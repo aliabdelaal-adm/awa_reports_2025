@@ -96,6 +96,7 @@
       </div>
     </div>
     <button class="print-btn" onclick="window.print()">طباعة أو حفظ PDF</button>
+    <button class="print-btn" onclick="openProfessionalReport()" style="background: linear-gradient(135deg, #d83b01 0%, #c13100 100%); margin-left: 10px;">📊 تقرير احترافي PowerPoint/Excel</button>
     <div class="section-title red">جدول التفتيش</div>
     <div id="planTable"></div>
     <div class="between-tables-space"></div>
@@ -467,6 +468,22 @@
     // تحميل البيانات وتفعيل التحديث التلقائي عند أول تحميل
     loadData();
     startAutoReload();
+    
+    // Professional Report Integration
+    window.openProfessionalReport = function() {
+      // Save current data to localStorage for the professional report
+      const currentData = {
+        inspectors: inspectors,
+        areas: areas,
+        shopsByArea: shopsByArea,
+        distribution: distribution,
+        goals: goals
+      };
+      localStorage.setItem('inspectionPlanData', JSON.stringify(currentData));
+      
+      // Open professional report in new tab
+      window.open('professional-report-template.html', '_blank');
+    };
   </script>
 </body>
 </html>
