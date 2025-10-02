@@ -40,9 +40,111 @@
     .stats-total-cell { color:#c00; font-weight:bold;}
     .goals-edit-box {margin: 14px 0 14px 0;}
     @media print { .print-btn, .copyright, .admin-section, .save-btn, .pw-popup, .stats-table { display:none !important;} body { background:#fff; } .container { box-shadow:none; margin:0;} }
+ copilot/fix-5c119674-a91f-42ba-b4f2-f68e8dc10b42
   </style>
 </head>
 <body>
+
+    /* Splash Screen Styles */
+    .splash-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #2336a0 0%, #1e2a8a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      cursor: pointer;
+      animation: fadeIn 0.5s ease-in;
+    }
+    .splash-screen.fade-out {
+      animation: fadeOut 0.5s ease-out forwards;
+    }
+    .splash-logo-container {
+      text-align: center;
+      animation: zoomIn 0.8s ease-out;
+    }
+    .splash-logo {
+      max-width: 400px;
+      max-height: 400px;
+      width: 90%;
+      height: auto;
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+    }
+    .splash-video-container {
+      width: 90%;
+      max-width: 560px;
+      height: auto;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+    .splash-video-container iframe {
+      width: 100%;
+      height: 315px;
+      border: none;
+    }
+    .splash-title {
+      color: #fff;
+      font-size: 2em;
+      margin-top: 30px;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .splash-subtitle {
+      color: #e2e6f6;
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
+    .splash-hint {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.9em;
+      margin-top: 20px;
+      animation: blink 2s ease-in-out infinite;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Splash Screen -->
+  <div id="splashScreen" class="splash-screen" onclick="hideSplashScreen()">
+    <div class="splash-logo-container">
+      <!-- Sheikh Zayed Image with Video -->
+      <img class="splash-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Sheikh_Zayed_bin_Sultan_Al_Nahyan_in_1968.jpg/800px-Sheikh_Zayed_bin_Sultan_Al_Nahyan_in_1968.jpg" alt="الشيخ زايد بن سلطان آل نهيان" style="border-radius: 10px; max-width: 300px;">
+      <div class="splash-title" style="margin-top: 20px;">الشيخ زايد بن سلطان آل نهيان</div>
+      <div class="splash-subtitle" style="font-size: 1em; margin-top: 15px;">"واجبنا أن نعمل المستحيل ونعمل الأشياء الغريبة"</div>
+      <div class="splash-video-container" style="margin-top: 20px;">
+        <!-- Embedded YouTube video with Sheikh Zayed's quote -->
+        <iframe src="https://www.youtube.com/embed/gVkXZeTvc3U?autoplay=1&mute=0&start=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="splash-hint">اضغط في أي مكان للمتابعة</div>
+    </div>
+  </div>
+
+ main
+ main
   <div class="container">
     <div class="header">خطة التفتيش الشهرية</div>
     <div style="text-align:left; margin-bottom:12px;">
@@ -487,6 +589,29 @@
       window.open('professional-report-template.html', '_blank');
     };
 
+ copilot/fix-5c119674-a91f-42ba-b4f2-f68e8dc10b42
+
+    // Splash Screen functionality
+    function hideSplashScreen() {
+      const splashScreen = document.getElementById('splashScreen');
+      if (splashScreen) {
+        splashScreen.classList.add('fade-out');
+        // Stop video when hiding splash screen
+        const iframe = splashScreen.querySelector('iframe');
+        if (iframe) {
+          iframe.src = '';
+        }
+        setTimeout(() => {
+          splashScreen.style.display = 'none';
+        }, 500); // Match the fadeOut animation duration
+      }
+    }
+
+    // Auto-hide splash screen after 10 seconds
+    setTimeout(() => {
+      hideSplashScreen();
+    }, 10000);
+ main
   </script>
 </body>
 </html>
