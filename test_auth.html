@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>اختبار نظام المصادقة</title>
+  <style>
+    body { font-family:'Segoe UI',Arial,sans-serif; background:#f6f6f6; padding:20px;}
+    .container { max-width:600px; margin:0 auto; background:#fff; border-radius:10px; padding:28px;}
+    .header { background:#2336a0; color:#fff; font-size:1.6em; text-align:center; padding:16px 0; border-radius:8px; margin-bottom:24px;}
+    select, button { font-size:1.1em; padding:8px; margin:10px 5px;}
+    .info { background:#e2e6f6; padding:15px; border-radius:6px; margin-top:20px;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">اختبار نظام المصادقة</div>
+    <div style="text-align:center; margin-bottom:20px;">
+      <label style="font-size:1.2em;">نوع المستخدم: </label>
+      <select id="userType" style="font-size:1.1em; padding:8px;">
+        <option value="inspector">مشاهد</option>
+        <option value="developer">مسؤول النظام</option>
+      </select>
+    </div>
+    <div class="info">
+      <h3>التغييرات المطبقة:</h3>
+      <ul>
+        <li>تم تغيير "مفتش" إلى "مشاهد"</li>
+        <li>تم تغيير "المطور" إلى "مسؤول النظام"</li>
+        <li>تم تغيير كلمة المرور من "ali@1983!!!" إلى "1940"</li>
+        <li>تم تحديث نص طلب كلمة المرور ليعكس دور مسؤول النظام</li>
+      </ul>
+      <p><strong>ملاحظة:</strong> هذه الصفحة للاختبار فقط. التغييرات تم تطبيقها على الملفات التالية:</p>
+      <ul>
+        <li>index.html</li>
+        <li>plan.html</li>
+        <li>plan_Version1.html</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

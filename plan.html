@@ -173,13 +173,13 @@
     <div style="text-align:left; margin-bottom:12px;">
       <label>نوع المستخدم: </label>
       <select id="userType" onchange="onUserTypeChange()">
-        <option value="inspector">مفتش</option>
-        <option value="developer">المطور</option>
+        <option value="inspector">مشاهد</option>
+        <option value="developer">مسؤول النظام</option>
       </select>
     </div>
     <div id="pwPopup" class="pw-popup" style="display:none;">
       <div class="pw-box">
-        <label>أدخل كلمة المرور للمطور:</label><br>
+        <label>أدخل كلمة المرور لمسؤول النظام:</label><br>
         <input id="pwInput" type="password" autocomplete="off" onkeypress="if(event.key==='Enter'){checkPassword();}">
         <br>
         <button onclick="checkPassword()">دخول</button>
@@ -232,7 +232,7 @@
     </div>
   </div>
   <script>
-    const DEVELOPER_PASSWORD = "ali@1983!!!";
+    const DEVELOPER_PASSWORD = "1940";
     let isDevAuthorized = false;
     let inspectors = [], areas = [], shopsByArea = {}, distribution = [], goals = "";
     let autoReloadTimer = null;
