@@ -246,9 +246,141 @@
                 font-size: 0.9em;
             }
         }
+        
+        /* Sheikh Zayed Splash Screen Styles */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2c5f2d 0%, #1a3d1b 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            cursor: pointer;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .splash-screen.fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+        
+        .splash-content-container {
+            text-align: center;
+            animation: zoomIn 0.8s ease-out;
+            max-width: 90%;
+        }
+        
+        .splash-logo {
+            max-width: 250px;
+            max-height: 250px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+            animation: pulse 2s ease-in-out infinite;
+            border: 5px solid #fff;
+        }
+        
+        .splash-video-container {
+            margin-top: 20px;
+            max-width: 560px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .splash-video-container iframe {
+            width: 100%;
+            height: 315px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .splash-title {
+            color: #fff;
+            font-size: 2.2em;
+            margin-top: 20px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .splash-subtitle {
+            color: #f0f0f0;
+            font-size: 1.3em;
+            margin-top: 10px;
+            font-style: italic;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        
+        .splash-hint {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9em;
+            margin-top: 15px;
+            animation: blink 2s ease-in-out infinite;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        @keyframes zoomIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+        
+        @media print { 
+            .splash-screen { 
+                display: none !important; 
+            } 
+        }
     </style>
 </head>
 <body>
+    <!-- Sheikh Zayed Splash Screen -->
+    <div id="splashScreen" class="splash-screen" onclick="hideSplashScreen()">
+        <div class="splash-content-container">
+            <!-- Sheikh Zayed Image from Wikipedia -->
+            <img class="splash-logo" 
+                 src="https://upload.wikimedia.org/wikipedia/commons/4/47/Zayed_bin_Sultan_Al_Nahyan_in_1976.jpg" 
+                 alt="الشيخ زايد بن سلطان آل نهيان">
+            
+            <div class="splash-title">الشيخ زايد بن سلطان آل نهيان</div>
+            <div class="splash-subtitle">"واجبنا أن نعمل المستحيل ونعمل الأشياء الغريبة"</div>
+            
+            <!-- YouTube Video -->
+            <div class="splash-video-container">
+                <iframe id="splashVideo"
+                        src="https://www.youtube.com/embed/HKP4i6gePWw?autoplay=1&mute=0&start=0&enablejsapi=1" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+            
+            <div class="splash-hint">اضغط في أي مكان للمتابعة</div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1>🏥 الخطة التحسينية المستمرة لنظام التفتيش الموحد</h1>
@@ -1593,6 +1725,34 @@
             processTableData();
             populateStatistics();
         });
+        
+        // Sheikh Zayed Splash Screen functionality
+        function hideSplashScreen() {
+            const splashScreen = document.getElementById('splashScreen');
+            const splashVideo = document.getElementById('splashVideo');
+            
+            if (splashScreen) {
+                // Stop the video
+                if (splashVideo) {
+                    const videoSrc = splashVideo.src;
+                    splashVideo.src = ''; // Stop the video by clearing src
+                    splashVideo.src = videoSrc.replace('autoplay=1', 'autoplay=0'); // Prevent autoplay if reopened
+                }
+                
+                // Add fade-out animation
+                splashScreen.classList.add('fade-out');
+                
+                // Hide after animation completes
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                }, 500); // Match the fadeOut animation duration
+            }
+        }
+        
+        // Auto-hide splash screen after 10 seconds
+        setTimeout(() => {
+            hideSplashScreen();
+        }, 10000);
     </script>
 </body>
 </html>
