@@ -39,10 +39,32 @@
     .stats-inspector-col {min-width:160px; width:160px;}
     .stats-total-cell { color:#c00; font-weight:bold;}
     .goals-edit-box {margin: 14px 0 14px 0;}
-    @media print { .print-btn, .copyright, .admin-section, .save-btn, .pw-popup, .stats-table { display:none !important;} body { background:#fff; } .container { box-shadow:none; margin:0;} }
+    .audio-overlay { position: fixed; top: 0; right: 0; left:0; bottom:0; background: rgba(0,0,0,0.7); display: flex; align-items:center; justify-content:center; z-index:2000; animation: fadeIn 0.3s;}
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+    .audio-box { background:#fff; padding:30px 24px; border-radius:12px; box-shadow:0 6px 30px #333; min-width:400px; text-align:center; animation: slideIn 0.4s;}
+    @keyframes slideIn { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .audio-box h2 { color:#2336a0; margin-bottom: 20px; font-size: 1.4em;}
+    .audio-box audio { width: 100%; margin: 20px 0; }
+    .audio-box .close-btn { background:#c00; color:#fff; padding:10px 40px; font-size:1.1em; border-radius:8px; border:none; cursor:pointer; margin-top: 15px;}
+    .audio-box .close-btn:hover { background:#a00;}
+    @media print { .print-btn, .copyright, .admin-section, .save-btn, .pw-popup, .stats-table, .audio-overlay { display:none !important;} body { background:#fff; } .container { box-shadow:none; margin:0;} }
   </style>
 </head>
 <body>
+  <!-- Audio/Video Overlay -->
+  <div id="audioOverlay" class="audio-overlay" style="display:none;">
+    <div class="audio-box">
+      <h2>🔊 رسالة ترحيبية</h2>
+      <p>مرحباً بك في نظام خطة التفتيش الشهرية</p>
+      <audio id="welcomeAudio" controls autoplay>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        المتصفح لا يدعم تشغيل الصوت
+      </audio>
+      <br>
+      <button class="close-btn" onclick="closeAudioOverlay()">إغلاق</button>
+    </div>
+  </div>
   <div class="container">
     <div class="header">خطة التفتيش الشهرية</div>
     <div style="text-align:left; margin-bottom:12px;">
@@ -430,11 +452,11 @@
       `;
       distribution.forEach((row, idx) => {
         html += `<tr>
-          <td>$$
-            {(userType === "developer" && isDevAuthorized)
-              ? `<select onchange="updateDist(${idx},'inspector',this.value)">
-                  ${inspectors.map(ins => `<option${row.inspector===ins?" selected":""}>${ins}</option>`).join("")}
-                </select>`
+          <td>${
+            (userType === "developer" && isDevAuthorized)
+              ? '<select onchange="updateDist(' + idx + ',\'inspector\',this.value)">' +
+                  inspectors.map(ins => '<option' + (row.inspector===ins?" selected":"") + '>' + ins + '</option>').join("") +
+                '</select>'
               : row.inspector
           }</td>
           <td>${row.day}</td>
@@ -468,6 +490,47 @@
     // تحميل البيانات وتفعيل التحديث التلقائي عند أول تحميل
     loadData();
     startAutoReload();
+    
+    // Audio overlay functions
+    function showAudioOverlay() {
+      const overlay = document.getElementById('audioOverlay');
+      const audio = document.getElementById('welcomeAudio');
+      
+      // Show overlay
+      overlay.style.display = 'flex';
+      
+      // Auto-close when audio ends
+      audio.addEventListener('ended', function() {
+        closeAudioOverlay();
+      });
+      
+      // Try to play audio (some browsers require user interaction)
+      audio.play().catch(function(error) {
+        console.log('Auto-play prevented:', error);
+      });
+    }
+    
+    function closeAudioOverlay() {
+      const overlay = document.getElementById('audioOverlay');
+      const audio = document.getElementById('welcomeAudio');
+      
+      // Fade out animation
+      overlay.style.animation = 'fadeOut 0.3s';
+      
+      setTimeout(function() {
+        overlay.style.display = 'none';
+        overlay.style.animation = 'fadeIn 0.3s';
+        audio.pause();
+        audio.currentTime = 0;
+      }, 300);
+    }
+    
+    // Show audio overlay on page load
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        showAudioOverlay();
+      }, 500); // Delay 0.5 seconds after page load
+    });
     
     // Professional Report Integration
     window.openProfessionalReport = function() {
