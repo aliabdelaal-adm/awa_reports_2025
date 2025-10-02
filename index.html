@@ -40,7 +40,6 @@
     .stats-total-cell { color:#c00; font-weight:bold;}
     .goals-edit-box {margin: 14px 0 14px 0;}
     @media print { .print-btn, .copyright, .admin-section, .save-btn, .pw-popup, .stats-table { display:none !important;} body { background:#fff; } .container { box-shadow:none; margin:0;} }
- copilot/fix-5c119674-a91f-42ba-b4f2-f68e8dc10b42
 
     /* Splash Screen Styles */
     .splash-screen {
@@ -122,17 +121,12 @@
       0%, 100% { opacity: 0.7; }
       50% { opacity: 1; }
     }
- main
- main
   </style>
   <!-- SheetJS library for Excel file parsing -->
   <!-- If the CDN below is blocked, download from https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js and host locally -->
   <script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
- copilot/fix-5c119674-a91f-42ba-b4f2-f68e8dc10b42
-
- copilot/fix-d800411c-398a-4581-8d5d-37d37b7f1c28
   <!-- Audio/Video Overlay -->
   <div id="audioOverlay" class="audio-overlay" style="display:none;">
     <div class="audio-box">
@@ -161,7 +155,6 @@
       <div class="splash-hint">اضغط في أي مكان للمتابعة</div>
     </div>
   </div>
- main
 
   <div class="container">
     <div class="header">خطة التفتيش الشهرية</div>
@@ -224,11 +217,11 @@
     </div>
     <button class="print-btn" onclick="window.print()">طباعة أو حفظ PDF</button>
     <button class="print-btn" onclick="openProfessionalReport()" style="background: linear-gradient(135deg, #d83b01 0%, #c13100 100%); margin-left: 10px;">📊 تقرير احترافي PowerPoint/Excel</button>
+    <div class="section-title red">الخطة التحسينية المستمرة لنظام التفتيش الموحد</div>
+    <div id="excelDataTable"></div>
+    <div class="between-tables-space"></div>
     <div class="section-title red">جدول التفتيش</div>
     <div id="planTable"></div>
-    <div class="between-tables-space"></div>
-    <div class="section-title red">احصائيات التفتيش</div>
-    <div id="stats"></div>
     <div class="copyright">
       جميع الحقوق محفوظة &copy; المطور د. علي عبدالعال
     </div>
@@ -296,7 +289,6 @@
         document.getElementById("adminSection").style.display = "none";
       }
       renderPlanTable();
-      renderStats();
     }
     function checkPassword() {
       let pw = document.getElementById("pwInput").value;
@@ -317,7 +309,6 @@
       document.getElementById("adminSection").style.display = "none";
       isDevAuthorized = false;
       renderPlanTable();
-      renderStats();
     }
 
     function renderInspectors() {
@@ -586,12 +577,84 @@
       renderShopAreaSelect();
       renderDistribution();
       renderPlanTable();
-      renderStats();
       document.getElementById("goalsEdit").value = goals;
     }
+    
+    // Load and display Excel file (plan-dataxlsx.json)
+    async function loadExcelData() {
+      try {
+        // Since SheetJS library might be blocked, we'll use a fallback approach
+        // Try to use XLSX if available, otherwise fetch and parse locally
+        if (typeof XLSX !== 'undefined') {
+          const response = await fetch('plan-dataxlsx.json');
+          const arrayBuffer = await response.arrayBuffer();
+          const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+          
+          // Get first sheet
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const data = XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: '' });
+          
+          renderExcelTable(data);
+        } else {
+          // Fallback: Show message that data file exists but library is needed
+          renderExcelTableFallback();
+        }
+      } catch (e) {
+        console.error('Error loading Excel file:', e);
+        renderExcelTableFallback();
+      }
+    }
+    
+    function renderExcelTable(data) {
+      let html = '<table style="font-size: 0.95em;">';
+      data.forEach((row, idx) => {
+        if (idx === 0) {
+          // Title row
+          html += '<thead><tr><th colspan="16" style="background:#c00; color:#fff; font-size:1.15em; padding:14px;">' + row[0] + '</th></tr></thead>';
+        } else if (idx === 1) {
+          // Header row
+          html += '<thead><tr>';
+          row.forEach(cell => {
+            if (cell) html += '<th>' + cell + '</th>';
+          });
+          html += '</tr></thead><tbody>';
+        } else if (row.some(cell => cell !== '')) {
+          // Data rows (skip empty rows)
+          html += '<tr>';
+          row.forEach((cell, cellIdx) => {
+            let cellValue = cell;
+            if (cell instanceof Date) {
+              cellValue = cell.toLocaleDateString('ar-AE');
+            }
+            // Highlight section headers
+            if (cellIdx === 0 && typeof cell === 'string' && cell.includes('شهر')) {
+              html += '<td colspan="16" style="background:#e2e6f6; font-weight:bold; text-align:right; padding:10px;">' + cellValue + '</td>';
+              return;
+            }
+            html += '<td>' + (cellValue || '') + '</td>';
+          });
+          html += '</tr>';
+        }
+      });
+      html += '</tbody></table>';
+      document.getElementById("excelDataTable").innerHTML = html;
+    }
+    
+    function renderExcelTableFallback() {
+      // Display a message indicating the file is available
+      let html = `<div style="background:#e2e6f6; padding:20px; border-radius:8px; text-align:center;">
+        <p style="color:#2336a0; font-size:1.1em; font-weight:bold;">📄 ملف الخطة التحسينية متاح</p>
+        <p style="color:#555;">الملف: <strong>plan-dataxlsx.json</strong></p>
+        <p style="color:#555;">يحتوي الملف على الخطة التحسينية المستمرة لنظام التفتيش الموحد</p>
+        <p style="color:#777; font-size:0.9em;">لعرض المحتوى كاملاً، يرجى التأكد من تحميل مكتبة SheetJS</p>
+      </div>`;
+      document.getElementById("excelDataTable").innerHTML = html;
+    }
+    
     // تحميل البيانات وتفعيل التحديث التلقائي عند أول تحميل
     loadData();
     startAutoReload();
+    loadExcelData();
     
 
     // Excel file upload handler
@@ -766,8 +829,6 @@
       window.open('professional-report-template.html', '_blank');
     };
 
- copilot/fix-5c119674-a91f-42ba-b4f2-f68e8dc10b42
-
     // Splash Screen functionality
     function hideSplashScreen() {
       const splashScreen = document.getElementById('splashScreen');
@@ -788,7 +849,6 @@
     setTimeout(() => {
       hideSplashScreen();
     }, 10000);
- main
   </script>
 </body>
 </html>
