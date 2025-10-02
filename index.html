@@ -122,6 +122,94 @@
       0%, 100% { opacity: 0.7; }
       50% { opacity: 1; }
     }
+    
+    /* Professional Excel Table Styles */
+    .excel-table-container {
+      margin: 20px 0;
+      overflow-x: auto;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      background: #fff;
+    }
+    
+    .excel-sheet-title {
+      background: linear-gradient(135deg, #2336a0 0%, #1e2a8a 100%);
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+      border-radius: 8px 8px 0 0;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .excel-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: #fff;
+      font-size: 1em;
+      margin-bottom: 30px;
+    }
+    
+    .excel-table thead {
+      background: linear-gradient(180deg, #2336a0 0%, #1e2a8a 100%);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    
+    .excel-header {
+      padding: 14px 12px;
+      text-align: center;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1.05em;
+      border: 1px solid #fff;
+      background: linear-gradient(180deg, #2336a0 0%, #1e2a8a 100%);
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+      white-space: nowrap;
+    }
+    
+    .excel-cell {
+      padding: 10px 12px;
+      text-align: center;
+      border: 1px solid #d0d0d0;
+      color: #333;
+      background: #fafafa;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+    
+    .excel-cell-first {
+      font-weight: bold;
+      background: #e8f0fe;
+      color: #2336a0;
+    }
+    
+    .excel-table tbody tr:nth-child(even) .excel-cell {
+      background: #fff;
+    }
+    
+    .excel-table tbody tr:hover .excel-cell {
+      background: #e2e6f6;
+      transform: scale(1.01);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .excel-table tbody tr:hover .excel-cell-first {
+      background: #d0e1ff;
+    }
+    
+    @media print {
+      .excel-table-container {
+        box-shadow: none;
+      }
+      .excel-table tbody tr:hover .excel-cell {
+        background: #fafafa;
+        transform: none;
+        box-shadow: none;
+      }
+    }
  main
  main
   </style>
@@ -252,6 +340,45 @@
         if(render) renderAll();
       } catch (e) {
         alert("تعذر تحميل البيانات من الخادم!");
+      }
+    }
+
+    // جلب وعرض جدول Excel المتقدم من ملف plan-dataxlsx.json
+    async function loadExcelTable() {
+      try {
+        // Check if XLSX library is loaded
+        if (typeof XLSX === 'undefined') {
+          console.error('مكتبة XLSX غير محملة');
+          document.getElementById("planTable").innerHTML = `
+            <div style="padding: 20px; background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; text-align: center;">
+              <h3 style="color: #856404;">⚠️ تنبيه</h3>
+              <p style="color: #856404;">مكتبة قراءة ملفات Excel غير محملة. يرجى التأكد من الاتصال بالإنترنت.</p>
+              <p style="color: #856404;">سيتم عرض الجدول تلقائياً عند توفر الاتصال.</p>
+            </div>
+          `;
+          return;
+        }
+        
+        // Load the Excel file from the repository
+        let res = await fetch('‎ plan-dataxlsx.json');
+        if (!res.ok) {
+          throw new Error('فشل تحميل ملف Excel');
+        }
+        let arrayBuffer = await res.arrayBuffer();
+        let data = new Uint8Array(arrayBuffer);
+        let workbook = XLSX.read(data, {type: 'array'});
+        
+        // Render the Excel table
+        renderExcelTable(workbook);
+      } catch (e) {
+        console.error("خطأ في تحميل ملف Excel:", e);
+        document.getElementById("planTable").innerHTML = `
+          <div style="padding: 20px; background: #f8d7da; border: 2px solid #dc3545; border-radius: 8px; text-align: center;">
+            <h3 style="color: #721c24;">❌ خطأ</h3>
+            <p style="color: #721c24;">حدث خطأ في تحميل جدول Excel: ${e.message}</p>
+            <p style="color: #721c24;">يرجى التحقق من وجود الملف أو إعادة تحميل الصفحة.</p>
+          </div>
+        `;
       }
     }
 
@@ -539,45 +666,57 @@
       </table>`;
       document.getElementById("stats").innerHTML = html;
     }
-    function renderPlanTable() {
-      let userType = document.getElementById("userType").value;
-      let html = `<table>
-        <thead>
-          <tr>
-            <th>اسم المفتش</th>
-            <th>اليوم</th>
-            <th>وقت المناوبة</th>
-            <th>المنطقة</th>
-            <th>المحلات</th>
-          </tr>
-        </thead>
-        <tbody>
-      `;
-      distribution.forEach((row, idx) => {
-        let inspectorCell = (userType === "developer" && isDevAuthorized)
-          ? `<select onchange="updateDist(${idx},'inspector',this.value)">
-              ${inspectors.map(ins => `<option${row.inspector===ins?" selected":""}>${ins}</option>`).join("")}
-            </select>`
-          : row.inspector;
-        html += `<tr>
-          <td>${inspectorCell}</td>
-          <td>${row.day}</td>
-          <td>${row.shift || ""}</td>
-          <td>${row.area}</td>
-          <td>${(row.shops||[]).join("، ")}</td>
-        </tr>`;
+    // عرض جدول Excel احترافي متقدم
+    function renderExcelTable(workbook) {
+      if (!workbook || !workbook.SheetNames || workbook.SheetNames.length === 0) {
+        document.getElementById("planTable").innerHTML = '<p style="color: #c00;">لا توجد بيانات لعرضها</p>';
+        return;
+      }
+      
+      let html = '<div class="excel-table-container">';
+      
+      // Process each sheet in the workbook
+      workbook.SheetNames.forEach((sheetName, sheetIndex) => {
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1, defval: ''});
+        
+        if (jsonData.length === 0) return;
+        
+        // Add sheet title
+        html += `<div class="excel-sheet-title">${sheetName}</div>`;
+        html += '<table class="excel-table">';
+        
+        // Process rows
+        jsonData.forEach((row, rowIndex) => {
+          if (rowIndex === 0) {
+            // Header row
+            html += '<thead><tr>';
+            row.forEach(cell => {
+              html += `<th class="excel-header">${cell || ''}</th>`;
+            });
+            html += '</tr></thead><tbody>';
+          } else {
+            // Data rows
+            html += '<tr>';
+            row.forEach((cell, colIndex) => {
+              const cellClass = colIndex === 0 ? 'excel-cell excel-cell-first' : 'excel-cell';
+              html += `<td class="${cellClass}">${cell || ''}</td>`;
+            });
+            html += '</tr>';
+          }
+        });
+        
+        html += '</tbody></table>';
       });
-      html += `</tbody>
-        <tfoot>
-          <tr>
-            <td class="goals-cell" colspan="5">
-              <span class="goals-red">أهداف التفتيش هذا الشهر:</span><br>
-              <span>${goals.replace(/\n/g, "<br>")}</span>
-            </td>
-          </tr>
-        </tfoot>
-      </table>`;
+      
+      html += '</div>';
       document.getElementById("planTable").innerHTML = html;
+    }
+    
+    function renderPlanTable() {
+      // This function is now replaced by renderExcelTable
+      // Kept for compatibility with other parts of the code
+      loadExcelTable();
     }
     function renderAll() {
       renderInspectors();
@@ -585,13 +724,15 @@
       renderShops();
       renderShopAreaSelect();
       renderDistribution();
-      renderPlanTable();
+      loadExcelTable(); // Load Excel table instead of simple table
       renderStats();
       document.getElementById("goalsEdit").value = goals;
     }
     // تحميل البيانات وتفعيل التحديث التلقائي عند أول تحميل
     loadData();
     startAutoReload();
+    // تحميل جدول Excel عند تحميل الصفحة
+    loadExcelTable();
     
 
     // Excel file upload handler
