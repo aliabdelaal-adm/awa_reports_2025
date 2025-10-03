@@ -2610,7 +2610,7 @@
                 yPosition += 10;
                 
                 pdf.setFontSize(12);
-                pdf.text('إدارة الصحة العامة - قسم الرقابة والرفق بالحيوان', pageWidth / 2, yPosition, { align: 'center' });
+                pdf.text('إدارة الصحة العامة - إدارة الرفق بالحيوان', pageWidth / 2, yPosition, { align: 'center' });
                 yPosition += 10;
                 pdf.text('بلدية مدينة أبوظبي', pageWidth / 2, yPosition, { align: 'center' });
                 yPosition += 15;
@@ -2659,7 +2659,7 @@
                 for (let i = 1; i <= totalPages; i++) {
                     pdf.setPage(i);
                     pdf.setFontSize(9);
-                    pdf.text(`تم التطوير بواسطة المطور د. علي عبدالعال - الصفحة ${i} من ${totalPages}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
+                    pdf.text(`تم التطوير بواسطة  د. علي عبدالعال - الصفحة ${i} من ${totalPages}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
                 }
                 
                 // Save PDF
@@ -2897,7 +2897,7 @@
                     fontSize: 44, bold: true, color: 'FFFFFF',
                     align: 'center', rtlMode: true
                 });
-                slide5.addText('تم التطوير بواسطة المطور د. علي عبدالعال', {
+                slide5.addText('تم التطوير بواسطة  د. علي عبدالعال', {
                     x: 0.5, y: 3.5, w: 9, h: 0.5,
                     fontSize: 18, color: 'FFFFFF',
                     align: 'center', rtlMode: true
