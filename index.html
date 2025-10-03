@@ -413,111 +413,13 @@
             border: 5px solid #fff;
         }
         
-        .splash-video-container {
+        .splash-audio-container {
             margin-top: 20px;
             max-width: 560px;
             width: 100%;
             margin-left: auto;
             margin-right: auto;
-            position: relative;
-        }
-        
-        .splash-video-container iframe {
-            width: 100%;
-            height: 315px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        
-        .video-poster {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 315px;
-            background-size: cover;
-            background-position: center;
-            border-radius: 10px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: opacity 0.3s ease;
-        }
-        
-        .video-poster.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        .play-button {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-        }
-        
-        .play-button:hover {
-            transform: scale(1.1);
-            background: rgba(255, 255, 255, 1);
-        }
-        
-        .play-button::after {
-            content: '';
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 15px 0 15px 25px;
-            border-color: transparent transparent transparent #2c5f2d;
-            margin-left: 5px;
-        }
-        
-        .video-error {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 315px;
-            background: rgba(44, 95, 45, 0.95);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            z-index: 10;
-        }
-        
-        .video-error p {
-            margin: 5px 0;
-            font-size: 1.1em;
-        }
-        
-        .retry-button {
-            background: rgba(255, 255, 255, 0.95);
-            color: #2c5f2d;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-size: 1em;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        
-        .retry-button:hover {
-            transform: scale(1.05);
-            background: white;
+            display: none; /* Hide the audio player visually */
         }
         
         .splash-title {
@@ -543,7 +445,7 @@
             animation: blink 2s ease-in-out infinite;
         }
         
-        .splash-unmute-hint {
+        .splash-audio-hint {
             color: rgba(255,255,255,0.9);
             font-size: 1em;
             margin-top: 10px;
@@ -658,26 +560,27 @@
             <div class="splash-title">الشيخ زايد بن سلطان آل نهيان</div>
             <div class="splash-subtitle">"واجبنا أن نعمل المستحيل ونعمل الأشياء الغريبة"</div>
             
-            <!-- YouTube Video -->
-            <div class="splash-video-container">
-                <div id="videoPoster" class="video-poster" 
-                     style="background-image: url('https://i.ytimg.com/vi/HKP4i6gePWw/maxresdefault.jpg');"
-                     onclick="playVideo(event)">
-                    <div class="play-button"></div>
-                </div>
-                <iframe id="splashVideo"
-                        src="https://www.youtube.com/embed/HKP4i6gePWw?autoplay=1&mute=1&enablejsapi=1&rel=0" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                        allowfullscreen>
-                </iframe>
-                <div id="videoError" class="video-error" style="display: none;">
-                    <p>⚠️ تعذر تحميل الفيديو</p>
-                    <button onclick="retryVideo(event)" class="retry-button">🔄 إعادة المحاولة</button>
-                    <p style="margin-top: 10px; font-size: 0.9em;">أو <a href="https://www.youtube.com/watch?v=HKP4i6gePWw" target="_blank" style="color: #fff; text-decoration: underline;">شاهد على يوتيوب</a></p>
-                </div>
+            <!-- Audio Clip -->
+            <div class="splash-audio-container">
+                <audio id="splashAudio" preload="auto">
+                    <!-- 
+                        تعليمات لاستخدام ملف صوتي:
+                        1. قم بتحميل الصوت من الفيديو من اليوتيوب: https://www.youtube.com/watch?v=HKP4i6gePWw
+                        2. استخدم أي أداة لتحويل الفيديو إلى ملف صوت MP3
+                        3. قم بتحميل ملف الصوت في نفس المجلد مع index.html
+                        4. استبدل "sheikh-zayed-speech.mp3" باسم ملف الصوت الخاص بك
+                        
+                        Instructions to use an audio file:
+                        1. Download the audio from the YouTube video: https://www.youtube.com/watch?v=HKP4i6gePWw
+                        2. Use any tool to convert the video to an MP3 audio file
+                        3. Upload the audio file to the same folder as index.html
+                        4. Replace "sheikh-zayed-speech.mp3" with your audio file name
+                    -->
+                    <source src="sheikh-zayed-speech.mp3" type="audio/mpeg">
+                    المتصفح لا يدعم عنصر الصوت.
+                </audio>
             </div>
-            <div class="splash-unmute-hint">▶️ اضغط زر التشغيل لسماع كلمات الشيخ زايد</div>
+            <div class="splash-audio-hint">🔊 استمع لكلمات الشيخ زايد عن العمل</div>
             
             <div class="splash-hint">اضغط في أي مكان للمتابعة</div>
         </div>
@@ -2487,77 +2390,47 @@
             // Show statistics by default
             showSection('statistics');
             
-            // Initialize video auto-play
-            const splashVideo = document.getElementById('splashVideo');
-            const videoPoster = document.getElementById('videoPoster');
-            const videoError = document.getElementById('videoError');
+            // Initialize audio auto-play
+            const splashAudio = document.getElementById('splashAudio');
             
-            // Keep the poster visible - don't hide it automatically
-            // User must click the play button to start the video with sound
-            
-            // Listen for iframe load errors
-            if (splashVideo) {
-                splashVideo.addEventListener('error', function() {
-                    console.log('Video failed to load');
-                    if (videoError) {
-                        videoError.style.display = 'flex';
-                    }
-                    if (videoPoster) {
-                        videoPoster.classList.remove('hidden');
-                    }
+            if (splashAudio) {
+                // Try to autoplay the audio
+                const playPromise = splashAudio.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        console.log('Audio started playing automatically');
+                        
+                        // Stop audio after 10 seconds
+                        setTimeout(() => {
+                            splashAudio.pause();
+                            splashAudio.currentTime = 0;
+                        }, 10000);
+                    }).catch(error => {
+                        console.log('Autoplay was prevented:', error);
+                        // Autoplay was prevented, but that's okay
+                        // User can still click to proceed
+                    });
+                }
+                
+                // Listen for audio errors
+                splashAudio.addEventListener('error', function() {
+                    console.log('Audio failed to load');
+                    // Continue showing splash screen even if audio fails
                 });
             }
         });
         
         // Sheikh Zayed Splash Screen functionality
-        function playVideo(event) {
-            if (event) {
-                event.stopPropagation(); // Prevent splash screen from closing
-            }
-            
-            const videoPoster = document.getElementById('videoPoster');
-            const splashVideo = document.getElementById('splashVideo');
-            const unmuteHint = document.querySelector('.splash-unmute-hint');
-            const videoError = document.getElementById('videoError');
-            
-            // Reload the video with sound enabled (unmuted)
-            // This will work because it's triggered by user interaction
-            splashVideo.src = 'https://www.youtube.com/embed/HKP4i6gePWw?autoplay=1&mute=0&enablejsapi=1&rel=0';
-            
-            // Hide the poster
-            videoPoster.classList.add('hidden');
-            
-            // Hide error if showing
-            if (videoError) {
-                videoError.style.display = 'none';
-            }
-            
-            // Update the unmute hint
-            if (unmuteHint) {
-                unmuteHint.textContent = '🔊 الفيديو يعمل الآن - استمتع بكلمات الشيخ زايد';
-            }
-        }
-        
-        function retryVideo(event) {
-            if (event) {
-                event.stopPropagation();
-            }
-            playVideo(event);
-        }
-        
         function hideSplashScreen(event) {
-            // Don't close if clicking on video iframe
-            if (event && event.target.tagName === 'IFRAME') {
-                return;
-            }
-            
             const splashScreen = document.getElementById('splashScreen');
-            const splashVideo = document.getElementById('splashVideo');
+            const splashAudio = document.getElementById('splashAudio');
             
             if (splashScreen) {
-                // Stop the video
-                if (splashVideo) {
-                    splashVideo.src = ''; // Stop the video by clearing src
+                // Stop the audio
+                if (splashAudio) {
+                    splashAudio.pause();
+                    splashAudio.currentTime = 0;
                 }
                 
                 // Add fade-out animation
@@ -2570,10 +2443,10 @@
             }
         }
         
-        // Auto-hide splash screen after 30 seconds (give more time for video)
+        // Auto-hide splash screen after 10 seconds (match audio duration)
         setTimeout(() => {
             hideSplashScreen();
-        }, 30000);
+        }, 10000);
         
         // ====== Export Functions ======
         
