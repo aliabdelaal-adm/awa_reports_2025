@@ -667,14 +667,14 @@
         </div>
         
         <div class="navigation">
-            <button class="nav-button" onclick="showSection('statistics')">📈 لوحة التحكم التحليلية</button>
-            <button class="nav-button" onclick="showSection('analytics')">📊 التحليلات المتقدمة</button>
-            <button class="nav-button" onclick="showSection('monthly')">📅 التقارير الشهرية</button>
-            <button class="nav-button" onclick="showSection('challenges')">⚠️ التحديات</button>
-            <button class="nav-button" onclick="showSection('solutions')">✅ الحلول والإجراءات</button>
-            <button class="nav-button" onclick="showSection('recommendations')">💡 التوصيات</button>
-            <button class="nav-button" onclick="showSection('suggestions')">🚀 مقترحات التطوير</button>
-            <button class="nav-button active" onclick="showSection('all')">📋 جميع البيانات</button>
+            <button class="nav-button" onclick="showSection('statistics', event)">📈 لوحة التحكم التحليلية</button>
+            <button class="nav-button" onclick="showSection('analytics', event)">📊 التحليلات المتقدمة</button>
+            <button class="nav-button" onclick="showSection('monthly', event)">📅 التقارير الشهرية</button>
+            <button class="nav-button" onclick="showSection('challenges', event)">⚠️ التحديات</button>
+            <button class="nav-button" onclick="showSection('solutions', event)">✅ الحلول والإجراءات</button>
+            <button class="nav-button" onclick="showSection('recommendations', event)">💡 التوصيات</button>
+            <button class="nav-button" onclick="showSection('suggestions', event)">🚀 مقترحات التطوير</button>
+            <button class="nav-button active" onclick="showSection('all', event)">📋 جميع البيانات</button>
         </div>
         
         <!-- Export Section for System Administrator -->
@@ -1971,7 +1971,7 @@
     
     <script>
         // Navigation functionality
-        function showSection(sectionId) {
+        function showSection(sectionId, clickEvent) {
             // Hide all sections
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
@@ -1989,8 +1989,8 @@
             }
             
             // Add active class to clicked button
-            if (event && event.target) {
-                event.target.classList.add('active');
+            if (clickEvent && clickEvent.target) {
+                clickEvent.target.classList.add('active');
             }
             
             // If statistics, populate it
@@ -2925,10 +2925,6 @@
                 event.target.disabled = false;
             }
         }
-
-        }, 15000);
- main
- main
     </script>
 </body>
 </html>
