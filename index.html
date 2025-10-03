@@ -413,6 +413,7 @@
             width: 100%;
             margin-left: auto;
             margin-right: auto;
+            position: relative;
         }
         
         .splash-video-container iframe {
@@ -420,6 +421,55 @@
             height: 315px;
             border-radius: 10px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .video-poster {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 315px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: opacity 0.3s ease;
+        }
+        
+        .video-poster.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .play-button:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 1);
+        }
+        
+        .play-button::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 15px 0 15px 25px;
+            border-color: transparent transparent transparent #2c5f2d;
+            margin-left: 5px;
         }
         
         .splash-title {
@@ -443,6 +493,17 @@
             font-size: 0.9em;
             margin-top: 15px;
             animation: blink 2s ease-in-out infinite;
+        }
+        
+        .splash-unmute-hint {
+            color: rgba(255,255,255,0.9);
+            font-size: 1em;
+            margin-top: 10px;
+            background: rgba(44, 95, 45, 0.8);
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            animation: pulse 2s ease-in-out infinite;
         }
         
         @keyframes fadeIn {
@@ -479,25 +540,32 @@
 </head>
 <body>
     <!-- Sheikh Zayed Splash Screen -->
-    <div id="splashScreen" class="splash-screen" onclick="hideSplashScreen()">
+    <div id="splashScreen" class="splash-screen" onclick="hideSplashScreen(event)">
         <div class="splash-content-container">
             <!-- Sheikh Zayed Image from Wikipedia -->
             <img class="splash-logo" 
-                 src="https://upload.wikimedia.org/wikipedia/commons/4/47/Zayed_bin_Sultan_Al_Nahyan_in_1976.jpg" 
-                 alt="الشيخ زايد بن سلطان آل نهيان">
+                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Zayed_bin_Sultan_Al_Nahyan_in_1976_%28cropped%29.jpg/800px-Zayed_bin_Sultan_Al_Nahyan_in_1976_%28cropped%29.jpg" 
+                 alt="الشيخ زايد بن سلطان آل نهيان"
+                 onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/4/47/Zayed_bin_Sultan_Al_Nahyan_in_1976.jpg'">
             
             <div class="splash-title">الشيخ زايد بن سلطان آل نهيان</div>
             <div class="splash-subtitle">"واجبنا أن نعمل المستحيل ونعمل الأشياء الغريبة"</div>
             
             <!-- YouTube Video -->
             <div class="splash-video-container">
+                <div id="videoPoster" class="video-poster" 
+                     style="background-image: url('https://i.ytimg.com/vi/HKP4i6gePWw/maxresdefault.jpg');"
+                     onclick="playVideo(event)">
+                    <div class="play-button"></div>
+                </div>
                 <iframe id="splashVideo"
-                        src="https://www.youtube.com/embed/HKP4i6gePWw?autoplay=1&mute=0&start=0&enablejsapi=1" 
+                        src="" 
                         frameborder="0" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                         allowfullscreen>
                 </iframe>
             </div>
+            <div class="splash-unmute-hint">▶️ اضغط على الفيديو لتشغيله والاستماع لكلمات الشيخ زايد</div>
             
             <div class="splash-hint">اضغط في أي مكان للمتابعة</div>
         </div>
@@ -2295,16 +2363,40 @@
         });
         
         // Sheikh Zayed Splash Screen functionality
-        function hideSplashScreen() {
+        function playVideo(event) {
+            if (event) {
+                event.stopPropagation(); // Prevent splash screen from closing
+            }
+            
+            const videoPoster = document.getElementById('videoPoster');
+            const splashVideo = document.getElementById('splashVideo');
+            const unmuteHint = document.querySelector('.splash-unmute-hint');
+            
+            // Load and play the video with sound
+            splashVideo.src = 'https://www.youtube.com/embed/HKP4i6gePWw?autoplay=1&mute=0&enablejsapi=1';
+            
+            // Hide the poster
+            videoPoster.classList.add('hidden');
+            
+            // Hide the unmute hint
+            if (unmuteHint) {
+                unmuteHint.style.display = 'none';
+            }
+        }
+        
+        function hideSplashScreen(event) {
+            // Don't close if clicking on video iframe
+            if (event && event.target.tagName === 'IFRAME') {
+                return;
+            }
+            
             const splashScreen = document.getElementById('splashScreen');
             const splashVideo = document.getElementById('splashVideo');
             
             if (splashScreen) {
                 // Stop the video
                 if (splashVideo) {
-                    const videoSrc = splashVideo.src;
                     splashVideo.src = ''; // Stop the video by clearing src
-                    splashVideo.src = videoSrc.replace('autoplay=1', 'autoplay=0'); // Prevent autoplay if reopened
                 }
                 
                 // Add fade-out animation
@@ -2317,10 +2409,10 @@
             }
         }
         
-        // Auto-hide splash screen after 10 seconds
+        // Auto-hide splash screen after 15 seconds (give more time for video)
         setTimeout(() => {
             hideSplashScreen();
-        }, 10000);
+        }, 15000);
     </script>
 </body>
 </html>
