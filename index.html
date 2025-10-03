@@ -375,118 +375,6 @@
             }
         }
         
-        /* Sheikh Zayed Splash Screen Styles */
-        .splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #2c5f2d 0%, #1a3d1b 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            cursor: pointer;
-            animation: fadeIn 0.5s ease-in;
-        }
-        
-        .splash-screen.fade-out {
-            animation: fadeOut 0.5s ease-out forwards;
-        }
-        
-        .splash-content-container {
-            text-align: center;
-            animation: zoomIn 0.8s ease-out;
-            max-width: 90%;
-        }
-        
-        .splash-logo {
-            max-width: 250px;
-            max-height: 250px;
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
-            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
-            animation: pulse 2s ease-in-out infinite;
-            border: 5px solid #fff;
-        }
-        
-        .splash-audio-container {
-            margin-top: 20px;
-            max-width: 560px;
-            width: 100%;
-            margin-left: auto;
-            margin-right: auto;
-            display: none; /* Hide the audio player visually */
-        }
-        
-        .splash-title {
-            color: #fff;
-            font-size: 2.2em;
-            margin-top: 20px;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        .splash-subtitle {
-            color: #f0f0f0;
-            font-size: 1.3em;
-            margin-top: 10px;
-            font-style: italic;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-        }
-        
-        .splash-hint {
-            color: rgba(255,255,255,0.8);
-            font-size: 0.9em;
-            margin-top: 15px;
-            animation: blink 2s ease-in-out infinite;
-        }
-        
-        .splash-audio-hint {
-            color: rgba(255,255,255,0.9);
-            font-size: 1em;
-            margin-top: 10px;
-            background: rgba(44, 95, 45, 0.8);
-            padding: 8px 15px;
-            border-radius: 20px;
-            display: inline-block;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-        
-        @keyframes zoomIn {
-            from { transform: scale(0.5); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        @keyframes blink {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
-        }
-        
-        @media print { 
-            .splash-screen { 
-                display: none !important; 
-            } 
-        }
-        
         /* Export Buttons Styles */
         .export-section {
             background: #ecf0f1;
@@ -548,44 +436,6 @@
     </style>
 </head>
 <body>
-    <!-- Sheikh Zayed Splash Screen -->
-    <div id="splashScreen" class="splash-screen" onclick="hideSplashScreen(event)">
-        <div class="splash-content-container">
-            <!-- Sheikh Zayed Image from Wikipedia -->
-            <img class="splash-logo" 
-                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Zayed_bin_Sultan_Al_Nahyan_in_1976_%28cropped%29.jpg/800px-Zayed_bin_Sultan_Al_Nahyan_in_1976_%28cropped%29.jpg" 
-                 alt="الشيخ زايد بن سلطان آل نهيان"
-                 onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/4/47/Zayed_bin_Sultan_Al_Nahyan_in_1976.jpg'">
-            
-            <div class="splash-title">الشيخ زايد بن سلطان آل نهيان</div>
-            <div class="splash-subtitle">"واجبنا أن نعمل المستحيل ونعمل الأشياء الغريبة"</div>
-            
-            <!-- Audio Clip -->
-            <div class="splash-audio-container">
-                <audio id="splashAudio" preload="auto">
-                    <!-- 
-                        تعليمات لاستخدام ملف صوتي:
-                        1. قم بتحميل الصوت من الفيديو من اليوتيوب: https://www.youtube.com/watch?v=HKP4i6gePWw
-                        2. استخدم أي أداة لتحويل الفيديو إلى ملف صوت MP3
-                        3. قم بتحميل ملف الصوت في نفس المجلد مع index.html
-                        4. استبدل "sheikh-zayed-speech.mp3" باسم ملف الصوت الخاص بك
-                        
-                        Instructions to use an audio file:
-                        1. Download the audio from the YouTube video: https://www.youtube.com/watch?v=HKP4i6gePWw
-                        2. Use any tool to convert the video to an MP3 audio file
-                        3. Upload the audio file to the same folder as index.html
-                        4. Replace "sheikh-zayed-speech.mp3" with your audio file name
-                    -->
-                    <source src="sheikh-zayed-speech.mp3" type="audio/mpeg">
-                    المتصفح لا يدعم عنصر الصوت.
-                </audio>
-            </div>
-            <div class="splash-audio-hint">🔊 استمع لكلمات الشيخ زايد عن العمل</div>
-            
-            <div class="splash-hint">اضغط في أي مكان للمتابعة</div>
-        </div>
-    </div>
-
     <div class="container">
         <div class="header">
             <h1>🏥 الخطة التحسينية المستمرة لنظام التفتيش الموحد</h1>
@@ -2390,63 +2240,8 @@
             // Show statistics by default
             showSection('statistics');
             
-            // Initialize audio auto-play
-            const splashAudio = document.getElementById('splashAudio');
-            
-            if (splashAudio) {
-                // Try to autoplay the audio
-                const playPromise = splashAudio.play();
-                
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        console.log('Audio started playing automatically');
-                        
-                        // Stop audio after 10 seconds
-                        setTimeout(() => {
-                            splashAudio.pause();
-                            splashAudio.currentTime = 0;
-                        }, 10000);
-                    }).catch(error => {
-                        console.log('Autoplay was prevented:', error);
-                        // Autoplay was prevented, but that's okay
-                        // User can still click to proceed
-                    });
-                }
-                
-                // Listen for audio errors
-                splashAudio.addEventListener('error', function() {
-                    console.log('Audio failed to load');
-                    // Continue showing splash screen even if audio fails
-                });
-            }
+
         });
-        
-        // Sheikh Zayed Splash Screen functionality
-        function hideSplashScreen(event) {
-            const splashScreen = document.getElementById('splashScreen');
-            const splashAudio = document.getElementById('splashAudio');
-            
-            if (splashScreen) {
-                // Stop the audio
-                if (splashAudio) {
-                    splashAudio.pause();
-                    splashAudio.currentTime = 0;
-                }
-                
-                // Add fade-out animation
-                splashScreen.classList.add('fade-out');
-                
-                // Hide after animation completes
-                setTimeout(() => {
-                    splashScreen.style.display = 'none';
-                }, 500); // Match the fadeOut animation duration
-            }
-        }
-        
-        // Auto-hide splash screen after 10 seconds (match audio duration)
-        setTimeout(() => {
-            hideSplashScreen();
-        }, 10000);
         
         // ====== Export Functions ======
         
