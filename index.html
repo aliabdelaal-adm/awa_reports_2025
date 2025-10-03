@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الخطة التحسينية المستمرة - نظام التفتيش الموحد</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js">
+
     <style>
         * {
             margin: 0;
@@ -402,30 +402,26 @@
                 <div class="analytics-grid">
                     <div class="chart-container">
                         <div class="chart-title">📊 توزيع المهام حسب الحالة</div>
-                        <div class="chart-wrapper">
-                            <canvas id="statusPieChart"></canvas>
+                        <div class="chart-wrapper" id="statusPieChart">
                         </div>
                     </div>
                     
                     <div class="chart-container">
                         <div class="chart-title">⏱️ توزيع المهام حسب الأولوية</div>
-                        <div class="chart-wrapper">
-                            <canvas id="priorityChart"></canvas>
+                        <div class="chart-wrapper" id="priorityChart">
                         </div>
                     </div>
                 </div>
                 
                 <div class="chart-container">
                     <div class="chart-title">📈 التقدم الشهري في الإنجاز</div>
-                    <div class="chart-wrapper">
-                        <canvas id="progressLineChart"></canvas>
+                    <div class="chart-wrapper" id="progressLineChart">
                     </div>
                 </div>
                 
                 <div class="chart-container">
                     <div class="chart-title">🏢 المواضيع الأكثر تكراراً</div>
-                    <div class="chart-wrapper">
-                        <canvas id="topicsBarChart"></canvas>
+                    <div class="chart-wrapper" id="topicsBarChart">
                     </div>
                 </div>
             </div>
@@ -1685,14 +1681,30 @@
             });
             
             // Show selected section
-            document.getElementById(sectionId).classList.add('active');
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.add('active');
+            }
             
             // Add active class to clicked button
-            event.target.classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
             
             // If statistics, populate it
             if (sectionId === 'statistics') {
                 populateStatistics();
+            }
+            
+            // If analytics, populate insights
+            if (sectionId === 'analytics') {
+                const stats = getEnhancedStats();
+                populateInsights(stats);
+            }
+            
+            // If monthly, generate reports
+            if (sectionId === 'monthly') {
+                generateMonthlyReports();
             }
         }
         
@@ -1911,150 +1923,103 @@
             return stats;
         }
         
-        // Create all charts
-        let chartsCreated = {};
-        
+        // Create CSS-based charts (no external dependencies)
         function createCharts(stats) {
             // Status Pie Chart
-            if (chartsCreated.statusPie) chartsCreated.statusPie.destroy();
             const statusCtx = document.getElementById('statusPieChart');
             if (statusCtx) {
-                chartsCreated.statusPie = new Chart(statusCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['منجز', 'قيد الإجراء'],
-                        datasets: [{
-                            data: [stats.completed, stats.pending],
-                            backgroundColor: ['#43e97b', '#fa709a'],
-                            borderWidth: 2,
-                            borderColor: '#fff'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    font: { size: 14 },
-                                    padding: 15
-                                }
-                            }
-                        }
-                    }
-                });
+                const completedPercent = Math.round((stats.completed / stats.total) * 100);
+                const pendingPercent = 100 - completedPercent;
+                statusCtx.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <div style="width: 200px; height: 200px; margin: 0 auto; border-radius: 50%; background: conic-gradient(#43e97b 0% ${completedPercent}%, #fa709a ${completedPercent}% 100%); box-shadow: 0 4px 15px rgba(0,0,0,0.2);"></div>
+                        <div style="margin-top: 20px; display: flex; justify-content: center; gap: 30px;">
+                            <div><span style="display: inline-block; width: 15px; height: 15px; background: #43e97b; border-radius: 3px; margin-left: 5px;"></span> منجز: ${stats.completed} (${completedPercent}%)</div>
+                            <div><span style="display: inline-block; width: 15px; height: 15px; background: #fa709a; border-radius: 3px; margin-left: 5px;"></span> قيد الإجراء: ${stats.pending} (${pendingPercent}%)</div>
+                        </div>
+                    </div>
+                `;
             }
             
             // Priority Chart
-            if (chartsCreated.priority) chartsCreated.priority.destroy();
             const priorityCtx = document.getElementById('priorityChart');
             if (priorityCtx) {
-                chartsCreated.priority = new Chart(priorityCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['هام وعاجل', 'هام وغير عاجل', 'غير هام'],
-                        datasets: [{
-                            data: [stats.highPriority, stats.mediumPriority, stats.lowPriority],
-                            backgroundColor: ['#ff6384', '#ffce56', '#4bc0c0'],
-                            borderWidth: 2,
-                            borderColor: '#fff'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    font: { size: 14 },
-                                    padding: 15
-                                }
-                            }
-                        }
-                    }
-                });
+                const total = stats.highPriority + stats.mediumPriority + stats.lowPriority;
+                const highPercent = Math.round((stats.highPriority / total) * 100);
+                const medPercent = Math.round((stats.mediumPriority / total) * 100);
+                const lowPercent = 100 - highPercent - medPercent;
+                priorityCtx.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <div style="width: 200px; height: 200px; margin: 0 auto; border-radius: 50%; background: conic-gradient(#ff6384 0% ${highPercent}%, #ffce56 ${highPercent}% ${highPercent + medPercent}%, #4bc0c0 ${highPercent + medPercent}% 100%); box-shadow: 0 4px 15px rgba(0,0,0,0.2);"></div>
+                        <div style="margin-top: 20px;">
+                            <div style="margin: 5px 0;"><span style="display: inline-block; width: 15px; height: 15px; background: #ff6384; border-radius: 3px; margin-left: 5px;"></span> هام وعاجل: ${stats.highPriority} (${highPercent}%)</div>
+                            <div style="margin: 5px 0;"><span style="display: inline-block; width: 15px; height: 15px; background: #ffce56; border-radius: 3px; margin-left: 5px;"></span> هام وغير عاجل: ${stats.mediumPriority} (${medPercent}%)</div>
+                            <div style="margin: 5px 0;"><span style="display: inline-block; width: 15px; height: 15px; background: #4bc0c0; border-radius: 3px; margin-left: 5px;"></span> غير هام: ${stats.lowPriority} (${lowPercent}%)</div>
+                        </div>
+                    </div>
+                `;
             }
             
-            // Progress Line Chart
-            if (chartsCreated.progress) chartsCreated.progress.destroy();
+            // Progress Line Chart (simplified bar chart)
             const progressCtx = document.getElementById('progressLineChart');
             if (progressCtx) {
-                chartsCreated.progress = new Chart(progressCtx, {
-                    type: 'line',
-                    data: {
-                        labels: ['أبريل 2024', 'مايو 2024', 'يونيو 2024', 'يوليو 2024', 'أغسطس 2024', 'سبتمبر 2024', 'أكتوبر 2024', 'يناير 2025', 'فبراير 2025', 'سبتمبر 2025'],
-                        datasets: [{
-                            label: 'المهام المنجزة',
-                            data: [3, 13, 1, 1, 3, 1, 1, 1, 3, 10],
-                            borderColor: '#43e97b',
-                            backgroundColor: 'rgba(67, 233, 123, 0.1)',
-                            tension: 0.4,
-                            fill: true
-                        }, {
-                            label: 'المهام الجديدة',
-                            data: [3, 14, 1, 1, 3, 1, 1, 1, 3, 15],
-                            borderColor: '#667eea',
-                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                            tension: 0.4,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
+                const months = ['أبريل 2024', 'مايو 2024', 'يونيو 2024', 'يوليو 2024', 'أغسطس 2024', 'سبتمبر 2024', 'أكتوبر 2024', 'يناير 2025', 'فبراير 2025', 'سبتمبر 2025'];
+                const completed = [3, 13, 1, 1, 3, 1, 1, 1, 3, 10];
+                const newTasks = [3, 14, 1, 1, 3, 1, 1, 1, 3, 15];
+                
+                let html = '<div style="padding: 20px;">';
+                html += '<div style="display: flex; gap: 30px; justify-content: center; margin-bottom: 20px;">';
+                html += '<div><span style="display: inline-block; width: 20px; height: 4px; background: #43e97b; margin-left: 5px;"></span> المهام المنجزة</div>';
+                html += '<div><span style="display: inline-block; width: 20px; height: 4px; background: #667eea; margin-left: 5px;"></span> المهام الجديدة</div>';
+                html += '</div>';
+                html += '<div style="display: flex; gap: 10px; height: 300px; align-items: flex-end; justify-content: space-between;">';
+                
+                for (let i = 0; i < months.length; i++) {
+                    const maxVal = Math.max(...newTasks);
+                    const compHeight = (completed[i] / maxVal) * 100;
+                    const newHeight = (newTasks[i] / maxVal) * 100;
+                    html += `
+                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                            <div style="display: flex; gap: 2px; height: 100%; align-items: flex-end;">
+                                <div style="width: 8px; background: #43e97b; height: ${compHeight}%; border-radius: 4px 4px 0 0;" title="${completed[i]}"></div>
+                                <div style="width: 8px; background: #667eea; height: ${newHeight}%; border-radius: 4px 4px 0 0;" title="${newTasks[i]}"></div>
+                            </div>
+                            <div style="font-size: 0.7em; writing-mode: vertical-rl; text-orientation: mixed; height: 80px; overflow: hidden;">${months[i]}</div>
+                        </div>
+                    `;
+                }
+                html += '</div></div>';
+                progressCtx.innerHTML = html;
             }
             
             // Topics Bar Chart
-            if (chartsCreated.topics) chartsCreated.topics.destroy();
             const topicsCtx = document.getElementById('topicsBarChart');
             if (topicsCtx) {
                 const topSubjects = Object.entries(stats.bySubject)
                     .sort((a, b) => b[1] - a[1])
                     .slice(0, 8);
                 
-                chartsCreated.topics = new Chart(topicsCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: topSubjects.map(s => s[0] || 'غير محدد'),
-                        datasets: [{
-                            label: 'عدد المهام',
-                            data: topSubjects.map(s => s[1]),
-                            backgroundColor: [
-                                '#667eea', '#764ba2', '#f093fb', '#f5576c',
-                                '#4facfe', '#00f2fe', '#43e97b', '#38f9d7'
-                            ]
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        indexAxis: 'y',
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            x: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
+                const maxCount = topSubjects[0][1];
+                let html = '<div style="padding: 20px;">';
+                
+                topSubjects.forEach((subject, index) => {
+                    const percent = (subject[1] / maxCount) * 100;
+                    const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe', '#43e97b', '#38f9d7'];
+                    html += `
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span style="font-size: 0.9em;">${subject[0] || 'غير محدد'}</span>
+                                <span style="font-weight: bold;">${subject[1]}</span>
+                            </div>
+                            <div style="background: #f0f0f0; height: 25px; border-radius: 12px; overflow: hidden;">
+                                <div style="background: ${colors[index]}; height: 100%; width: ${percent}%; border-radius: 12px; transition: width 0.3s;"></div>
+                            </div>
+                        </div>
+                    `;
                 });
+                
+                html += '</div>';
+                topicsCtx.innerHTML = html;
             }
         }
         
