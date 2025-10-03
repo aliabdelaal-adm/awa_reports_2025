@@ -478,6 +478,48 @@
             margin-left: 5px;
         }
         
+        .video-error {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 315px;
+            background: rgba(44, 95, 45, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            z-index: 10;
+        }
+        
+        .video-error p {
+            margin: 5px 0;
+            font-size: 1.1em;
+        }
+        
+        .retry-button {
+            background: rgba(255, 255, 255, 0.95);
+            color: #2c5f2d;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .retry-button:hover {
+            transform: scale(1.05);
+            background: white;
+        }
+        
         .splash-title {
             color: #fff;
             font-size: 2.2em;
@@ -624,13 +666,18 @@
                     <div class="play-button"></div>
                 </div>
                 <iframe id="splashVideo"
-                        src="" 
+                        src="https://www.youtube.com/embed/HKP4i6gePWw?autoplay=1&mute=0&enablejsapi=1&rel=0" 
                         frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                         allowfullscreen>
                 </iframe>
+                <div id="videoError" class="video-error" style="display: none;">
+                    <p>⚠️ تعذر تحميل الفيديو</p>
+                    <button onclick="retryVideo(event)" class="retry-button">🔄 إعادة المحاولة</button>
+                    <p style="margin-top: 10px; font-size: 0.9em;">أو <a href="https://www.youtube.com/watch?v=HKP4i6gePWw" target="_blank" style="color: #fff; text-decoration: underline;">شاهد على يوتيوب</a></p>
+                </div>
             </div>
-            <div class="splash-unmute-hint">▶️ اضغط على الفيديو لتشغيله والاستماع لكلمات الشيخ زايد</div>
+            <div class="splash-unmute-hint">▶️ الفيديو يعمل تلقائياً - استمع لكلمات الشيخ زايد</div>
             
             <div class="splash-hint">اضغط في أي مكان للمتابعة</div>
         </div>
@@ -2432,12 +2479,41 @@
             monthlyContainer.innerHTML = html;
         }
         
-        // Initialize on page load
+        // Initialize on page load - combined initialization
         window.addEventListener('DOMContentLoaded', function() {
+            // Initialize data tables
             processTableData();
             populateStatistics();
             // Show statistics by default
             showSection('statistics');
+            
+            // Initialize video auto-play
+            const splashVideo = document.getElementById('splashVideo');
+            const videoPoster = document.getElementById('videoPoster');
+            const videoError = document.getElementById('videoError');
+            
+            // Try to load the video immediately
+            if (splashVideo && splashVideo.src) {
+                // Video should already have src, hide poster after a short delay
+                setTimeout(() => {
+                    if (videoPoster) {
+                        videoPoster.classList.add('hidden');
+                    }
+                }, 1000);
+            }
+            
+            // Listen for iframe load errors
+            if (splashVideo) {
+                splashVideo.addEventListener('error', function() {
+                    console.log('Video failed to load');
+                    if (videoError) {
+                        videoError.style.display = 'flex';
+                    }
+                    if (videoPoster) {
+                        videoPoster.classList.remove('hidden');
+                    }
+                });
+            }
         });
         
         // Sheikh Zayed Splash Screen functionality
@@ -2449,17 +2525,30 @@
             const videoPoster = document.getElementById('videoPoster');
             const splashVideo = document.getElementById('splashVideo');
             const unmuteHint = document.querySelector('.splash-unmute-hint');
+            const videoError = document.getElementById('videoError');
             
             // Load and play the video with sound
-            splashVideo.src = 'https://www.youtube.com/embed/HKP4i6gePWw?autoplay=1&mute=0&enablejsapi=1';
+            splashVideo.src = 'https://www.youtube.com/embed/HKP4i6gePWw?autoplay=1&mute=0&enablejsapi=1&rel=0';
             
             // Hide the poster
             videoPoster.classList.add('hidden');
             
-            // Hide the unmute hint
-            if (unmuteHint) {
-                unmuteHint.style.display = 'none';
+            // Hide error if showing
+            if (videoError) {
+                videoError.style.display = 'none';
             }
+            
+            // Update the unmute hint
+            if (unmuteHint) {
+                unmuteHint.textContent = '🔊 الفيديو يعمل الآن - استمتع بكلمات الشيخ زايد';
+            }
+        }
+        
+        function retryVideo(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            playVideo(event);
         }
         
         function hideSplashScreen(event) {
@@ -2487,9 +2576,12 @@
             }
         }
         
-        // Auto-hide splash screen after 15 seconds (give more time for video)
+        // Auto-hide splash screen after 30 seconds (give more time for video)
         setTimeout(() => {
             hideSplashScreen();
+ copilot/fix-0ea19bb4-e54a-4f64-90aa-4e6fa19f7810
+        }, 30000);
+
  copilot/fix-cbae8883-1a0a-4100-9d83-a879b4106354
         }, 10000);
         
@@ -2834,6 +2926,7 @@
         }
 
         }, 15000);
+ main
  main
     </script>
 </body>
