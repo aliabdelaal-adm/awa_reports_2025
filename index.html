@@ -666,7 +666,7 @@
                     <div class="play-button"></div>
                 </div>
                 <iframe id="splashVideo"
-                        src="https://www.youtube.com/embed/HKP4i6gePWw?autoplay=1&mute=0&enablejsapi=1&rel=0" 
+                        src="https://www.youtube.com/embed/HKP4i6gePWw?autoplay=1&mute=1&enablejsapi=1&rel=0" 
                         frameborder="0" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                         allowfullscreen>
@@ -677,7 +677,7 @@
                     <p style="margin-top: 10px; font-size: 0.9em;">أو <a href="https://www.youtube.com/watch?v=HKP4i6gePWw" target="_blank" style="color: #fff; text-decoration: underline;">شاهد على يوتيوب</a></p>
                 </div>
             </div>
-            <div class="splash-unmute-hint">▶️ الفيديو يعمل تلقائياً - استمع لكلمات الشيخ زايد</div>
+            <div class="splash-unmute-hint">▶️ اضغط زر التشغيل لسماع كلمات الشيخ زايد</div>
             
             <div class="splash-hint">اضغط في أي مكان للمتابعة</div>
         </div>
@@ -2492,15 +2492,8 @@
             const videoPoster = document.getElementById('videoPoster');
             const videoError = document.getElementById('videoError');
             
-            // Try to load the video immediately
-            if (splashVideo && splashVideo.src) {
-                // Video should already have src, hide poster after a short delay
-                setTimeout(() => {
-                    if (videoPoster) {
-                        videoPoster.classList.add('hidden');
-                    }
-                }, 1000);
-            }
+            // Keep the poster visible - don't hide it automatically
+            // User must click the play button to start the video with sound
             
             // Listen for iframe load errors
             if (splashVideo) {
@@ -2527,7 +2520,8 @@
             const unmuteHint = document.querySelector('.splash-unmute-hint');
             const videoError = document.getElementById('videoError');
             
-            // Load and play the video with sound
+            // Reload the video with sound enabled (unmuted)
+            // This will work because it's triggered by user interaction
             splashVideo.src = 'https://www.youtube.com/embed/HKP4i6gePWw?autoplay=1&mute=0&enablejsapi=1&rel=0';
             
             // Hide the poster
