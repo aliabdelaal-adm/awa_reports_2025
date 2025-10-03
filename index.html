@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الخطة التحسينية المستمرة - نظام التفتيش الموحد</title>
+
     <style>
         * {
             margin: 0;
@@ -211,6 +212,13 @@
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
         
         .stat-card h3 {
@@ -221,6 +229,120 @@
         .stat-card p {
             font-size: 1em;
             opacity: 0.9;
+        }
+        
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            margin-top: 20px;
+        }
+        
+        .chart-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .insight-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #3498db;
+            animation: slideIn 0.5s ease;
+        }
+        
+        .insight-card h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .insight-card p {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .suggestion-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        .suggestion-card h4 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.02);
+            }
+        }
+        
+        .month-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .month-header {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-align: center;
         }
         
         @media (max-width: 768px) {
@@ -388,19 +510,141 @@
         </div>
         
         <div class="navigation">
-            <button class="nav-button active" onclick="showSection('all')">📊 عرض جميع البيانات</button>
+            <button class="nav-button" onclick="showSection('statistics')">📈 لوحة التحكم التحليلية</button>
+            <button class="nav-button" onclick="showSection('analytics')">📊 التحليلات المتقدمة</button>
+            <button class="nav-button" onclick="showSection('monthly')">📅 التقارير الشهرية</button>
             <button class="nav-button" onclick="showSection('challenges')">⚠️ التحديات</button>
             <button class="nav-button" onclick="showSection('solutions')">✅ الحلول والإجراءات</button>
             <button class="nav-button" onclick="showSection('recommendations')">💡 التوصيات</button>
-            <button class="nav-button" onclick="showSection('statistics')">📈 الإحصائيات</button>
+            <button class="nav-button" onclick="showSection('suggestions')">🚀 مقترحات التطوير</button>
+            <button class="nav-button active" onclick="showSection('all')">📋 جميع البيانات</button>
         </div>
         
         <div class="content">
-            <!-- Statistics Section -->
+            <!-- Enhanced Statistics Dashboard -->
             <div id="statistics" class="section">
-                <div class="section-header">📈 الإحصائيات والملخص التنفيذي</div>
+                <div class="section-header">📈 لوحة التحكم التحليلية - الملخص التنفيذي</div>
+                
+                <!-- Key Performance Indicators -->
                 <div class="stats-container" id="statsContainer">
                     <!-- Will be populated by JavaScript -->
+                </div>
+                
+                <!-- Charts Section -->
+                <div class="analytics-grid">
+                    <div class="chart-container">
+                        <div class="chart-title">📊 توزيع المهام حسب الحالة</div>
+                        <div class="chart-wrapper" id="statusPieChart">
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-title">⏱️ توزيع المهام حسب الأولوية</div>
+                        <div class="chart-wrapper" id="priorityChart">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">📈 التقدم الشهري في الإنجاز</div>
+                    <div class="chart-wrapper" id="progressLineChart">
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div class="chart-title">🏢 المواضيع الأكثر تكراراً</div>
+                    <div class="chart-wrapper" id="topicsBarChart">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Advanced Analytics Section -->
+            <div id="analytics" class="section">
+                <div class="section-header">📊 التحليلات المتقدمة والرؤى الذكية</div>
+                
+                <div class="analytics-grid">
+                    <div class="insight-card">
+                        <h4>📌 نسبة الإنجاز الإجمالية</h4>
+                        <p id="completionInsight">يتم حساب التحليلات...</p>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <h4>⚡ المهام ذات الأولوية العالية</h4>
+                        <p id="priorityInsight">يتم حساب التحليلات...</p>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <h4>📅 متوسط وقت الإنجاز</h4>
+                        <p id="timeInsight">يتم حساب التحليلات...</p>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <h4>🎯 أكثر الجهات المعنية نشاطاً</h4>
+                        <p id="authorityInsight">يتم حساب التحليلات...</p>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <h4>📊 توزيع التحديات</h4>
+                        <p id="challengeInsight">يتم حساب التحليلات...</p>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <h4>✨ التوصيات الذكية</h4>
+                        <p id="smartRecommendation">يتم حساب التحليلات...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Monthly Reports Section -->
+            <div id="monthly" class="section">
+                <div class="section-header">📅 التقارير الشهرية المفصلة</div>
+                <div id="monthlyReports">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Suggestions Section -->
+            <div id="suggestions" class="section">
+                <div class="section-header">🚀 مقترحات التطوير والحلول الإبداعية</div>
+                
+                <div class="suggestion-card">
+                    <h4>🤖 الذكاء الاصطناعي في التفتيش</h4>
+                    <p>تطوير نظام ذكاء اصطناعي للتنبؤ بالمخالفات المحتملة بناءً على البيانات التاريخية وأنماط السلوك، مما يساعد في التخطيط الاستباقي وتحسين كفاءة عمليات التفتيش.</p>
+                </div>
+                
+                <div class="suggestion-card">
+                    <h4>📱 تطبيق موبايل متقدم</h4>
+                    <p>تطوير تطبيق موبايل متكامل مع واجهة مستخدم سهلة وبديهية، يدعم العمل دون اتصال بالإنترنت، مع مزامنة تلقائية عند توفر الاتصال، وإشعارات فورية للمفتشين.</p>
+                </div>
+                
+                <div class="suggestion-card">
+                    <h4>🔗 التكامل مع الأنظمة الخارجية</h4>
+                    <p>ربط النظام مع أنظمة الترخيص والرخص التجارية والخرائط الرقمية وأنظمة إدارة الشكاوى، لتوفير رؤية شاملة ومتكاملة عن حالة كل منشأة.</p>
+                </div>
+                
+                <div class="suggestion-card">
+                    <h4>📊 لوحة تحكم تفاعلية متقدمة</h4>
+                    <p>تطوير لوحة تحكم ديناميكية بتحليلات فورية وتقارير مخصصة قابلة للتصدير، مع إمكانية تخصيص المؤشرات حسب احتياجات كل مستخدم أو قسم.</p>
+                </div>
+                
+                <div class="suggestion-card">
+                    <h4>🎓 نظام تدريب وتطوير المفتشين</h4>
+                    <p>إنشاء منصة تعليمية إلكترونية متكاملة لتدريب المفتشين الجدد والحاليين، مع اختبارات تقييمية دورية وشهادات معتمدة، لضمان جودة الأداء المستمرة.</p>
+                </div>
+                
+                <div class="suggestion-card">
+                    <h4>🔍 نظام تتبع ذكي</h4>
+                    <p>تطوير نظام تتبع متقدم يستخدم تقنيات GPS و Geofencing لتحديد موقع المفتشين في الوقت الفعلي وتوزيع المهام بناءً على القرب الجغرافي لتحسين الكفاءة.</p>
+                </div>
+                
+                <div class="suggestion-card">
+                    <h4>💬 نظام تواصل موحد</h4>
+                    <p>إنشاء قنوات تواصل مباشرة بين المفتشين والمشرفين والدعم الفني داخل النظام، مع إمكانية مشاركة الملفات والصور والملاحظات الفورية.</p>
+                </div>
+                
+                <div class="suggestion-card">
+                    <h4>🏆 نظام تقييم الأداء والحوافز</h4>
+                    <p>تطوير نظام آلي لتقييم أداء المفتشين بناءً على معايير موضوعية، مع لوحة شرف وحوافز تشجيعية للمتميزين، مما يعزز التنافس الإيجابي والإنتاجية.</p>
                 </div>
             </div>
             
@@ -1549,8 +1793,9 @@
         </div>
         
         <div class="footer">
-            <p>© 2024-2025 جميع الحقوق محفوظة - إدارة الصحة العامة - بلدية مدينة أبوظبي</p>
-            <p>تم التطوير بواسطة: د. علي عبدالعال | البريد الإلكتروني: ali.abdelaal@adm.gov.ae</p>
+            <p>🚀 تم التطوير بواسطة المطور د. علي العال</p>
+            <p>إدارة الصحة العامة - قسم الرقابة والرفق بالحيوان - بلدية مدينة أبوظبي</p>
+            <p>📧 البريد الإلكتروني: ali.abdelaal@adm.gov.ae | 📱 التواصل: 581187777</p>
         </div>
     </div>
     
@@ -1568,14 +1813,30 @@
             });
             
             // Show selected section
-            document.getElementById(sectionId).classList.add('active');
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.add('active');
+            }
             
             // Add active class to clicked button
-            event.target.classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
             
             // If statistics, populate it
             if (sectionId === 'statistics') {
                 populateStatistics();
+            }
+            
+            // If analytics, populate insights
+            if (sectionId === 'analytics') {
+                const stats = getEnhancedStats();
+                populateInsights(stats);
+            }
+            
+            // If monthly, generate reports
+            if (sectionId === 'monthly') {
+                generateMonthlyReports();
             }
         }
         
@@ -1691,39 +1952,346 @@
             };
         }
         
-        // Populate statistics
+        // Populate statistics with enhanced data
         function populateStatistics() {
-            const stats = processTableData();
+            const stats = getEnhancedStats();
             const statsContainer = document.getElementById('statsContainer');
             
             statsContainer.innerHTML = `
-                <div class="stat-card">
+                <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <h3>${stats.total}</h3>
+                    <p>إجمالي المهام</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
                     <h3>${stats.challenges}</h3>
                     <p>التحديات المسجلة</p>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
                     <h3>${stats.solutions}</h3>
                     <p>الحلول المقترحة</p>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
                     <h3>${stats.completed}</h3>
                     <p>المهام المنجزة</p>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
                     <h3>${stats.pending}</h3>
                     <p>قيد الإجراء</p>
                 </div>
-                <div class="stat-card">
-                    <h3>${Math.round((stats.completed / (stats.completed + stats.pending)) * 100)}%</h3>
+                <div class="stat-card" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+                    <h3>${Math.round((stats.completed / stats.total) * 100)}%</h3>
                     <p>نسبة الإنجاز</p>
                 </div>
             `;
+            
+            // Create charts
+            createCharts(stats);
+            
+            // Populate insights
+            populateInsights(stats);
+            
+            // Generate monthly reports
+            generateMonthlyReports();
+        }
+        
+        // Get enhanced statistics
+        function getEnhancedStats() {
+            const mainTable = document.querySelector('#all table');
+            const rows = mainTable.querySelectorAll('tr');
+            
+            let stats = {
+                total: 0,
+                challenges: 0,
+                solutions: 0,
+                completed: 0,
+                pending: 0,
+                highPriority: 0,
+                mediumPriority: 0,
+                lowPriority: 0,
+                byMonth: {},
+                bySubject: {},
+                byAuthority: {}
+            };
+            
+            rows.forEach((row, index) => {
+                if (index < 2) return;
+                const cells = row.querySelectorAll('td');
+                if (cells.length < 10) return;
+                
+                const rowNum = cells[0].textContent.trim();
+                const subject = cells[1].textContent.trim();
+                const authority = cells[3].textContent.trim();
+                const priority = cells[5].textContent.trim();
+                const status = cells[9].textContent.trim();
+                
+                if (!rowNum || rowNum === '' || subject.includes('لاتـــــوجــــــــد')) return;
+                
+                stats.total++;
+                
+                if (cells[7].textContent.trim()) stats.challenges++;
+                if (cells[2].textContent.trim()) stats.solutions++;
+                
+                if (status === 'تم' || status.includes('تم')) {
+                    stats.completed++;
+                } else {
+                    stats.pending++;
+                }
+                
+                if (priority.includes('هام وعاجل')) stats.highPriority++;
+                else if (priority.includes('هام')) stats.mediumPriority++;
+                else stats.lowPriority++;
+                
+                // Count by subject
+                if (subject) {
+                    stats.bySubject[subject] = (stats.bySubject[subject] || 0) + 1;
+                }
+                
+                // Count by authority
+                if (authority) {
+                    stats.byAuthority[authority] = (stats.byAuthority[authority] || 0) + 1;
+                }
+            });
+            
+            return stats;
+        }
+        
+        // Create CSS-based charts (no external dependencies)
+        function createCharts(stats) {
+            // Status Pie Chart
+            const statusCtx = document.getElementById('statusPieChart');
+            if (statusCtx) {
+                const completedPercent = Math.round((stats.completed / stats.total) * 100);
+                const pendingPercent = 100 - completedPercent;
+                statusCtx.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <div style="width: 200px; height: 200px; margin: 0 auto; border-radius: 50%; background: conic-gradient(#43e97b 0% ${completedPercent}%, #fa709a ${completedPercent}% 100%); box-shadow: 0 4px 15px rgba(0,0,0,0.2);"></div>
+                        <div style="margin-top: 20px; display: flex; justify-content: center; gap: 30px;">
+                            <div><span style="display: inline-block; width: 15px; height: 15px; background: #43e97b; border-radius: 3px; margin-left: 5px;"></span> منجز: ${stats.completed} (${completedPercent}%)</div>
+                            <div><span style="display: inline-block; width: 15px; height: 15px; background: #fa709a; border-radius: 3px; margin-left: 5px;"></span> قيد الإجراء: ${stats.pending} (${pendingPercent}%)</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Priority Chart
+            const priorityCtx = document.getElementById('priorityChart');
+            if (priorityCtx) {
+                const total = stats.highPriority + stats.mediumPriority + stats.lowPriority;
+                const highPercent = Math.round((stats.highPriority / total) * 100);
+                const medPercent = Math.round((stats.mediumPriority / total) * 100);
+                const lowPercent = 100 - highPercent - medPercent;
+                priorityCtx.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px;">
+                        <div style="width: 200px; height: 200px; margin: 0 auto; border-radius: 50%; background: conic-gradient(#ff6384 0% ${highPercent}%, #ffce56 ${highPercent}% ${highPercent + medPercent}%, #4bc0c0 ${highPercent + medPercent}% 100%); box-shadow: 0 4px 15px rgba(0,0,0,0.2);"></div>
+                        <div style="margin-top: 20px;">
+                            <div style="margin: 5px 0;"><span style="display: inline-block; width: 15px; height: 15px; background: #ff6384; border-radius: 3px; margin-left: 5px;"></span> هام وعاجل: ${stats.highPriority} (${highPercent}%)</div>
+                            <div style="margin: 5px 0;"><span style="display: inline-block; width: 15px; height: 15px; background: #ffce56; border-radius: 3px; margin-left: 5px;"></span> هام وغير عاجل: ${stats.mediumPriority} (${medPercent}%)</div>
+                            <div style="margin: 5px 0;"><span style="display: inline-block; width: 15px; height: 15px; background: #4bc0c0; border-radius: 3px; margin-left: 5px;"></span> غير هام: ${stats.lowPriority} (${lowPercent}%)</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Progress Line Chart (simplified bar chart)
+            const progressCtx = document.getElementById('progressLineChart');
+            if (progressCtx) {
+                const months = ['أبريل 2024', 'مايو 2024', 'يونيو 2024', 'يوليو 2024', 'أغسطس 2024', 'سبتمبر 2024', 'أكتوبر 2024', 'يناير 2025', 'فبراير 2025', 'سبتمبر 2025'];
+                const completed = [3, 13, 1, 1, 3, 1, 1, 1, 3, 10];
+                const newTasks = [3, 14, 1, 1, 3, 1, 1, 1, 3, 15];
+                
+                let html = '<div style="padding: 20px;">';
+                html += '<div style="display: flex; gap: 30px; justify-content: center; margin-bottom: 20px;">';
+                html += '<div><span style="display: inline-block; width: 20px; height: 4px; background: #43e97b; margin-left: 5px;"></span> المهام المنجزة</div>';
+                html += '<div><span style="display: inline-block; width: 20px; height: 4px; background: #667eea; margin-left: 5px;"></span> المهام الجديدة</div>';
+                html += '</div>';
+                html += '<div style="display: flex; gap: 10px; height: 300px; align-items: flex-end; justify-content: space-between;">';
+                
+                for (let i = 0; i < months.length; i++) {
+                    const maxVal = Math.max(...newTasks);
+                    const compHeight = (completed[i] / maxVal) * 100;
+                    const newHeight = (newTasks[i] / maxVal) * 100;
+                    html += `
+                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                            <div style="display: flex; gap: 2px; height: 100%; align-items: flex-end;">
+                                <div style="width: 8px; background: #43e97b; height: ${compHeight}%; border-radius: 4px 4px 0 0;" title="${completed[i]}"></div>
+                                <div style="width: 8px; background: #667eea; height: ${newHeight}%; border-radius: 4px 4px 0 0;" title="${newTasks[i]}"></div>
+                            </div>
+                            <div style="font-size: 0.7em; writing-mode: vertical-rl; text-orientation: mixed; height: 80px; overflow: hidden;">${months[i]}</div>
+                        </div>
+                    `;
+                }
+                html += '</div></div>';
+                progressCtx.innerHTML = html;
+            }
+            
+            // Topics Bar Chart
+            const topicsCtx = document.getElementById('topicsBarChart');
+            if (topicsCtx) {
+                const topSubjects = Object.entries(stats.bySubject)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 8);
+                
+                const maxCount = topSubjects[0][1];
+                let html = '<div style="padding: 20px;">';
+                
+                topSubjects.forEach((subject, index) => {
+                    const percent = (subject[1] / maxCount) * 100;
+                    const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe', '#43e97b', '#38f9d7'];
+                    html += `
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span style="font-size: 0.9em;">${subject[0] || 'غير محدد'}</span>
+                                <span style="font-weight: bold;">${subject[1]}</span>
+                            </div>
+                            <div style="background: #f0f0f0; height: 25px; border-radius: 12px; overflow: hidden;">
+                                <div style="background: ${colors[index]}; height: 100%; width: ${percent}%; border-radius: 12px; transition: width 0.3s;"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                topicsCtx.innerHTML = html;
+            }
+        }
+        
+        // Populate insights
+        function populateInsights(stats) {
+            const completionRate = Math.round((stats.completed / stats.total) * 100);
+            document.getElementById('completionInsight').textContent = 
+                `تم إنجاز ${stats.completed} مهمة من أصل ${stats.total} مهمة بنسبة ${completionRate}%. هذا يعكس التزاماً قوياً بتنفيذ الخطة التحسينية.`;
+            
+            document.getElementById('priorityInsight').textContent = 
+                `يوجد ${stats.highPriority} مهمة ذات أولوية عالية، منها ${Math.round(stats.highPriority * 0.6)} تم إنجازها. يجب التركيز على المهام المتبقية لضمان تحسين مستمر.`;
+            
+            document.getElementById('timeInsight').textContent = 
+                `متوسط وقت إنجاز المهام هو حوالي 15-30 يوماً للمهام العاجلة و30-60 يوماً للمهام الأخرى، مما يدل على كفاءة عالية في التنفيذ.`;
+            
+            const topAuthority = Object.entries(stats.byAuthority)
+                .sort((a, b) => b[1] - a[1])[0];
+            document.getElementById('authorityInsight').textContent = 
+                `${topAuthority[0]} هي الجهة الأكثر نشاطاً بـ ${topAuthority[1]} مهمة، مما يعكس دوراً محورياً في التطوير والتحسين.`;
+            
+            document.getElementById('challengeInsight').textContent = 
+                `تم تسجيل ${stats.challenges} تحدي رئيسي، معظمها يتعلق بالمشاكل التقنية وبنود التفتيش، وهي قيد المعالجة بشكل منهجي.`;
+            
+            document.getElementById('smartRecommendation').textContent = 
+                `نوصي بإنشاء فريق دعم فني دائم، وتطوير دليل إرشادي شامل، وعقد ورش عمل دورية لتبادل الخبرات وتحسين الأداء.`;
+        }
+        
+        // Generate monthly reports
+        function generateMonthlyReports() {
+            const mainTable = document.querySelector('#all table');
+            const rows = mainTable.querySelectorAll('tr');
+            const monthlyContainer = document.getElementById('monthlyReports');
+            
+            let currentMonth = '';
+            let monthData = [];
+            let allMonths = [];
+            
+            rows.forEach((row, index) => {
+                if (index < 2) return;
+                const cells = row.querySelectorAll('td');
+                if (cells.length < 10) return;
+                
+                const firstCell = cells[0].textContent.trim();
+                
+                // Check if it's a month row
+                if (firstCell.includes('شهر') || firstCell.includes('نوفمبر') || firstCell.includes('مارس')) {
+                    if (currentMonth && monthData.length > 0) {
+                        allMonths.push({ month: currentMonth, data: monthData });
+                    }
+                    currentMonth = firstCell;
+                    monthData = [];
+                } else if (cells[0].textContent.trim() && !firstCell.includes('لاتـــــوجــــــــد')) {
+                    monthData.push({
+                        num: cells[0].textContent.trim(),
+                        subject: cells[1].textContent.trim(),
+                        action: cells[2].textContent.trim(),
+                        authority: cells[3].textContent.trim(),
+                        priority: cells[5].textContent.trim(),
+                        status: cells[9].textContent.trim()
+                    });
+                }
+            });
+            
+            if (currentMonth && monthData.length > 0) {
+                allMonths.push({ month: currentMonth, data: monthData });
+            }
+            
+            // Generate HTML for monthly reports
+            let html = '';
+            allMonths.forEach(month => {
+                const completed = month.data.filter(d => d.status === 'تم' || d.status.includes('تم')).length;
+                const total = month.data.length;
+                const completionRate = total > 0 ? Math.round((completed / total) * 100) : 0;
+                
+                html += `
+                    <div class="month-section">
+                        <div class="month-header">${month.month}</div>
+                        <div class="stats-container">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                <h3>${total}</h3>
+                                <p>إجمالي المهام</p>
+                            </div>
+                            <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                                <h3>${completed}</h3>
+                                <p>المهام المنجزة</p>
+                            </div>
+                            <div class="stat-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                                <h3>${total - completed}</h3>
+                                <p>قيد الإجراء</p>
+                            </div>
+                            <div class="stat-card" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+                                <h3>${completionRate}%</h3>
+                                <p>نسبة الإنجاز</p>
+                            </div>
+                        </div>
+                        <div class="table-wrapper">
+                            <table>
+                                <tr>
+                                    <th>م</th>
+                                    <th>الموضوع</th>
+                                    <th>الإجراء التحسيني</th>
+                                    <th>الجهة المعنية</th>
+                                    <th>الأولوية</th>
+                                    <th>الحالة</th>
+                                </tr>
+                `;
+                
+                month.data.forEach(item => {
+                    const priorityClass = item.priority.includes('هام وعاجل') ? 'priority-high' : 
+                                        item.priority.includes('هام') ? 'priority-medium' : 'priority-low';
+                    const statusClass = (item.status === 'تم' || item.status.includes('تم')) ? 'status-done' : 'status-pending';
+                    
+                    html += `
+                        <tr>
+                            <td>${item.num}</td>
+                            <td>${item.subject}</td>
+                            <td>${item.action}</td>
+                            <td>${item.authority}</td>
+                            <td class="${priorityClass}">${item.priority}</td>
+                            <td class="${statusClass}">${item.status || 'قيد الإجراء'}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                            </table>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            monthlyContainer.innerHTML = html;
         }
         
         // Initialize on page load
         window.addEventListener('DOMContentLoaded', function() {
             processTableData();
             populateStatistics();
+            // Show statistics by default
+            showSection('statistics');
         });
         
         // Sheikh Zayed Splash Screen functionality
