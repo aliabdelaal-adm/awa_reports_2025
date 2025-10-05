@@ -18,12 +18,44 @@
             box-sizing: border-box;
         }
         
+        html {
+            scroll-behavior: smooth;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             direction: rtl;
             padding: 20px;
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            opacity: 0.1;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        body::before {
+            background: radial-gradient(circle, #fff 0%, transparent 70%);
+            top: -100px;
+            left: -100px;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        body::after {
+            background: radial-gradient(circle, #fff 0%, transparent 70%);
+            bottom: -100px;
+            right: -100px;
+            animation: float 8s ease-in-out infinite reverse;
         }
         
         .container {
@@ -33,19 +65,46 @@
             border-radius: 15px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             overflow: hidden;
+            position: relative;
+            z-index: 1;
+            animation: zoomIn 0.8s ease;
         }
         
         .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 5s ease infinite;
             color: white;
             padding: 30px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::after {
+            content: '✨';
+            position: absolute;
+            font-size: 3em;
+            opacity: 0.1;
+            animation: float 3s ease-in-out infinite;
+            top: 20px;
+            right: 50px;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
         }
         
         .header h1 {
             font-size: 2em;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease;
         }
         
         .header p {
@@ -73,16 +132,37 @@
             font-size: 1em;
             transition: all 0.3s;
             font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .nav-button:hover::before {
+            width: 300px;
+            height: 300px;
         }
         
         .nav-button:hover {
             background: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
         }
         
         .nav-button.active {
             background: #27ae60;
+            animation: pulse 2s infinite;
         }
         
         .content {
@@ -108,6 +188,20 @@
             font-weight: bold;
             text-align: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: slideInRight 0.6s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
         }
         
         .table-wrapper {
@@ -147,6 +241,9 @@
         
         tr:hover {
             background-color: #e3f2fd;
+            transform: scale(1.01);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+            transition: all 0.3s ease;
         }
         
         .month-row {
@@ -197,11 +294,38 @@
         }
         
         .footer {
-            background: #2c3e50;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
             color: white;
             padding: 20px;
             text-align: center;
             font-size: 1em;
+            animation: fadeInUp 1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .footer::before {
+            content: '🌟';
+            position: absolute;
+            font-size: 5em;
+            opacity: 0.05;
+            left: 10%;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .footer::after {
+            content: '✨';
+            position: absolute;
+            font-size: 3em;
+            opacity: 0.05;
+            right: 15%;
+            top: 10px;
+            animation: float 5s ease-in-out infinite reverse;
+        }
+        
+        .footer p {
+            position: relative;
+            z-index: 1;
         }
         
         .stats-container {
@@ -219,12 +343,27 @@
             text-align: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
-            animation: fadeInUp 0.6s ease;
+            animation: bounceIn 0.8s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
         }
         
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+            animation: glow 2s infinite;
         }
         
         .stat-card h3 {
@@ -272,7 +411,30 @@
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             border-left: 4px solid #3498db;
-            animation: slideIn 0.5s ease;
+            animation: slideIn 0.8s ease;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .insight-card:hover {
+            transform: translateX(-10px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+            border-left-width: 8px;
+        }
+        
+        .insight-card::after {
+            content: '✨';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 1.5em;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .insight-card:hover::after {
+            opacity: 1;
+            animation: float 2s infinite;
         }
         
         .insight-card h4 {
@@ -293,7 +455,30 @@
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             margin-bottom: 20px;
-            animation: pulse 2s infinite;
+            animation: zoomIn 0.6s ease, float 3s ease-in-out infinite;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .suggestion-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .suggestion-card:hover::before {
+            left: 100%;
+        }
+        
+        .suggestion-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(245, 87, 108, 0.4);
         }
         
         .suggestion-card h4 {
@@ -332,12 +517,129 @@
             }
         }
         
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) translateY(-30px);
+            }
+            50% {
+                opacity: 0.9;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+        
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin: 20px auto;
+        }
+        
+        .section.active {
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .stat-card h3 {
+            font-size: 2em;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .chart-container {
+            animation: fadeInUp 0.8s ease;
+        }
+        
         .month-section {
             background: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
+            animation: slideIn 0.6s ease;
+            transition: all 0.3s ease;
+        }
+        
+        .month-section:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.3);
         }
         
         .month-header {
@@ -349,6 +651,19 @@
             font-size: 1.3em;
             font-weight: bold;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .month-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shimmer 3s infinite;
         }
         
         @media (max-width: 768px) {
@@ -400,12 +715,32 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .export-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .export-button:hover::before {
+            width: 300px;
+            height: 300px;
         }
         
         .export-button:hover {
             background: linear-gradient(135deg, #c0392b 0%, #922b21 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
         }
         
         .export-button.excel {
@@ -1900,37 +2235,69 @@
             };
         }
         
+        // Animate number counter
+        function animateCounter(element, target, duration = 1500, isPercentage = false) {
+            const start = 0;
+            const increment = target / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = isPercentage ? Math.round(target) + '%' : Math.round(target);
+                    clearInterval(timer);
+                } else {
+                    element.textContent = isPercentage ? Math.round(current) + '%' : Math.round(current);
+                }
+            }, 16);
+        }
+        
         // Populate statistics with enhanced data
         function populateStatistics() {
             const stats = getEnhancedStats();
             const statsContainer = document.getElementById('statsContainer');
             
             statsContainer.innerHTML = `
-                <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                    <h3>${stats.total}</h3>
+                <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); animation-delay: 0s;">
+                    <div style="font-size: 2.5em; margin-bottom: 10px;">📊</div>
+                    <h3 class="counter" data-target="${stats.total}">0</h3>
                     <p>إجمالي المهام</p>
                 </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                    <h3>${stats.challenges}</h3>
+                <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); animation-delay: 0.1s;">
+                    <div style="font-size: 2.5em; margin-bottom: 10px;">⚠️</div>
+                    <h3 class="counter" data-target="${stats.challenges}">0</h3>
                     <p>التحديات المسجلة</p>
                 </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                    <h3>${stats.solutions}</h3>
+                <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); animation-delay: 0.2s;">
+                    <div style="font-size: 2.5em; margin-bottom: 10px;">💡</div>
+                    <h3 class="counter" data-target="${stats.solutions}">0</h3>
                     <p>الحلول المقترحة</p>
                 </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
-                    <h3>${stats.completed}</h3>
+                <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); animation-delay: 0.3s;">
+                    <div style="font-size: 2.5em; margin-bottom: 10px;">✅</div>
+                    <h3 class="counter" data-target="${stats.completed}">0</h3>
                     <p>المهام المنجزة</p>
                 </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
-                    <h3>${stats.pending}</h3>
+                <div class="stat-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); animation-delay: 0.4s;">
+                    <div style="font-size: 2.5em; margin-bottom: 10px;">🔄</div>
+                    <h3 class="counter" data-target="${stats.pending}">0</h3>
                     <p>قيد الإجراء</p>
                 </div>
-                <div class="stat-card" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
-                    <h3>${Math.round((stats.completed / stats.total) * 100)}%</h3>
+                <div class="stat-card" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); animation-delay: 0.5s;">
+                    <div style="font-size: 2.5em; margin-bottom: 10px;">📈</div>
+                    <h3 class="counter" data-target="${Math.round((stats.completed / stats.total) * 100)}" data-percentage="true">0%</h3>
                     <p>نسبة الإنجاز</p>
                 </div>
             `;
+            
+            // Animate all counters
+            setTimeout(() => {
+                document.querySelectorAll('.counter').forEach(counter => {
+                    const target = parseInt(counter.getAttribute('data-target'));
+                    const isPercentage = counter.hasAttribute('data-percentage');
+                    animateCounter(counter, target, 1500, isPercentage);
+                });
+            }, 300);
             
             // Create charts
             createCharts(stats);
@@ -2583,6 +2950,75 @@
                 event.target.disabled = false;
             }
         }
+        
+        // Initialize scroll reveal animations
+        function initScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe all cards
+            document.querySelectorAll('.stat-card, .insight-card, .suggestion-card, .chart-container').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        }
+        
+        // Add staggered animation to table rows
+        function animateTableRows() {
+            const rows = document.querySelectorAll('#all table tr');
+            rows.forEach((row, index) => {
+                if (index > 1) { // Skip header rows
+                    row.style.opacity = '0';
+                    row.style.transform = 'translateX(-20px)';
+                    setTimeout(() => {
+                        row.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                        row.style.opacity = '1';
+                        row.style.transform = 'translateX(0)';
+                    }, index * 30);
+                }
+            });
+        }
+        
+        // Add sparkle effect to icons
+        function addSparkleEffect() {
+            const icons = document.querySelectorAll('.stat-card > div, .section-header');
+            icons.forEach(icon => {
+                icon.style.cursor = 'pointer';
+                icon.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.2) rotate(10deg)';
+                    this.style.transition = 'transform 0.3s ease';
+                });
+                icon.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1) rotate(0deg)';
+                });
+            });
+        }
+        
+        // Initialize all animations on page load
+        window.addEventListener('load', () => {
+            initScrollAnimations();
+            animateTableRows();
+            addSparkleEffect();
+            
+            // Show statistics section by default with animation
+            setTimeout(() => {
+                document.getElementById('statistics').classList.add('active');
+                populateStatistics();
+            }, 500);
+        });
     </script>
 </body>
 </html>
