@@ -823,11 +823,17 @@
         
         <!-- Screen Switcher -->
         <div class="screen-switcher">
+            <a href="home.html" class="screen-switch-btn">
+                🏠 الصفحة الرئيسية
+            </a>
             <span class="screen-switch-btn current">
                 📋 الخطة التحسينية
             </span>
-            <a href="index2.html" class="screen-switch-btn">
+            <a href="index2.html" class="screen-switch-btn" id="link-index2">
                 📊 التقرير الاحترافي
+            </a>
+            <a href="smart-planner.html" class="screen-switch-btn" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                🎛️ لوحة التحكم
             </a>
         </div>
         
@@ -2135,6 +2141,44 @@
     </div>
     
     <script>
+        // Check if this file should be visible based on smart planner settings
+        (function() {
+            const STORAGE_KEY = "smartPlannerConfig";
+            const fileId = "index";
+            
+            function isFileVisible() {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (!stored) return false; // Default is hidden as requested
+                const config = JSON.parse(stored);
+                return config[fileId] !== undefined ? config[fileId] : false;
+            }
+            
+            // Check visibility and update link visibility
+            function updateLinkVisibility() {
+                const config = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+                
+                // Hide index2 link if it's not visible
+                const index2Link = document.getElementById('link-index2');
+                if (index2Link) {
+                    const index2Visible = config['index2'] !== undefined ? config['index2'] : true;
+                    if (!index2Visible) {
+                        index2Link.style.display = 'none';
+                    }
+                }
+            }
+            
+            // If file should not be visible, redirect to home
+            if (!isFileVisible()) {
+                // Only redirect if not coming from smart planner
+                if (!document.referrer.includes('smart-planner.html')) {
+                    window.location.href = 'home.html';
+                }
+            }
+            
+            // Update link visibility on page load
+            window.addEventListener('DOMContentLoaded', updateLinkVisibility);
+        })();
+        
         // Navigation functionality
         function showSection(sectionId, clickEvent) {
             // Hide all sections
