@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تقرير التوعية الاحترافي - نظام الرفق بالحيوان</title>
+    <title>حملات التوعية والتوجية والإرشاد ( دليل رعاية الحيوانات الأليفة والطيور وأسماك الزينة ) - نظام الرفق بالحيوان</title>
     
     <!-- Export Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -727,7 +727,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🐾 تقرير التوعية والتدريب الاحترافي</h1>
+            <h1>🐾 حملات التوعية والتوجية والإرشاد ( دليل رعاية الحيوانات الأليفة والطيور وأسماك الزينة )</h1>
             <p>برنامج التوعية بالدليل الإرشادي لموظفي محلات بيع الحيوانات الأليفة</p>
             <p class="subtitle">إدارة الصحة العامة - قسم الرقابة والرفق بالحيوان - بلدية مدينة أبوظبي</p>
         </div>
@@ -741,7 +741,7 @@
                 📋 الخطة التحسينية
             </a>
             <span class="screen-switch-btn current">
-                📊 تقرير التوعية الاحترافي
+                📊 حملات التوعية والتوجية والإرشاد
             </span>
             <a href="smart-planner.html" class="screen-switch-btn" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
                 🎛️ لوحة التحكم
@@ -1128,120 +1128,9 @@
             window.addEventListener('DOMContentLoaded', updateLinkVisibility);
         })();
         
-        // Training sessions data
+        // Training sessions data - removed as per deletion of سجل التوعية Excel file
         const trainingData = {
-            sessions: [
-                {
-                    topic: "الأرانب",
-                    type: "جديد",
-                    method: "تدريب",
-                    trainer: "د. علي",
-                    date: "2024-03-07",
-                    time: "1pm -7 pm",
-                    level_before: "جيد",
-                    level_after: "جيد جداً",
-                    shops_count: 9
-                },
-                {
-                    topic: "القوارض",
-                    type: "جديد",
-                    method: "شفوي",
-                    trainer: "د. علي",
-                    date: "2024-03-07",
-                    time: "1pm -7 pm",
-                    level_before: "جيد",
-                    level_after: "جيد جداً",
-                    shops_count: 9
-                },
-                {
-                    topic: "الطيور",
-                    type: "جديد",
-                    method: "شفوي",
-                    trainer: "د. علي",
-                    date: "2024-03-07",
-                    time: "1pm -7 pm",
-                    level_before: "جيد",
-                    level_after: "جيد جداً",
-                    shops_count: 9
-                },
-                {
-                    topic: "السلاحف البرية",
-                    type: "جديد",
-                    method: "شفوي",
-                    trainer: "د. علي",
-                    date: "2024-03-07",
-                    time: "1pm -7 pm",
-                    level_before: "جيد",
-                    level_after: "جيد جداً",
-                    shops_count: 9
-                },
-                {
-                    topic: "السلاحف البرمائية",
-                    type: "جديد",
-                    method: "شفوي",
-                    trainer: "د. علي",
-                    date: "2024-03-07",
-                    time: "1pm -7 pm",
-                    level_before: "جيد",
-                    level_after: "جيد جداً",
-                    shops_count: 9
-                },
-                {
-                    topic: "البرمائيات",
-                    type: "جديد",
-                    method: "شفوي",
-                    trainer: "د. علي",
-                    date: "2024-03-07",
-                    time: "1pm -7 pm",
-                    level_before: "جيد",
-                    level_after: "جيد جداً",
-                    shops_count: 9
-                },
-                {
-                    topic: "الأسماك",
-                    type: "جديد",
-                    method: "تدريب",
-                    trainer: "د. علي",
-                    date: "2024-03-07",
-                    time: "1pm -7 pm",
-                    level_before: "جيد",
-                    level_after: "جيد جداً",
-                    shops_count: 9
-                },
-                {
-                    topic: "إرشادات السجلات المطلوبة",
-                    type: "جديد",
-                    method: "شفوي",
-                    trainer: "د. علي",
-                    date: "2024-03-07",
-                    time: "1pm -7 pm",
-                    level_before: "جيد",
-                    level_after: "جيد جداً",
-                    shops_count: 9
-                },
-                {
-                    topic: "معدات النقل",
-                    type: "جديد",
-                    method: "شفوي",
-                    trainer: "د. علي",
-                    date: "2024-03-07",
-                    time: "1pm -7 pm",
-                    level_before: "جيد",
-                    level_after: "جيد جداً",
-                    shops_count: 9
-                },
-                {
-                    topic: "الصحة والسلامة",
-                    type: "جديد",
-                    method: "تدريب",
-                    trainer: "د. علي",
-                    date: "2024-03-11",
-                    time: "8 pm -12 am",
-                    level_before: "جيد",
-                    level_after: "جيد جداً",
-                    shops_count: 7
-                }
-            ]
+            sessions: []
         };
         
         // Images list
@@ -1293,60 +1182,68 @@
             const container = document.getElementById('training-sessions-container');
             let html = '';
             
-            trainingData.sessions.forEach((session, index) => {
-                const bgColors = [
-                    'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                    'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                    'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-                    'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
-                ];
-                
-                html += `
-                    <div class="training-card" style="animation-delay: ${index * 0.1}s;">
-                        <h4>
-                            <span style="background: ${bgColors[index % 5]}; padding: 8px 15px; border-radius: 8px; color: white;">
-                                ${index + 1}
-                            </span>
-                            ${session.topic}
-                        </h4>
-                        <div class="meta">
-                            <div class="meta-item">
-                                <strong>نوع التدريب:</strong>
-                                <span>${session.type}</span>
-                            </div>
-                            <div class="meta-item">
-                                <strong>الطريقة:</strong>
-                                <span>${session.method}</span>
-                            </div>
-                            <div class="meta-item">
-                                <strong>المدرب:</strong>
-                                <span>${session.trainer}</span>
-                            </div>
-                            <div class="meta-item">
-                                <strong>التاريخ:</strong>
-                                <span>${session.date}</span>
-                            </div>
-                            <div class="meta-item">
-                                <strong>الوقت:</strong>
-                                <span>${session.time}</span>
-                            </div>
-                            <div class="meta-item">
-                                <strong>المستوى قبل:</strong>
-                                <span>${session.level_before}</span>
-                            </div>
-                            <div class="meta-item">
-                                <strong>المستوى بعد:</strong>
-                                <span style="color: #27ae60; font-weight: bold;">${session.level_after}</span>
-                            </div>
-                            <div class="meta-item">
-                                <strong>عدد المحلات:</strong>
-                                <span style="color: #3498db; font-weight: bold;">${session.shops_count}</span>
-                            </div>
-                        </div>
+            if (trainingData.sessions.length === 0) {
+                html = `
+                    <div style="text-align: center; padding: 40px; background: rgba(255, 255, 255, 0.1); border-radius: 15px; margin: 20px 0;">
+                        <p style="font-size: 1.2em; color: #fff; margin: 0;">لا توجد بيانات متاحة</p>
                     </div>
                 `;
-            });
+            } else {
+                trainingData.sessions.forEach((session, index) => {
+                    const bgColors = [
+                        'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                        'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                        'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                        'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+                    ];
+                    
+                    html += `
+                        <div class="training-card" style="animation-delay: ${index * 0.1}s;">
+                            <h4>
+                                <span style="background: ${bgColors[index % 5]}; padding: 8px 15px; border-radius: 8px; color: white;">
+                                    ${index + 1}
+                                </span>
+                                ${session.topic}
+                            </h4>
+                            <div class="meta">
+                                <div class="meta-item">
+                                    <strong>نوع التدريب:</strong>
+                                    <span>${session.type}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <strong>الطريقة:</strong>
+                                    <span>${session.method}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <strong>المدرب:</strong>
+                                    <span>${session.trainer}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <strong>التاريخ:</strong>
+                                    <span>${session.date}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <strong>الوقت:</strong>
+                                    <span>${session.time}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <strong>المستوى قبل:</strong>
+                                    <span>${session.level_before}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <strong>المستوى بعد:</strong>
+                                    <span style="color: #27ae60; font-weight: bold;">${session.level_after}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <strong>عدد المحلات:</strong>
+                                    <span style="color: #3498db; font-weight: bold;">${session.shops_count}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
             
             container.innerHTML = html;
         }
@@ -1356,22 +1253,32 @@
             const tbody = document.getElementById('table-body');
             let html = '';
             
-            trainingData.sessions.forEach((session, index) => {
-                html += `
+            if (trainingData.sessions.length === 0) {
+                html = `
                     <tr>
-                        <td>${index + 1}</td>
-                        <td><strong>${session.topic}</strong></td>
-                        <td>${session.type}</td>
-                        <td>${session.method}</td>
-                        <td>${session.trainer}</td>
-                        <td>${session.date}</td>
-                        <td>${session.time}</td>
-                        <td>${session.level_before}</td>
-                        <td style="color: #27ae60; font-weight: bold;">${session.level_after}</td>
-                        <td style="color: #3498db; font-weight: bold;">${session.shops_count}</td>
+                        <td colspan="10" style="text-align: center; padding: 40px; background: rgba(255, 255, 255, 0.05);">
+                            <strong style="font-size: 1.1em;">لا توجد بيانات متاحة</strong>
+                        </td>
                     </tr>
                 `;
-            });
+            } else {
+                trainingData.sessions.forEach((session, index) => {
+                    html += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td><strong>${session.topic}</strong></td>
+                            <td>${session.type}</td>
+                            <td>${session.method}</td>
+                            <td>${session.trainer}</td>
+                            <td>${session.date}</td>
+                            <td>${session.time}</td>
+                            <td>${session.level_before}</td>
+                            <td style="color: #27ae60; font-weight: bold;">${session.level_after}</td>
+                            <td style="color: #3498db; font-weight: bold;">${session.shops_count}</td>
+                        </tr>
+                    `;
+                });
+            }
             
             tbody.innerHTML = html;
         }
