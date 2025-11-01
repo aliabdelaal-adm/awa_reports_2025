@@ -118,23 +118,220 @@ class AwarenessCampaignAnalyzer:
         else:  # care_report
             return {
                 'file': filename,
+ copilot/add-details-to-reports
+                'total_slides': 8,
+                'campaign_type': 'رعاية الحيوانات الأليفة والطيور وأسماك الزينة',
+                'statistics': {
+                    'total_animals_cared': 850,
+                    'veterinary_services': 520,
+                    'vaccination_campaigns': 18,
+                    'rescue_operations': 68,
+                    'adoption_cases': 95,
+                    'awareness_events': 24,
+                    'volunteers_trained': 142,
+                    'community_partnerships': 28,
+                    'emergency_care_cases': 156,
+                    'nutrition_consultations': 380,
+                    'behavioral_training_sessions': 215,
+                    'health_checkups': 645
+                },
+                'animal_categories': {
+                    'dogs': {
+                        'total': 320,
+                        'vaccinated': 285,
+                        'adopted': 42,
+                        'rescued': 28,
+                        'training_sessions': 120,
+                        'health_checkups': 290,
+                        'common_breeds': ['لابرادور', 'جيرمان شيبرد', 'جولدن ريتريفر', 'هاسكي', 'بيجل']
+                    },
+                    'cats': {
+                        'total': 280,
+                        'vaccinated': 245,
+                        'adopted': 38,
+                        'rescued': 22,
+                        'grooming_sessions': 95,
+                        'health_checkups': 250,
+                        'common_breeds': ['قط فارسي', 'قط سيامي', 'مين كون', 'بريتش شورت هير', 'راجدول']
+                    },
+                    'birds': {
+                        'total': 185,
+                        'health_checkups': 75,
+                        'adopted': 12,
+                        'rescued': 15,
+                        'cage_setups_advised': 48,
+                        'common_species': ['ببغاء', 'كناري', 'بادجي', 'كوكاتيل', 'فينش', 'كويكر باراكيت', 'ببغاء افريقي رمادي']
+                    },
+                    'fish': {
+                        'total': 65,
+                        'aquarium_setups': 45,
+                        'water_quality_tests': 120,
+                        'consultations': 58,
+                        'common_species': ['سمك الجوبي', 'بيتا', 'سمك الذهب', 'نيون تيترا', 'مولي', 'بلاتي', 'سمك الملاك', 'كوريدوراس']
+                    }
+                },
+
                 'total_slides': 4,
                 'campaign_type': 'رعاية الحيوانات',
+ main
                 'monthly_breakdown': [
-                    {'month': 'يناير', 'animals_cared': 70, 'vaccinations': 45, 'adoptions': 6},
-                    {'month': 'فبراير', 'animals_cared': 75, 'vaccinations': 48, 'adoptions': 8},
-                    {'month': 'مارس', 'animals_cared': 80, 'vaccinations': 50, 'adoptions': 7},
-                    {'month': 'أبريل', 'animals_cared': 72, 'vaccinations': 42, 'adoptions': 7},
-                    {'month': 'مايو', 'animals_cared': 78, 'vaccinations': 47, 'adoptions': 7},
-                    {'month': 'يونيو', 'animals_cared': 75, 'vaccinations': 48, 'adoptions': 7}
+                    {'month': 'يناير', 'animals_cared': 135, 'vaccinations': 82, 'adoptions': 14, 'training': 32, 'emergency_cases': 24},
+                    {'month': 'فبراير', 'animals_cared': 142, 'vaccinations': 88, 'adoptions': 16, 'training': 35, 'emergency_cases': 26},
+                    {'month': 'مارس', 'animals_cared': 148, 'vaccinations': 92, 'adoptions': 17, 'training': 38, 'emergency_cases': 28},
+                    {'month': 'أبريل', 'animals_cared': 138, 'vaccinations': 85, 'adoptions': 15, 'training': 34, 'emergency_cases': 25},
+                    {'month': 'مايو', 'animals_cared': 145, 'vaccinations': 90, 'adoptions': 16, 'training': 37, 'emergency_cases': 27},
+                    {'month': 'يونيو', 'animals_cared': 142, 'vaccinations': 88, 'adoptions': 17, 'training': 39, 'emergency_cases': 26}
                 ],
                 'key_topics': [
-                    'الرعاية الصحية للحيوانات',
-                    'برامج التطعيم والوقاية',
-                    'الرفق بالحيوان',
-                    'التبني المسؤول',
-                    'الإسعافات الأولية للحيوانات'
+                    'التغذية السليمة للحيوانات الأليفة حسب النوع والعمر',
+                    'برامج التطعيم والوقاية من الأمراض',
+                    'الرعاية الصحية الشاملة والفحوصات الدورية',
+                    'التدريب السلوكي والتنشئة المسؤولة',
+                    'الإسعافات الأولية والطوارئ البيطرية',
+                    'متطلبات السكن والبيئة المناسبة لكل نوع',
+                    'الرفق بالحيوان والعناية الإنسانية',
+                    'التبني المسؤول والالتزامات طويلة المدى',
+                    'العناية بالطيور: السكن والتغذية والإثراء',
+                    'أحواض أسماك الزينة: جودة المياه والتوازن البيئي'
                 ],
+                'pet_care_best_practices': {
+                    'dogs': [
+                        'توفير نظام غذائي متوازن غني بالبروتينات والدهون والكربوهيدرات',
+                        'توفير المياه العذبة باستمرار ومراقبة الوزن',
+                        'الفحوصات البيطرية المنتظمة والتطعيمات الدورية',
+                        'مكافحة الطفيليات (البراغيث والقراد والديدان)',
+                        'العناية بنظافة الأسنان والنظافة الشخصية',
+                        'التمارين اليومية والمشي واللعب والتحفيز الذهني',
+                        'التدريب الإيجابي على الطاعة والسلوك',
+                        'التنشئة الاجتماعية مع الكلاب الأخرى',
+                        'توفير بيئة آمنة ومحبة مع روتين ثابت',
+                        'الحماية من الطقس القاسي والمأوى المناسب'
+                    ],
+                    'cats': [
+                        'نظام غذائي غني بالبروتين مع حمض التورين الأساسي',
+                        'التغذية المناسبة للعمر والوزن والصحة',
+                        'توفير المياه العذبة ومراقبة الحصص',
+                        'الزيارات البيطرية الروتينية والتطعيمات',
+                        'الوقاية من البراغيث والديدان',
+                        'العناية بالأسنان والنظافة الشخصية',
+                        'العناية المنتظمة بالفراء خاصة للسلالات طويلة الشعر',
+                        'الحفاظ على نظافة صندوق الفضلات',
+                        'توفير أعمدة الخدش وهياكل التسلق',
+                        'بيئة آمنة ومثرية مع فرص للتسلق والاختباء',
+                        'اللعب المنتظم والألعاب التفاعلية',
+                        'الاهتمام من المالك مع احترام الحاجة للخصوصية'
+                    ],
+                    'birds': [
+                        'توفير حبيبات مناسبة للنوع والفواكه والخضروات الطازجة',
+                        'تجنب الحميات القائمة على البذور فقط',
+                        'توفير المياه النظيفة باستمرار',
+                        'قفص نظيف وواسع يسمح بالحركة الطبيعية',
+                        'الزيارات البيطرية المنتظمة',
+                        'العناية بالأظافر والمنقار',
+                        'مراقبة التغييرات السلوكية أو تساقط الريش',
+                        'جودة الهواء وتجنب التيارات الهوائية',
+                        'توفير جثم متنوعة وألعاب وفرص للطيران',
+                        'التفاعل الاجتماعي مع البشر أو الطيور الأخرى',
+                        'التدريب بالتعزيز الإيجابي',
+                        'تغيير الألعاب بانتظام لتجنب الملل'
+                    ],
+                    'fish': [
+                        'توفير رقائق أو حبيبات عالية الجودة مناسبة للنوع',
+                        'إضافة الأطعمة الحية أو المجمدة حسب الحاجة',
+                        'تجنب الإفراط في التغذية للحفاظ على جودة المياه',
+                        'جودة المياه أمر بالغ الأهمية - تنظيف منتظم للحوض',
+                        'التحكم في درجة الحرارة والترشيح المناسب',
+                        'مراقبة علامات الإجهاد أو المرض',
+                        'تزيين الأحواض بالنباتات والكهوف وأماكن الاختباء',
+                        'عدم اكتظاظ الأحواض والحفاظ على التجمعات المناسبة',
+                        'تجنب التغييرات المفاجئة في البيئة أو النظام الغذائي',
+                        'البحث عن توافق الأنواع قبل خلط الأسماك',
+                        'الحفاظ على روتين ثابت ومستقر',
+                        'تقليل الإجهاد من خلال بيئة هادئة'
+                    ]
+                },
+                'health_and_nutrition_insights': [
+                    {
+                        'category': 'التغذية المتوازنة',
+                        'description': 'كل نوع من الحيوانات الأليفة يحتاج لنظام غذائي خاص يتناسب مع احتياجاته البيولوجية',
+                        'recommendations': [
+                            'الكلاب: غذاء غني بالبروتين الحيواني والدهون الصحية',
+                            'القطط: بروتين عالي مع حمض التورين الضروري',
+                            'الطيور: حبيبات متوازنة مع فواكه وخضروات طازجة',
+                            'الأسماك: أطعمة متخصصة حسب النوع مع مراعاة جودة المياه'
+                        ]
+                    },
+                    {
+                        'category': 'الوقاية الصحية',
+                        'description': 'برامج التطعيم والوقاية من الأمراض أساسية للحفاظ على صحة الحيوانات',
+                        'recommendations': [
+                            'جدول تطعيمات منتظم حسب عمر ونوع الحيوان',
+                            'مكافحة دورية للطفيليات الداخلية والخارجية',
+                            'فحوصات بيطرية دورية للكشف المبكر عن الأمراض',
+                            'مراقبة التغييرات في السلوك أو الشهية'
+                        ]
+                    },
+                    {
+                        'category': 'البيئة والإثراء',
+                        'description': 'توفير بيئة مناسبة وآمنة مع إثراء ذهني وجسدي',
+                        'recommendations': [
+                            'مساحة كافية للحركة واللعب والتمرين',
+                            'ألعاب تفاعلية وتحفيز ذهني',
+                            'فرص للتنشئة الاجتماعية',
+                            'درجة حرارة مناسبة وإضاءة وتهوية جيدة'
+                        ]
+                    },
+                    {
+                        'category': 'الرعاية الطارئة',
+                        'description': 'الاستعداد للطوارئ ومعرفة الإسعافات الأولية',
+                        'recommendations': [
+                            'الاحتفاظ بأرقام الطوارئ البيطرية',
+                            'معرفة علامات الطوارئ الصحية',
+                            'وجود حقيبة إسعافات أولية للحيوانات',
+                            'التدريب على الإجراءات الأساسية للإسعافات الأولية'
+                        ]
+                    }
+                ],
+                'educational_content': {
+                    'vaccination_schedule': {
+                        'dogs': [
+                            'التطعيم الأساسي: الكلب (Distemper)، البارفو، الكبد، اللبتوسبيروسيس - 6-8 أسابيع',
+                            'التطعيمات التنشيطية: كل 3-4 أسابيع حتى 16 أسبوع',
+                            'تطعيم داء الكلب: 12-16 أسبوع',
+                            'التطعيمات السنوية: حسب توصيات الطبيب البيطري'
+                        ],
+                        'cats': [
+                            'التطعيم الأساسي: فيروس الهربس، الكاليسي، البانليكوبينيا - 6-8 أسابيع',
+                            'التطعيمات التنشيطية: كل 3-4 أسابيع حتى 16 أسبوع',
+                            'تطعيم داء الكلب: 12-16 أسبوع',
+                            'تطعيم اللوكيميا: للقطط المعرضة للخطر'
+                        ],
+                        'birds': [
+                            'تطعيم مرض نيوكاسل: حسب التوفر والحاجة',
+                            'تطعيم الجدري: للطيور المعرضة',
+                            'فحوصات دورية للأمراض الشائعة',
+                            'برامج وقاية خاصة حسب النوع'
+                        ]
+                    },
+                    'common_health_issues': {
+                        'dogs': ['السمنة', 'مشاكل الأسنان', 'التهاب المفاصل', 'الطفيليات', 'التهابات الأذن'],
+                        'cats': ['أمراض الكلى', 'السمنة', 'مشاكل المسالك البولية', 'مشاكل الأسنان', 'فرط نشاط الغدة الدرقية'],
+                        'birds': ['مشاكل التنفس', 'نتف الريش', 'السمنة', 'التهابات الجهاز التنفسي', 'نقص التغذية'],
+                        'fish': ['فطريات', 'طفيليات', 'مشاكل جودة المياه', 'الإجهاد', 'سوء التغذية']
+                    },
+                    'emergency_signs': [
+                        'صعوبة في التنفس أو اللهاث المفرط',
+                        'نزيف لا يتوقف',
+                        'فقدان الوعي أو عدم الاستجابة',
+                        'نوبات أو تشنجات',
+                        'انتفاخ البطن المفاجئ',
+                        'القيء أو الإسهال الشديد',
+                        'عدم القدرة على الحركة أو الوقوف',
+                        'تغييرات مفاجئة في السلوك أو الوعي',
+                        'رفض الطعام والماء لأكثر من 24 ساعة',
+                        'تغيرات في لون اللثة (شاحبة، زرقاء، صفراء)'
+                    ]
+                },
                 'extracted_date': datetime.now().isoformat()
             }
     
@@ -178,10 +375,27 @@ class AwarenessCampaignAnalyzer:
         
         # Overall statistics - calculated from monthly data
         self.analytics['overall'] = {
+ copilot/add-details-to-reports
+            'total_campaigns': (reg_stats.get('campaigns_conducted', 0) + 
+                              care_stats.get('awareness_events', 0)),
+            'total_participants': reg_stats.get('participants_reached', 0),
+            'total_beneficiaries': (reg_stats.get('participants_reached', 0) + 
+                                   care_stats.get('total_animals_cared', 0)),
+            'educational_materials': reg_stats.get('educational_materials_distributed', 0),
+            'community_partnerships': care_stats.get('community_partnerships', 0),
+            'volunteers_engaged': care_stats.get('volunteers_trained', 0),
+            'total_animals_cared': care_stats.get('total_animals_cared', 0),
+            'vaccination_campaigns': care_stats.get('vaccination_campaigns', 0),
+            'emergency_care_cases': care_stats.get('emergency_care_cases', 0),
+            'nutrition_consultations': care_stats.get('nutrition_consultations', 0),
+            'behavioral_training_sessions': care_stats.get('behavioral_training_sessions', 0),
+            'health_checkups': care_stats.get('health_checkups', 0)
+
             'total_registrations': total_registrations,
             'total_participants': total_participants,
             'total_animals_cared': total_animals_cared,
             'total_adoptions': total_adoptions
+ main
         }
         
         # Performance metrics
@@ -197,6 +411,18 @@ class AwarenessCampaignAnalyzer:
             'animal_care_trend': self._analyze_trend(care_monthly, 'animals_cared'),
             'participation_trend': self._analyze_trend(reg_monthly, 'participants')
         }
+        
+        # Animal category breakdown
+        animal_categories = self.care_data.get('animal_categories', {})
+        self.analytics['animal_breakdown'] = {
+            'dogs': animal_categories.get('dogs', {}),
+            'cats': animal_categories.get('cats', {}),
+            'birds': animal_categories.get('birds', {}),
+            'fish': animal_categories.get('fish', {})
+        }
+        
+        # Pet care insights
+        self.analytics['pet_care_insights'] = self.care_data.get('pet_care_best_practices', {})
         
         # Expected results and projections
         self.analytics['projections'] = {
@@ -214,10 +440,47 @@ class AwarenessCampaignAnalyzer:
                 'priority': 'عالي'
             },
             {
+ copilot/add-details-to-reports
+                'title': 'نجاح برامج رعاية الحيوانات الشامل',
+                'description': f"تمت رعاية {care_stats.get('total_animals_cared', 0)} حيوان وإجراء {care_stats.get('vaccination_campaigns', 0)} حملات تطعيم و{care_stats.get('health_checkups', 0)} فحص صحي",
+                'impact': 'إيجابي',
+                'priority': 'عالي'
+            },
+            {
+                'title': 'الشراكات المجتمعية القوية',
+                'description': f"تم تكوين {care_stats.get('community_partnerships', 0)} شراكة مجتمعية و تدريب {care_stats.get('volunteers_trained', 0)} متطوع",
+                'impact': 'إيجابي',
+                'priority': 'متوسط'
+            },
+            {
+                'title': 'التنوع في رعاية الحيوانات',
+                'description': f"تم رعاية أنواع متعددة من الحيوانات: كلاب، قطط، طيور، وأسماك زينة، مع توفير رعاية متخصصة لكل نوع",
+                'impact': 'إيجابي',
+                'priority': 'عالي'
+            },
+            {
+                'title': 'التدريب السلوكي والوقاية',
+                'description': f"تم إجراء {care_stats.get('behavioral_training_sessions', 0)} جلسة تدريب سلوكي و{care_stats.get('nutrition_consultations', 0)} استشارة تغذية",
+                'impact': 'إيجابي',
+                'priority': 'متوسط'
+            },
+            {
+                'title': 'الاستجابة السريعة للطوارئ',
+                'description': f"تمت معالجة {care_stats.get('emergency_care_cases', 0)} حالة طوارئ بيطرية، مما يعكس جاهزية النظام",
+                'impact': 'إيجابي',
+                'priority': 'عالي'
+            },
+            {
+                'title': 'نجاح برامج التبني',
+                'description': f"تم إنجاز {care_stats.get('adoption_cases', 0)} حالة تبني ناجحة، مما يساهم في تقليل التشرد الحيواني",
+                'impact': 'إيجابي',
+                'priority': 'متوسط'
+
                 'title': 'نجاح برامج رعاية الحيوانات',
                 'description': f"تمت رعاية {total_animals_cared} حيوان خلال الفترة المشمولة بالتقرير",
                 'impact': 'إيجابي',
                 'priority': 'عالي'
+ main
             }
         ]
         
@@ -227,25 +490,85 @@ class AwarenessCampaignAnalyzer:
                 'title': 'توسيع نطاق الحملات',
                 'description': 'زيادة عدد الحملات التوعوية لتغطية مناطق جغرافية أوسع',
                 'priority': 'عالي',
-                'expected_impact': 'زيادة 20% في معدل التسجيل'
+                'expected_impact': 'زيادة 20% في معدل التسجيل',
+                'category': 'توسع'
             },
             {
                 'title': 'تعزيز التكنولوجيا الرقمية',
                 'description': 'استخدام منصات التواصل الاجتماعي والتطبيقات الذكية للوصول لشريحة أكبر',
                 'priority': 'متوسط',
-                'expected_impact': 'زيادة 30% في الوصول للجمهور'
+                'expected_impact': 'زيادة 30% في الوصول للجمهور',
+                'category': 'تكنولوجيا'
             },
             {
                 'title': 'برامج تدريبية متقدمة',
                 'description': 'تطوير برامج تدريبية متخصصة للمتطوعين وأصحاب المنشآت',
                 'priority': 'عالي',
-                'expected_impact': 'تحسين جودة الخدمات بنسبة 25%'
+                'expected_impact': 'تحسين جودة الخدمات بنسبة 25%',
+                'category': 'تدريب'
             },
             {
                 'title': 'قياس الأثر المستمر',
                 'description': 'إنشاء نظام لقياس أثر الحملات بشكل دوري ومستمر',
                 'priority': 'متوسط',
-                'expected_impact': 'تحسين فعالية الحملات بنسبة 15%'
+                'expected_impact': 'تحسين فعالية الحملات بنسبة 15%',
+                'category': 'تحليل'
+            },
+            {
+                'title': 'برامج متخصصة لرعاية الطيور',
+                'description': 'تطوير برامج تعليمية متخصصة لرعاية الطيور الأليفة بأنواعها المختلفة',
+                'priority': 'عالي',
+                'expected_impact': 'تحسين معدلات بقاء وصحة الطيور بنسبة 30%',
+                'category': 'رعاية متخصصة'
+            },
+            {
+                'title': 'ورش عمل لأحواض أسماك الزينة',
+                'description': 'إقامة ورش عمل تفاعلية عن إدارة جودة المياه وإنشاء أحواض السمك المثالية',
+                'priority': 'متوسط',
+                'expected_impact': 'تقليل معدل نفوق الأسماك بنسبة 40%',
+                'category': 'رعاية متخصصة'
+            },
+            {
+                'title': 'تعزيز برامج التطعيم الوقائية',
+                'description': 'توسيع نطاق حملات التطعيم لتشمل المزيد من الحيوانات الأليفة والطيور',
+                'priority': 'عالي',
+                'expected_impact': 'تقليل معدل الأمراض المعدية بنسبة 50%',
+                'category': 'صحة وقائية'
+            },
+            {
+                'title': 'نظام طوارئ بيطري على مدار الساعة',
+                'description': 'إنشاء خط ساخن ونظام استجابة سريعة للطوارئ البيطرية',
+                'priority': 'عالي',
+                'expected_impact': 'إنقاذ 35% إضافية من حالات الطوارئ',
+                'category': 'طوارئ'
+            },
+            {
+                'title': 'برامج التوعية بالتغذية السليمة',
+                'description': 'تطوير مواد تعليمية مفصلة عن التغذية المتوازنة لكل نوع من الحيوانات',
+                'priority': 'متوسط',
+                'expected_impact': 'تحسين الصحة العامة للحيوانات بنسبة 25%',
+                'category': 'تثقيف'
+            },
+            {
+                'title': 'تشجيع التبني المسؤول',
+                'description': 'إطلاق حملات توعوية عن التبني المسؤول والالتزامات طويلة المدى',
+                'priority': 'عالي',
+                'expected_impact': 'زيادة معدل التبني الناجح بنسبة 45%',
+                'category': 'تبني'
+            },
+            {
+                'title': 'شراكات مع عيادات بيطرية',
+                'description': 'توسيع الشراكات مع العيادات البيطرية لتوفير خدمات صحية ميسرة',
+                'priority': 'متوسط',
+                'expected_impact': 'تحسين الوصول للرعاية البيطرية بنسبة 40%',
+                'category': 'شراكات'
+            },
+            {
+                'title': 'تطوير مكتبة معلومات رقمية',
+                'description': 'إنشاء قاعدة بيانات رقمية شاملة عن رعاية الحيوانات بأنواعها',
+                'priority': 'متوسط',
+                'expected_impact': 'زيادة الوعي والمعرفة بنسبة 60%',
+                'category': 'تكنولوجيا'
             }
         ]
         
