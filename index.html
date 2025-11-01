@@ -2149,6 +2149,10 @@
             const FILE_ID = "index";
             const DEFAULT_VISIBILITY = false; // Hidden by default as requested
             
+            // Check if we're in viewer mode (accessed via shared link)
+            const urlParams = new URLSearchParams(window.location.search);
+            const isViewerMode = urlParams.has('view') || urlParams.has('viewer');
+            
             function isFileVisible() {
                 const stored = localStorage.getItem(STORAGE_KEY);
                 if (!stored) return DEFAULT_VISIBILITY;
@@ -2160,6 +2164,17 @@
             function updateLinkVisibility() {
                 const config = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
                 const isAuthenticated = localStorage.getItem('smartPlannerAuth') === 'true';
+                
+                // In viewer mode, hide all navigation elements
+                if (isViewerMode) {
+                    // Hide screen switcher (Home, Dashboard buttons)
+                    const screenSwitcher = document.querySelector('.screen-switcher');
+                    if (screenSwitcher) {
+                        screenSwitcher.style.display = 'none';
+                    }
+                    
+                    return; // Skip other visibility checks in viewer mode
+                }
                 
                 // Hide index2 link if it's not visible
                 const index2Link = document.getElementById('link-index2');
@@ -2179,8 +2194,8 @@
                 });
             }
             
-            // If file should not be visible, redirect to home
-            if (!isFileVisible()) {
+            // If file should not be visible, redirect to home (but not in viewer mode)
+            if (!isViewerMode && !isFileVisible()) {
                 // Only redirect if not coming from smart planner
                 if (!document.referrer.includes('smart-planner.html')) {
                     window.location.href = 'home.html';
