@@ -362,6 +362,15 @@
 
         const STORAGE_KEY = "smartPlannerConfig";
 
+        // ⚠️ SECURITY NOTE: This uses client-side authentication only.
+        // For production with sensitive data, implement server-side authentication.
+        // Client-side checks can be bypassed via browser developer tools.
+        
+        // Check if user is authenticated
+        function isAuthenticated() {
+            return localStorage.getItem('smartPlannerAuth') === 'true';
+        }
+
         // Get configuration from localStorage
         function getConfig() {
             const stored = localStorage.getItem(STORAGE_KEY);
@@ -397,28 +406,33 @@
                 }
             });
 
-            // Add admin card
-            html += `
-                <div class="card admin-card">
-                    <div class="card-icon">🎛️</div>
-                    <h2>لوحة التحكم الذكية</h2>
-                    <p>التحكم الكامل في عرض وإخفاء التقارير والملفات - للمطورين فقط</p>
-                    <a href="smart-planner.html" class="btn">
-                        🔐 دخول لوحة التحكم
-                    </a>
-                </div>
-            `;
+            // Add admin card (only if authenticated)
+            if (isAuthenticated()) {
+                html += `
+                    <div class="card admin-card">
+                        <div class="card-icon">🎛️</div>
+                        <h2>لوحة التحكم الذكية</h2>
+                        <p>التحكم الكامل في عرض وإخفاء التقارير والملفات - للمطورين فقط</p>
+                        <a href="smart-planner.html" class="btn">
+                            🔐 دخول لوحة التحكم
+                        </a>
+                    </div>
+                `;
+            }
 
             if (visibleCount === 0) {
+                const smartPlannerLink = isAuthenticated() ? 
+                    `<p style="margin-top: 20px;">
+                        <a href="smart-planner.html" style="color: #667eea; text-decoration: none; font-weight: bold; font-size: 1.1em;">
+                            🔐 دخول لوحة التحكم الذكية
+                        </a>
+                    </p>` : '';
+                    
                 html = `
                     <div class="no-files-message">
                         <h2>📁 لا توجد تقارير معروضة حالياً</h2>
                         <p>لم يتم تفعيل أي تقارير للعرض من قبل المطور.</p>
-                        <p style="margin-top: 20px;">
-                            <a href="smart-planner.html" style="color: #667eea; text-decoration: none; font-weight: bold; font-size: 1.1em;">
-                                🔐 دخول لوحة التحكم الذكية
-                            </a>
-                        </p>
+                        ${smartPlannerLink}
                     </div>
                 `;
             }

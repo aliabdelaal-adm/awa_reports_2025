@@ -448,11 +448,7 @@
             </div>
             <button type="submit" class="login-btn">🔓 دخول</button>
         </form>
-        <p style="text-align: center; margin-top: 20px; color: #666; font-size: 0.9em;">
-            💡 كلمة المرور الافتراضية: <code style="background: #f0f0f0; padding: 3px 8px; border-radius: 4px;">Ali@2025</code>
-            <!-- Note: Password is displayed for convenience in this internal developer tool. 
-                 For production use with external access, remove this hint and implement proper authentication. -->
-        </p>
+        <!-- Password hint removed for security -->
     </div>
 
     <!-- Control Panel -->
@@ -536,6 +532,14 @@
     <input type="file" id="importInput" accept=".json" style="display: none;" onchange="handleImport(event)">
 
     <script>
+        // ⚠️ SECURITY WARNING: This is a client-side only authentication system.
+        // For production environments with sensitive data:
+        // 1. Implement server-side authentication (OAuth, JWT, etc.)
+        // 2. Store credentials securely on the server
+        // 3. Use HTTPS for all connections
+        // 4. Implement proper session management
+        // Client-side localStorage can be manipulated via browser developer tools.
+        
         // Configuration
         const DEFAULT_PASSWORD = "Ali@2025";
         const STORAGE_KEY = "smartPlannerConfig";

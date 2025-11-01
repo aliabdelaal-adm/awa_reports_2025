@@ -1090,6 +1090,8 @@
     
     <script>
         // Check if this file should be visible based on smart planner settings
+        // ⚠️ SECURITY NOTE: Client-side visibility checks can be bypassed.
+        // For production security, implement server-side access control.
         (function() {
             const STORAGE_KEY = "smartPlannerConfig";
             const FILE_ID = "index2";
@@ -1105,6 +1107,7 @@
             // Check visibility and update link visibility
             function updateLinkVisibility() {
                 const config = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+                const isAuthenticated = localStorage.getItem('smartPlannerAuth') === 'true';
                 
                 // Hide index link if it's not visible
                 const indexLink = document.getElementById('link-index');
@@ -1114,6 +1117,14 @@
                         indexLink.style.display = 'none';
                     }
                 }
+                
+                // Hide smart-planner link for non-authenticated users
+                const smartPlannerLinks = document.querySelectorAll('a[href="smart-planner.html"]');
+                smartPlannerLinks.forEach(link => {
+                    if (!isAuthenticated) {
+                        link.style.display = 'none';
+                    }
+                });
             }
             
             // If file should not be visible, redirect to home
