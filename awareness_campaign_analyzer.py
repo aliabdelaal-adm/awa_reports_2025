@@ -23,6 +23,9 @@ import pandas as pd
 class AwarenessCampaignAnalyzer:
     """محلل حملات التوعية والتوجيه والإرشاد"""
     
+    # Constants
+    MIN_VALID_FILE_SIZE = 100  # Minimum file size in bytes to consider as valid PowerPoint
+    
     def __init__(self, registration_pptx, care_pptx):
         self.registration_file = registration_pptx
         self.care_file = care_pptx
@@ -35,7 +38,7 @@ class AwarenessCampaignAnalyzer:
         """استخراج البيانات من ملف PowerPoint"""
         
         # Check if file is empty or text file
-        if os.path.getsize(pptx_file) < 100:
+        if os.path.getsize(pptx_file) < self.MIN_VALID_FILE_SIZE:
             print(f"ملف {pptx_file} فارغ أو غير صالح. سيتم استخدام بيانات نموذجية.")
             return self._generate_sample_data(pptx_file)
         
@@ -202,7 +205,7 @@ class AwarenessCampaignAnalyzer:
             'average_monthly_animal_care': self._calculate_average(
                 self.care_data.get('monthly_breakdown', []), 'animals_cared'
             ),
-            'success_rate': 85.5  # Calculated based on achievements
+            'success_rate': self._calculate_success_rate(reg_stats, care_stats)
         }
         
         # Trends analysis
@@ -226,7 +229,9 @@ class AwarenessCampaignAnalyzer:
             'next_quarter_animal_care': self._project_next_quarter(
                 self.care_data.get('monthly_breakdown', []), 'animals_cared'
             ),
-            'expected_compliance_improvement': 5.0  # Percentage improvement expected
+            'expected_compliance_improvement': self._calculate_compliance_improvement(
+                self.registration_data.get('monthly_breakdown', [])
+            )
         }
         
         # Key insights
@@ -323,6 +328,43 @@ class AwarenessCampaignAnalyzer:
         else:
             return round(avg * 3, 2)
     
+    def _calculate_success_rate(self, reg_stats, care_stats):
+        """حساب معدل النجاح بناءً على الإحصائيات الفعلية"""
+        if not reg_stats or not care_stats:
+            return 0
+        
+        # Calculate success rate based on actual metrics
+        # Registration success: registered / total facilities
+        reg_success = (reg_stats.get('registered_facilities', 0) / 
+                      max(reg_stats.get('total_facilities', 1), 1)) * 100
+        
+        # Care success: successful adoptions / total animals cared
+        care_success = (care_stats.get('adoption_cases', 0) / 
+                       max(care_stats.get('total_animals_cared', 1), 1)) * 100
+        
+        # Overall success is weighted average (70% registration, 30% care)
+        overall_success = (reg_success * 0.7) + (care_success * 0.3)
+        
+        return round(overall_success, 2)
+    
+    def _calculate_compliance_improvement(self, monthly_data):
+        """حساب تحسن الامتثال المتوقع بناءً على الاتجاه"""
+        if not monthly_data or len(monthly_data) < 2:
+            return 0
+        
+        # Analyze the trend of registrations over time
+        trend = self._analyze_trend(monthly_data, 'registrations')
+        
+        if trend == 'تصاعدي':
+            # If trend is upward, expect 5-7% improvement
+            return round(6.0, 2)
+        elif trend == 'تنازلي':
+            # If trend is downward, expect 2-3% improvement through interventions
+            return round(2.5, 2)
+        else:
+            # If stable, expect moderate 3-5% improvement
+            return round(4.0, 2)
+    
     def save_to_json(self, output_file):
         """حفظ البيانات والتحليلات في ملف JSON"""
         complete_data = {
@@ -338,17 +380,13 @@ class AwarenessCampaignAnalyzer:
     def generate_html_report(self, output_file):
         """إنشاء تقرير HTML تفاعلي"""
         
-        html_content = self._create_html_template()
+        # Note: HTML report is provided as a separate file (awareness-campaign-report.html)
+        # This method is kept for API compatibility but the actual HTML report
+        # is designed to read from the JSON file directly for better separation of concerns
         
-        with open(output_file, 'w', encoding='utf-8') as f:
-            f.write(html_content)
-        
-        print(f"تم إنشاء التقرير HTML في: {output_file}")
-    
-    def _create_html_template(self):
-        """إنشاء قالب HTML للتقرير"""
-        # This will be implemented in a separate HTML file
-        pass
+        print(f"تنبيه: تقرير HTML موجود في ملف منفصل: awareness-campaign-report.html")
+        print(f"يقرأ التقرير البيانات من: awareness_campaign_analytics.json")
+        print(f"لا حاجة لتوليد HTML من Python - استخدم الملف HTML المخصص")
 
 def main():
     """الوظيفة الرئيسية"""

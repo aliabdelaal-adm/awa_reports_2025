@@ -469,7 +469,16 @@
         async function loadData() {
             try {
                 const response = await fetch('awareness_campaign_analytics.json');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
                 analyticsData = await response.json();
+                
+                if (!analyticsData || !analyticsData.merged_data || !analyticsData.analytics) {
+                    throw new Error('بيانات غير صالحة في ملف JSON');
+                }
                 
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('overview').classList.add('active');
@@ -477,7 +486,19 @@
                 renderAllSections();
             } catch (error) {
                 console.error('Error loading data:', error);
-                document.getElementById('loading').innerHTML = '❌ حدث خطأ في تحميل البيانات';
+                const loadingEl = document.getElementById('loading');
+                loadingEl.innerHTML = `
+                    <div style="color: #dc3545;">
+                        <h2>❌ حدث خطأ في تحميل البيانات</h2>
+                        <p style="margin-top: 10px;">الرجاء التأكد من وجود ملف awareness_campaign_analytics.json</p>
+                        <p style="margin-top: 5px; font-size: 0.9em; color: #666;">
+                            يمكنك توليد الملف بتشغيل: <code>python3 awareness_campaign_analyzer.py</code>
+                        </p>
+                        <p style="margin-top: 10px; font-size: 0.85em; color: #999;">
+                            تفاصيل الخطأ: ${error.message}
+                        </p>
+                    </div>
+                `;
             }
         }
         

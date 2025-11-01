@@ -1,7 +1,7 @@
 {
   "merged_data": {
     "report_title": "تقرير حملات التوعية والتوجيه والإرشاد الموحد",
-    "generated_date": "2025-11-01 14:50:40",
+    "generated_date": "2025-11-01 14:59:21",
     "registration_campaign": {
       "file": "/home/runner/work/awa_reports_2025/awa_reports_2025/registration_report.pptx",
       "total_slides": 5,
@@ -61,7 +61,7 @@
         "الفوائد الصحية للتسجيل",
         "التزامات المنشآت المسجلة"
       ],
-      "extracted_date": "2025-11-01T14:50:40.426477"
+      "extracted_date": "2025-11-01T14:59:21.426993"
     },
     "care_campaign": {
       "file": "/home/runner/work/awa_reports_2025/awa_reports_2025/care_report.pptx",
@@ -122,7 +122,7 @@
         "التبني المسؤول",
         "الإسعافات الأولية للحيوانات"
       ],
-      "extracted_date": "2025-11-01T14:50:40.426512"
+      "extracted_date": "2025-11-01T14:59:21.427019"
     }
   },
   "analytics": {
@@ -138,7 +138,7 @@
       "registration_compliance_rate": 80.0,
       "average_monthly_registrations": 20.0,
       "average_monthly_animal_care": 75.0,
-      "success_rate": 85.5
+      "success_rate": 58.8
     },
     "trends": {
       "registration_trend": "تصاعدي",
@@ -148,7 +148,7 @@
     "projections": {
       "next_quarter_registrations": 66.0,
       "next_quarter_animal_care": 225.0,
-      "expected_compliance_improvement": 5.0
+      "expected_compliance_improvement": 6.0
     },
     "insights": [
       {
