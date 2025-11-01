@@ -165,6 +165,12 @@ class AwarenessCampaignAnalyzer:
         reg_monthly = self.registration_data.get('monthly_breakdown', [])
         care_monthly = self.care_data.get('monthly_breakdown', [])
         
+        # Defensive checks to ensure data is valid
+        if not isinstance(reg_monthly, list):
+            reg_monthly = []
+        if not isinstance(care_monthly, list):
+            care_monthly = []
+        
         total_participants = sum(item.get('participants', 0) for item in reg_monthly)
         total_registrations = sum(item.get('registrations', 0) for item in reg_monthly)
         total_animals_cared = sum(item.get('animals_cared', 0) for item in care_monthly)
@@ -182,7 +188,7 @@ class AwarenessCampaignAnalyzer:
         self.analytics['performance'] = {
             'average_monthly_registrations': self._calculate_average(reg_monthly, 'registrations'),
             'average_monthly_animal_care': self._calculate_average(care_monthly, 'animals_cared'),
-            'average_monthly_participants': self._calculate_average(reg_monthly, 'participants')
+            'average_monthly_participation': self._calculate_average(reg_monthly, 'participants')
         }
         
         # Trends analysis

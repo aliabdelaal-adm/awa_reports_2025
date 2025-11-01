@@ -887,7 +887,7 @@
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">متوسط المشاركين الشهرية</div>
-                    <div class="stat-number">${performance.average_monthly_participants}</div>
+                    <div class="stat-number">${performance.average_monthly_participation}</div>
                 </div>
             `;
             
@@ -922,9 +922,9 @@
                     datasets: [{
                         label: 'مؤشرات الأداء',
                         data: [
-                            performance.average_monthly_registrations * 4, // Normalized
-                            performance.average_monthly_animal_care / 2, // Normalized
-                            performance.average_monthly_participants / 10 // Normalized
+                            performance.average_monthly_registrations * 4, // Normalized for display
+                            performance.average_monthly_animal_care / 2, // Normalized for display
+                            performance.average_monthly_participation / 10 // Normalized for display
                         ],
                         backgroundColor: 'rgba(102, 126, 234, 0.2)',
                         borderColor: 'rgb(102, 126, 234)',
