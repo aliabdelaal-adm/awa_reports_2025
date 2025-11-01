@@ -716,12 +716,12 @@
         }
 
         function copyLink(path) {
-            // Construct URL more robustly
+            // Construct URL more robustly with viewer mode parameter
             const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
-            const fullUrl = baseUrl + path;
+            const fullUrl = baseUrl + path + '?view=1';
             navigator.clipboard.writeText(fullUrl).then(() => {
-                alert('✅ تم نسخ الرابط بنجاح!');
-                addLog(`تم نسخ رابط: ${path}`, 'success');
+                alert('✅ تم نسخ الرابط بنجاح!\n\nسيتم فتح الملف في وضع العرض (بدون أزرار التنقل)');
+                addLog(`تم نسخ رابط المشاهد: ${path}`, 'success');
             });
         }
 
