@@ -450,6 +450,8 @@
         </form>
         <p style="text-align: center; margin-top: 20px; color: #666; font-size: 0.9em;">
             💡 كلمة المرور الافتراضية: <code style="background: #f0f0f0; padding: 3px 8px; border-radius: 4px;">Ali@2025</code>
+            <!-- Note: Password is displayed for convenience in this internal developer tool. 
+                 For production use with external access, remove this hint and implement proper authentication. -->
         </p>
     </div>
 
@@ -538,6 +540,8 @@
         const DEFAULT_PASSWORD = "Ali@2025";
         const STORAGE_KEY = "smartPlannerConfig";
         const ACTIVITY_LOG_KEY = "smartPlannerActivityLog";
+        const MAX_LOG_ENTRIES = 100; // Maximum number of log entries to keep
+        const MAX_DISPLAYED_LOGS = 50; // Maximum number of logs to display
 
         // File definitions
         const files = [
@@ -700,7 +704,9 @@
         }
 
         function copyLink(path) {
-            const fullUrl = window.location.origin + window.location.pathname.replace('smart-planner.html', path);
+            // Construct URL more robustly
+            const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+            const fullUrl = baseUrl + path;
             navigator.clipboard.writeText(fullUrl).then(() => {
                 alert('✅ تم نسخ الرابط بنجاح!');
                 addLog(`تم نسخ رابط: ${path}`, 'success');
@@ -798,8 +804,8 @@
             // Save to localStorage
             saveActivityLog(message, type);
             
-            // Keep only last 50 entries
-            while (logContainer.children.length > 50) {
+            // Keep only last MAX_DISPLAYED_LOGS entries
+            while (logContainer.children.length > MAX_DISPLAYED_LOGS) {
                 logContainer.removeChild(logContainer.lastChild);
             }
         }
@@ -811,7 +817,7 @@
                 message: message,
                 type: type
             });
-            logs = logs.slice(0, 100); // Keep only last 100
+            logs = logs.slice(0, MAX_LOG_ENTRIES); // Keep only last MAX_LOG_ENTRIES
             localStorage.setItem(ACTIVITY_LOG_KEY, JSON.stringify(logs));
         }
 

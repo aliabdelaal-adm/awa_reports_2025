@@ -1092,13 +1092,14 @@
         // Check if this file should be visible based on smart planner settings
         (function() {
             const STORAGE_KEY = "smartPlannerConfig";
-            const fileId = "index2";
+            const FILE_ID = "index2";
+            const DEFAULT_VISIBILITY = true; // Visible by default
             
             function isFileVisible() {
                 const stored = localStorage.getItem(STORAGE_KEY);
-                if (!stored) return true; // Default is visible
+                if (!stored) return DEFAULT_VISIBILITY;
                 const config = JSON.parse(stored);
-                return config[fileId] !== undefined ? config[fileId] : true;
+                return config[FILE_ID] !== undefined ? config[FILE_ID] : DEFAULT_VISIBILITY;
             }
             
             // Check visibility and update link visibility
