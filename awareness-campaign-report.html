@@ -341,11 +341,52 @@
             color: #666;
         }
         
+        .screen-switcher {
+            background: #34495e;
+            padding: 10px 30px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            border-bottom: 2px solid #2c3e50;
+        }
+        
+        .screen-switch-btn {
+            background: linear-gradient(135deg, #16a085 0%, #1abc9c 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .screen-switch-btn:hover {
+            background: linear-gradient(135deg, #1abc9c 0%, #48c9b0 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(22, 160, 133, 0.4);
+        }
+        
+        .screen-switch-btn.current {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: default;
+        }
+        
+        .screen-switch-btn.current:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
         @media print {
             body {
                 background: white;
             }
-            .nav-bar, .nav-btn {
+            .nav-bar, .nav-btn, .screen-switcher {
                 display: none;
             }
         }
@@ -357,6 +398,25 @@
             <h1>📊 تقرير حملات التوعية والتوجيه والإرشاد الموحد</h1>
             <p>Unified Awareness & Guidance Campaign Report 2025</p>
             <p style="font-size: 0.9em; margin-top: 10px;">بلدية مدينة أبوظبي - إدارة الصحة العامة</p>
+        </div>
+        
+        <!-- Screen Switcher -->
+        <div class="screen-switcher">
+            <a href="home.html" class="screen-switch-btn">
+                🏠 الصفحة الرئيسية
+            </a>
+            <a href="index.html" class="screen-switch-btn" id="link-index">
+                📋 الخطة التحسينية
+            </a>
+            <a href="index2.html" class="screen-switch-btn" id="link-index2">
+                📊 التقرير الاحترافي
+            </a>
+            <span class="screen-switch-btn current">
+                📊 تقرير حملات التوعية
+            </span>
+            <a href="smart-planner.html" class="screen-switch-btn" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                🎛️ لوحة التحكم الذكية
+            </a>
         </div>
         
         <div class="nav-bar">
@@ -991,8 +1051,25 @@
             }
         }
         
+        // Viewer mode support - hide navigation when accessed via shared link
+        function initViewerMode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isViewerMode = urlParams.has('view') || urlParams.has('viewer');
+            
+            if (isViewerMode) {
+                // Hide screen switcher (Home, Dashboard buttons)
+                const screenSwitcher = document.querySelector('.screen-switcher');
+                if (screenSwitcher) {
+                    screenSwitcher.style.display = 'none';
+                }
+            }
+        }
+        
         // Load data on page load
-        window.addEventListener('DOMContentLoaded', loadData);
+        window.addEventListener('DOMContentLoaded', function() {
+            initViewerMode();
+            loadData();
+        });
     </script>
 </body>
 </html>
