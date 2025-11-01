@@ -1,56 +1,44 @@
 {
   "merged_data": {
     "report_title": "تقرير حملات التوعية والتوجيه والإرشاد الموحد",
+ copilot/add-details-to-reports
     "generated_date": "2025-11-01 16:57:46",
+
+    "generated_date": "2025-11-01 16:57:51",
+ main
     "registration_campaign": {
       "file": "/home/runner/work/awa_reports_2025/awa_reports_2025/registration_report.pptx",
       "total_slides": 5,
       "campaign_type": "تسجيل المنشآت",
-      "statistics": {
-        "total_facilities": 150,
-        "registered_facilities": 120,
-        "pending_registration": 30,
-        "compliance_rate": 80.0,
-        "campaigns_conducted": 12,
-        "participants_reached": 2500,
-        "awareness_sessions": 15,
-        "educational_materials_distributed": 5000
-      },
       "monthly_breakdown": [
         {
           "month": "يناير",
           "registrations": 15,
-          "sessions": 2,
           "participants": 250
         },
         {
           "month": "فبراير",
           "registrations": 18,
-          "sessions": 3,
           "participants": 300
         },
         {
           "month": "مارس",
           "registrations": 22,
-          "sessions": 2,
           "participants": 280
         },
         {
           "month": "أبريل",
           "registrations": 20,
-          "sessions": 3,
           "participants": 320
         },
         {
           "month": "مايو",
           "registrations": 25,
-          "sessions": 2,
           "participants": 290
         },
         {
           "month": "يونيو",
           "registrations": 20,
-          "sessions": 3,
           "participants": 310
         }
       ],
@@ -61,6 +49,7 @@
         "الفوائد الصحية للتسجيل",
         "التزامات المنشآت المسجلة"
       ],
+ copilot/add-details-to-reports
       "extracted_date": "2025-11-01T16:57:46.033859"
     },
     "care_campaign": {
@@ -145,6 +134,14 @@
           ]
         }
       },
+
+      "extracted_date": "2025-11-01T16:57:51.974442"
+    },
+    "care_campaign": {
+      "file": "/home/runner/work/awa_reports_2025/awa_reports_2025/care_report.pptx",
+      "total_slides": 4,
+      "campaign_type": "رعاية الحيوانات",
+ main
       "monthly_breakdown": [
         {
           "month": "يناير",
@@ -207,6 +204,7 @@
         "العناية بالطيور: السكن والتغذية والإثراء",
         "أحواض أسماك الزينة: جودة المياه والتوازن البيئي"
       ],
+ copilot/add-details-to-reports
       "pet_care_best_practices": {
         "dogs": [
           "توفير نظام غذائي متوازن غني بالبروتينات والدهون والكربوهيدرات",
@@ -370,10 +368,14 @@
         ]
       },
       "extracted_date": "2025-11-01T16:57:46.033906"
+
+      "extracted_date": "2025-11-01T16:57:51.974459"
+ main
     }
   },
   "analytics": {
     "overall": {
+ copilot/add-details-to-reports
       "total_campaigns": 36,
       "total_participants": 2500,
       "total_beneficiaries": 3350,
@@ -386,12 +388,22 @@
       "nutrition_consultations": 380,
       "behavioral_training_sessions": 215,
       "health_checkups": 645
+
+      "total_registrations": 120,
+      "total_participants": 1750,
+      "total_animals_cared": 450,
+      "total_adoptions": 42
+ main
     },
     "performance": {
-      "registration_compliance_rate": 80.0,
       "average_monthly_registrations": 20.0,
+ copilot/add-details-to-reports
       "average_monthly_animal_care": 141.67,
       "success_rate": 59.35
+
+      "average_monthly_animal_care": 75.0,
+      "average_monthly_participation": 291.67
+ main
     },
     "trends": {
       "registration_trend": "تصاعدي",
@@ -520,23 +532,23 @@
     },
     "projections": {
       "next_quarter_registrations": 66.0,
+ copilot/add-details-to-reports
       "next_quarter_animal_care": 425.01,
       "expected_compliance_improvement": 6.0
+
+      "next_quarter_animal_care": 225.0,
+      "expected_growth_rate": 6.0
+ main
     },
     "insights": [
       {
-        "title": "معدل الامتثال المرتفع",
-        "description": "معدل امتثال المنشآت المسجلة بلغ 80.0%، مما يدل على فعالية حملات التوعية",
+        "title": "تزايد الوعي المجتمعي",
+        "description": "وصلت حملات التوعية إلى 1750 مشارك، مما يعكس انتشاراً واسعاً للوعي",
         "impact": "إيجابي",
         "priority": "عالي"
       },
       {
-        "title": "تزايد الوعي المجتمعي",
-        "description": "وصلت حملات التوعية إلى 2500 مشارك، مما يعكس انتشاراً واسعاً للوعي",
-        "impact": "إيجابي",
-        "priority": "متوسط"
-      },
-      {
+ copilot/add-details-to-reports
         "title": "نجاح برامج رعاية الحيوانات الشامل",
         "description": "تمت رعاية 850 حيوان وإجراء 18 حملات تطعيم و645 فحص صحي",
         "impact": "إيجابي",
@@ -571,6 +583,12 @@
         "description": "تم إنجاز 95 حالة تبني ناجحة، مما يساهم في تقليل التشرد الحيواني",
         "impact": "إيجابي",
         "priority": "متوسط"
+
+        "title": "نجاح برامج رعاية الحيوانات",
+        "description": "تمت رعاية 450 حيوان خلال الفترة المشمولة بالتقرير",
+        "impact": "إيجابي",
+        "priority": "عالي"
+ main
       }
     ],
     "recommendations": [
