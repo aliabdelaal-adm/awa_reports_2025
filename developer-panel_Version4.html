@@ -27,9 +27,9 @@
 </head>
 <body>
   <!-- Navigation Bar -->
-  <div style="background:#1a3a5e; padding:15px; text-align:center; margin-bottom:20px; border-radius:8px;">
+  <div style="background:#1a3a5e; padding:15px; text-align:center; margin-bottom:20px; border-radius:8px;" id="navBar">
     <a href="home.html" style="color:#fff; text-decoration:none; margin:0 15px; padding:8px 16px; background:#2336a0; border-radius:5px; display:inline-block;">🏠 الصفحة الرئيسية</a>
-    <a href="index.html" style="color:#fff; text-decoration:none; margin:0 15px; padding:8px 16px; background:#2336a0; border-radius:5px; display:inline-block;">📋 الخطة التحسينية</a>
+    <a href="index.html" style="color:#fff; text-decoration:none; margin:0 15px; padding:8px 16px; background:#2336a0; border-radius:5px; display:inline-block;" id="link-index">📋 الخطة التحسينية</a>
     <a href="index2.html" style="color:#fff; text-decoration:none; margin:0 15px; padding:8px 16px; background:#2336a0; border-radius:5px; display:inline-block;">📊 تقرير التوعية</a>
     <a href="smart-planner.html" style="color:#fff; text-decoration:none; margin:0 15px; padding:8px 16px; background:#c0392b; border-radius:5px; display:inline-block;">🎛️ لوحة التحكم الذكية</a>
   </div>
@@ -67,6 +67,35 @@
   </div>
   <div class="copyright">جميع الحقوق محفوظة &copy; المطور د. علي عبدالعال</div>
   <script>
+    // ⚠️ SECURITY NOTE: This is client-side authentication only!
+    // For production use with sensitive data, implement server-side authentication.
+    // Client-side checks can be bypassed via browser developer tools.
+    
+    // Check authentication - redirect if not authenticated
+    (function() {
+      const isAuthenticated = localStorage.getItem('smartPlannerAuth') === 'true';
+      if (!isAuthenticated) {
+        alert('⚠️ يجب عليك تسجيل الدخول أولاً من لوحة التحكم الذكية');
+        window.location.href = 'smart-planner.html';
+        return;
+      }
+      
+      // Update navigation link visibility on page load
+      window.addEventListener('DOMContentLoaded', function() {
+        const STORAGE_KEY = "smartPlannerConfig";
+        const config = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+        
+        // Hide index link if it's not visible
+        const indexLink = document.getElementById('link-index');
+        if (indexLink) {
+          const indexVisible = config['index'] !== undefined ? config['index'] : false;
+          if (!indexVisible) {
+            indexLink.style.display = 'none';
+          }
+        }
+      });
+    })();
+    
     // بيانات افتراضية (يمكنك تعديلها لاحقًا)
     let inspectors = ["د. علي عبدالمالك", "د. محمد إسماعيل"];
     let areas = ["وسط المدينة", "جنوب"];
