@@ -720,7 +720,7 @@
             const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
             const fullUrl = baseUrl + path + '?view=1';
             navigator.clipboard.writeText(fullUrl).then(() => {
-                alert('✅ تم نسخ الرابط بنجاح!\nسيتم فتح الملف في وضع العرض (بدون أزرار التنقل)');
+                alert('✅ تم نسخ الرابط بنجاح!\n\nسيتم فتح الملف في وضع العرض (بدون أزرار التنقل)');
                 addLog(`تم نسخ رابط المشاهد: ${path}`, 'success');
             });
         }

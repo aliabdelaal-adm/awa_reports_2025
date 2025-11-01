@@ -750,8 +750,8 @@
         
         <div class="navigation">
             <button class="nav-button active" onclick="showSection('overview', event)">📊 نظرة عامة</button>
-            <button class="nav-button" onclick="showSection('statistics', event)">📈 الإحصائيات</button>
-            <button class="nav-button" onclick="showSection('training', event)">🎓 جلسات التدريب</button>
+            <button class="nav-button" onclick="showSection('statistics', event)" data-viewer-hide="true">📈 الإحصائيات</button>
+            <button class="nav-button" onclick="showSection('training', event)" data-viewer-hide="true">🎓 جلسات التدريب</button>
             <button class="nav-button" onclick="showSection('ppt-content', event)">📽️ محتوى التوعية</button>
             <button class="nav-button" onclick="showSection('gallery', event)">🖼️ معرض الصور</button>
             <button class="nav-button" onclick="showSection('data-table', event)">📋 جدول البيانات الكامل</button>
@@ -1121,13 +1121,10 @@
                         screenSwitcher.style.display = 'none';
                     }
                     
-                    // Hide Statistics and Training Sessions navigation buttons
-                    const navButtons = document.querySelectorAll('.nav-button');
+                    // Hide navigation buttons marked for viewer mode hiding
+                    const navButtons = document.querySelectorAll('.nav-button[data-viewer-hide="true"]');
                     navButtons.forEach(button => {
-                        const buttonText = button.textContent.trim();
-                        if (buttonText.includes('الإحصائيات') || buttonText.includes('جلسات التدريب')) {
-                            button.style.display = 'none';
-                        }
+                        button.style.display = 'none';
                     });
                     
                     return; // Skip other visibility checks in viewer mode
