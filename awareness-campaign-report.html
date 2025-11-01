@@ -594,28 +594,20 @@
             
             const statsHTML = `
                 <div class="stat-card">
-                    <div class="stat-label">إجمالي الحملات</div>
-                    <div class="stat-number">${overall.total_campaigns}</div>
+                    <div class="stat-label">إجمالي التسجيلات</div>
+                    <div class="stat-number">${overall.total_registrations}</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">إجمالي المشاركين</div>
                     <div class="stat-number">${overall.total_participants.toLocaleString()}</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">إجمالي المستفيدين</div>
-                    <div class="stat-number">${overall.total_beneficiaries.toLocaleString()}</div>
+                    <div class="stat-label">إجمالي الحيوانات المرعاية</div>
+                    <div class="stat-number">${overall.total_animals_cared.toLocaleString()}</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">المواد التعليمية الموزعة</div>
-                    <div class="stat-number">${overall.educational_materials.toLocaleString()}</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">الشراكات المجتمعية</div>
-                    <div class="stat-number">${overall.community_partnerships}</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">المتطوعون المدربون</div>
-                    <div class="stat-number">${overall.volunteers_engaged}</div>
+                    <div class="stat-label">حالات التبني</div>
+                    <div class="stat-number">${overall.total_adoptions}</div>
                 </div>
             `;
             
@@ -626,32 +618,26 @@
             new Chart(ctx1, {
                 type: 'bar',
                 data: {
-                    labels: ['الحملات', 'المشاركون', 'المستفيدون', 'المواد التعليمية', 'الشراكات', 'المتطوعون'],
+                    labels: ['التسجيلات', 'المشاركون', 'الحيوانات المرعاية', 'حالات التبني'],
                     datasets: [{
                         label: 'الإحصائيات الشاملة',
                         data: [
-                            overall.total_campaigns,
+                            overall.total_registrations,
                             overall.total_participants,
-                            overall.total_beneficiaries,
-                            overall.educational_materials,
-                            overall.community_partnerships,
-                            overall.volunteers_engaged
+                            overall.total_animals_cared,
+                            overall.total_adoptions
                         ],
                         backgroundColor: [
                             'rgba(102, 126, 234, 0.8)',
                             'rgba(118, 75, 162, 0.8)',
                             'rgba(240, 147, 251, 0.8)',
-                            'rgba(245, 87, 108, 0.8)',
-                            'rgba(40, 167, 69, 0.8)',
-                            'rgba(255, 193, 7, 0.8)'
+                            'rgba(245, 87, 108, 0.8)'
                         ],
                         borderColor: [
                             'rgba(102, 126, 234, 1)',
                             'rgba(118, 75, 162, 1)',
                             'rgba(240, 147, 251, 1)',
-                            'rgba(245, 87, 108, 1)',
-                            'rgba(40, 167, 69, 1)',
-                            'rgba(255, 193, 7, 1)'
+                            'rgba(245, 87, 108, 1)'
                         ],
                         borderWidth: 2
                     }]
@@ -725,32 +711,29 @@
         
         function renderRegistrationCampaign() {
             const regData = analyticsData.merged_data.registration_campaign;
-            const stats = regData.statistics;
+            
+            // Calculate totals from monthly breakdown
+            const totalRegistrations = regData.monthly_breakdown.reduce((sum, m) => sum + m.registrations, 0);
+            const totalParticipants = regData.monthly_breakdown.reduce((sum, m) => sum + m.participants, 0);
+            const avgRegistrations = Math.round(totalRegistrations / regData.monthly_breakdown.length);
+            const avgParticipants = Math.round(totalParticipants / regData.monthly_breakdown.length);
             
             const statsHTML = `
                 <div class="stat-card">
-                    <div class="stat-label">إجمالي المنشآت</div>
-                    <div class="stat-number">${stats.total_facilities}</div>
+                    <div class="stat-label">إجمالي التسجيلات</div>
+                    <div class="stat-number">${totalRegistrations}</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">المنشآت المسجلة</div>
-                    <div class="stat-number">${stats.registered_facilities}</div>
+                    <div class="stat-label">إجمالي المشاركين</div>
+                    <div class="stat-number">${totalParticipants.toLocaleString()}</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">معدل الامتثال</div>
-                    <div class="stat-number">${stats.compliance_rate}%</div>
+                    <div class="stat-label">متوسط التسجيلات الشهرية</div>
+                    <div class="stat-number">${avgRegistrations}</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">الحملات المنفذة</div>
-                    <div class="stat-number">${stats.campaigns_conducted}</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">المشاركون</div>
-                    <div class="stat-number">${stats.participants_reached.toLocaleString()}</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">جلسات التوعية</div>
-                    <div class="stat-number">${stats.awareness_sessions}</div>
+                    <div class="stat-label">متوسط المشاركين الشهرية</div>
+                    <div class="stat-number">${avgParticipants}</div>
                 </div>
             `;
             
@@ -768,7 +751,6 @@
                     <tr>
                         <th>الشهر</th>
                         <th>التسجيلات</th>
-                        <th>الجلسات</th>
                         <th>المشاركون</th>
                     </tr>
                 </thead>
@@ -780,7 +762,6 @@
                     <tr>
                         <td><strong>${month.month}</strong></td>
                         <td>${month.registrations}</td>
-                        <td>${month.sessions}</td>
                         <td>${month.participants}</td>
                     </tr>
                 `;
@@ -804,11 +785,12 @@
                             borderWidth: 2
                         },
                         {
-                            label: 'الجلسات',
-                            data: regData.monthly_breakdown.map(m => m.sessions),
+                            label: 'المشاركون',
+                            data: regData.monthly_breakdown.map(m => m.participants),
                             backgroundColor: 'rgba(245, 87, 108, 0.8)',
                             borderColor: 'rgba(245, 87, 108, 1)',
-                            borderWidth: 2
+                            borderWidth: 2,
+                            yAxisID: 'y1'
                         }
                     ]
                 },
@@ -821,7 +803,15 @@
                     },
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            position: 'left',
+                        },
+                        y1: {
+                            beginAtZero: true,
+                            position: 'right',
+                            grid: {
+                                drawOnChartArea: false,
+                            }
                         }
                     }
                 }
@@ -830,32 +820,29 @@
         
         function renderCareCampaign() {
             const careData = analyticsData.merged_data.care_campaign;
-            const stats = careData.statistics;
+            
+            // Calculate totals from monthly breakdown
+            const totalAnimalsCared = careData.monthly_breakdown.reduce((sum, m) => sum + m.animals_cared, 0);
+            const totalVaccinations = careData.monthly_breakdown.reduce((sum, m) => sum + m.vaccinations, 0);
+            const totalAdoptions = careData.monthly_breakdown.reduce((sum, m) => sum + m.adoptions, 0);
+            const avgAnimalsCared = Math.round(totalAnimalsCared / careData.monthly_breakdown.length);
             
             const statsHTML = `
                 <div class="stat-card">
                     <div class="stat-label">الحيوانات المرعية</div>
-                    <div class="stat-number">${stats.total_animals_cared}</div>
+                    <div class="stat-number">${totalAnimalsCared}</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">الخدمات البيطرية</div>
-                    <div class="stat-number">${stats.veterinary_services}</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">حملات التطعيم</div>
-                    <div class="stat-number">${stats.vaccination_campaigns}</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">عمليات الإنقاذ</div>
-                    <div class="stat-number">${stats.rescue_operations}</div>
+                    <div class="stat-label">التطعيمات</div>
+                    <div class="stat-number">${totalVaccinations}</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">حالات التبني</div>
-                    <div class="stat-number">${stats.adoption_cases}</div>
+                    <div class="stat-number">${totalAdoptions}</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">المتطوعون المدربون</div>
-                    <div class="stat-number">${stats.volunteers_trained}</div>
+                    <div class="stat-label">متوسط الحيوانات شهرياً</div>
+                    <div class="stat-number">${avgAnimalsCared}</div>
                 </div>
             `;
             
@@ -951,20 +938,16 @@
             // Performance Stats
             const perfHTML = `
                 <div class="stat-card">
-                    <div class="stat-label">معدل الامتثال</div>
-                    <div class="stat-number">${performance.registration_compliance_rate}%</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">معدل النجاح</div>
-                    <div class="stat-number">${performance.success_rate}%</div>
-                </div>
-                <div class="stat-card">
                     <div class="stat-label">متوسط التسجيلات الشهرية</div>
                     <div class="stat-number">${performance.average_monthly_registrations}</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">متوسط رعاية الحيوانات الشهرية</div>
                     <div class="stat-number">${performance.average_monthly_animal_care}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">متوسط المشاركين الشهرية</div>
+                    <div class="stat-number">${performance.average_monthly_participation}</div>
                 </div>
             `;
             
@@ -983,8 +966,8 @@
                     <div style="margin-top:10px">${getTrendBadge(trends.animal_care_trend)}</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">تحسن الامتثال المتوقع</div>
-                    <div class="stat-number">+${projections.expected_compliance_improvement}%</div>
+                    <div class="stat-label">معدل النمو المتوقع</div>
+                    <div class="stat-number">+${projections.expected_growth_rate}%</div>
                 </div>
             `;
             
@@ -995,15 +978,13 @@
             new Chart(ctx, {
                 type: 'radar',
                 data: {
-                    labels: ['معدل الامتثال', 'معدل النجاح', 'التسجيلات الشهرية', 'رعاية الحيوانات', 'المشاركة المجتمعية'],
+                    labels: ['التسجيلات الشهرية', 'رعاية الحيوانات', 'المشاركة المجتمعية'],
                     datasets: [{
                         label: 'مؤشرات الأداء',
                         data: [
-                            performance.registration_compliance_rate,
-                            performance.success_rate,
-                            performance.average_monthly_registrations * 4, // Normalized
-                            performance.average_monthly_animal_care / 2, // Normalized
-                            75 // Community engagement score
+                            performance.average_monthly_registrations * 4, // Normalized for display
+                            performance.average_monthly_animal_care / 2, // Normalized for display
+                            performance.average_monthly_participation / 10 // Normalized for display
                         ],
                         backgroundColor: 'rgba(102, 126, 234, 0.2)',
                         borderColor: 'rgb(102, 126, 234)',

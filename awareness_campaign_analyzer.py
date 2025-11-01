@@ -98,23 +98,13 @@ class AwarenessCampaignAnalyzer:
                 'file': filename,
                 'total_slides': 5,
                 'campaign_type': 'تسجيل المنشآت',
-                'statistics': {
-                    'total_facilities': 150,
-                    'registered_facilities': 120,
-                    'pending_registration': 30,
-                    'compliance_rate': 80.0,
-                    'campaigns_conducted': 12,
-                    'participants_reached': 2500,
-                    'awareness_sessions': 15,
-                    'educational_materials_distributed': 5000
-                },
                 'monthly_breakdown': [
-                    {'month': 'يناير', 'registrations': 15, 'sessions': 2, 'participants': 250},
-                    {'month': 'فبراير', 'registrations': 18, 'sessions': 3, 'participants': 300},
-                    {'month': 'مارس', 'registrations': 22, 'sessions': 2, 'participants': 280},
-                    {'month': 'أبريل', 'registrations': 20, 'sessions': 3, 'participants': 320},
-                    {'month': 'مايو', 'registrations': 25, 'sessions': 2, 'participants': 290},
-                    {'month': 'يونيو', 'registrations': 20, 'sessions': 3, 'participants': 310}
+                    {'month': 'يناير', 'registrations': 15, 'participants': 250},
+                    {'month': 'فبراير', 'registrations': 18, 'participants': 300},
+                    {'month': 'مارس', 'registrations': 22, 'participants': 280},
+                    {'month': 'أبريل', 'registrations': 20, 'participants': 320},
+                    {'month': 'مايو', 'registrations': 25, 'participants': 290},
+                    {'month': 'يونيو', 'registrations': 20, 'participants': 310}
                 ],
                 'key_topics': [
                     'أهمية تسجيل المنشآت',
@@ -130,16 +120,6 @@ class AwarenessCampaignAnalyzer:
                 'file': filename,
                 'total_slides': 4,
                 'campaign_type': 'رعاية الحيوانات',
-                'statistics': {
-                    'total_animals_cared': 450,
-                    'veterinary_services': 280,
-                    'vaccination_campaigns': 8,
-                    'rescue_operations': 35,
-                    'adoption_cases': 42,
-                    'awareness_events': 10,
-                    'volunteers_trained': 65,
-                    'community_partnerships': 12
-                },
                 'monthly_breakdown': [
                     {'month': 'يناير', 'animals_cared': 70, 'vaccinations': 45, 'adoptions': 6},
                     {'month': 'فبراير', 'animals_cared': 75, 'vaccinations': 48, 'adoptions': 8},
@@ -181,84 +161,63 @@ class AwarenessCampaignAnalyzer:
     def _generate_smart_analytics(self):
         """توليد التحليلات الذكية"""
         
-        reg_stats = self.registration_data.get('statistics', {})
-        care_stats = self.care_data.get('statistics', {})
+        # Calculate totals from monthly breakdown instead of statistics
+        reg_monthly = self.registration_data.get('monthly_breakdown', [])
+        care_monthly = self.care_data.get('monthly_breakdown', [])
         
-        # Overall statistics
+        # Defensive checks to ensure data is valid
+        if not isinstance(reg_monthly, list):
+            reg_monthly = []
+        if not isinstance(care_monthly, list):
+            care_monthly = []
+        
+        total_participants = sum(item.get('participants', 0) for item in reg_monthly)
+        total_registrations = sum(item.get('registrations', 0) for item in reg_monthly)
+        total_animals_cared = sum(item.get('animals_cared', 0) for item in care_monthly)
+        total_adoptions = sum(item.get('adoptions', 0) for item in care_monthly)
+        
+        # Overall statistics - calculated from monthly data
         self.analytics['overall'] = {
-            'total_campaigns': (reg_stats.get('campaigns_conducted', 0) + 
-                              care_stats.get('awareness_events', 0)),
-            'total_participants': reg_stats.get('participants_reached', 0),
-            'total_beneficiaries': (reg_stats.get('participants_reached', 0) + 
-                                   care_stats.get('total_animals_cared', 0)),
-            'educational_materials': reg_stats.get('educational_materials_distributed', 0),
-            'community_partnerships': care_stats.get('community_partnerships', 0),
-            'volunteers_engaged': care_stats.get('volunteers_trained', 0)
+            'total_registrations': total_registrations,
+            'total_participants': total_participants,
+            'total_animals_cared': total_animals_cared,
+            'total_adoptions': total_adoptions
         }
         
         # Performance metrics
         self.analytics['performance'] = {
-            'registration_compliance_rate': reg_stats.get('compliance_rate', 0),
-            'average_monthly_registrations': self._calculate_average(
-                self.registration_data.get('monthly_breakdown', []), 'registrations'
-            ),
-            'average_monthly_animal_care': self._calculate_average(
-                self.care_data.get('monthly_breakdown', []), 'animals_cared'
-            ),
-            'success_rate': self._calculate_success_rate(reg_stats, care_stats)
+            'average_monthly_registrations': self._calculate_average(reg_monthly, 'registrations'),
+            'average_monthly_animal_care': self._calculate_average(care_monthly, 'animals_cared'),
+            'average_monthly_participation': self._calculate_average(reg_monthly, 'participants')
         }
         
         # Trends analysis
         self.analytics['trends'] = {
-            'registration_trend': self._analyze_trend(
-                self.registration_data.get('monthly_breakdown', []), 'registrations'
-            ),
-            'animal_care_trend': self._analyze_trend(
-                self.care_data.get('monthly_breakdown', []), 'animals_cared'
-            ),
-            'participation_trend': self._analyze_trend(
-                self.registration_data.get('monthly_breakdown', []), 'participants'
-            )
+            'registration_trend': self._analyze_trend(reg_monthly, 'registrations'),
+            'animal_care_trend': self._analyze_trend(care_monthly, 'animals_cared'),
+            'participation_trend': self._analyze_trend(reg_monthly, 'participants')
         }
         
         # Expected results and projections
         self.analytics['projections'] = {
-            'next_quarter_registrations': self._project_next_quarter(
-                self.registration_data.get('monthly_breakdown', []), 'registrations'
-            ),
-            'next_quarter_animal_care': self._project_next_quarter(
-                self.care_data.get('monthly_breakdown', []), 'animals_cared'
-            ),
-            'expected_compliance_improvement': self._calculate_compliance_improvement(
-                self.registration_data.get('monthly_breakdown', [])
-            )
+            'next_quarter_registrations': self._project_next_quarter(reg_monthly, 'registrations'),
+            'next_quarter_animal_care': self._project_next_quarter(care_monthly, 'animals_cared'),
+            'expected_growth_rate': self._calculate_compliance_improvement(reg_monthly)
         }
         
         # Key insights
         self.analytics['insights'] = [
             {
-                'title': 'معدل الامتثال المرتفع',
-                'description': f"معدل امتثال المنشآت المسجلة بلغ {reg_stats.get('compliance_rate', 0)}%، مما يدل على فعالية حملات التوعية",
+                'title': 'تزايد الوعي المجتمعي',
+                'description': f"وصلت حملات التوعية إلى {total_participants} مشارك، مما يعكس انتشاراً واسعاً للوعي",
                 'impact': 'إيجابي',
                 'priority': 'عالي'
-            },
-            {
-                'title': 'تزايد الوعي المجتمعي',
-                'description': f"وصلت حملات التوعية إلى {reg_stats.get('participants_reached', 0)} مشارك، مما يعكس انتشاراً واسعاً للوعي",
-                'impact': 'إيجابي',
-                'priority': 'متوسط'
             },
             {
                 'title': 'نجاح برامج رعاية الحيوانات',
-                'description': f"تمت رعاية {care_stats.get('total_animals_cared', 0)} حيوان وإجراء {care_stats.get('vaccination_campaigns', 0)} حملات تطعيم",
+                'description': f"تمت رعاية {total_animals_cared} حيوان خلال الفترة المشمولة بالتقرير",
                 'impact': 'إيجابي',
                 'priority': 'عالي'
-            },
-            {
-                'title': 'الشراكات المجتمعية',
-                'description': f"تم تكوين {care_stats.get('community_partnerships', 0)} شراكة مجتمعية و تدريب {care_stats.get('volunteers_trained', 0)} متطوع",
-                'impact': 'إيجابي',
-                'priority': 'متوسط'
             }
         ]
         
@@ -327,25 +286,6 @@ class AwarenessCampaignAnalyzer:
             return round(avg * 3 * 0.9, 2)  # 10% decline
         else:
             return round(avg * 3, 2)
-    
-    def _calculate_success_rate(self, reg_stats, care_stats):
-        """حساب معدل النجاح بناءً على الإحصائيات الفعلية"""
-        if not reg_stats or not care_stats:
-            return 0
-        
-        # Calculate success rate based on actual metrics
-        # Registration success: registered / total facilities
-        reg_success = (reg_stats.get('registered_facilities', 0) / 
-                      max(reg_stats.get('total_facilities', 1), 1)) * 100
-        
-        # Care success: successful adoptions / total animals cared
-        care_success = (care_stats.get('adoption_cases', 0) / 
-                       max(care_stats.get('total_animals_cared', 1), 1)) * 100
-        
-        # Overall success is weighted average (70% registration, 30% care)
-        overall_success = (reg_success * 0.7) + (care_success * 0.3)
-        
-        return round(overall_success, 2)
     
     def _calculate_compliance_improvement(self, monthly_data):
         """حساب تحسن الامتثال المتوقع بناءً على الاتجاه"""
@@ -419,11 +359,10 @@ def main():
     print()
     
     # Display summary
-    print(f"إجمالي الحملات: {analyzer.analytics['overall']['total_campaigns']}")
+    print(f"إجمالي التسجيلات: {analyzer.analytics['overall']['total_registrations']}")
     print(f"إجمالي المشاركين: {analyzer.analytics['overall']['total_participants']}")
-    print(f"إجمالي المستفيدين: {analyzer.analytics['overall']['total_beneficiaries']}")
-    print(f"معدل الامتثال: {analyzer.analytics['performance']['registration_compliance_rate']}%")
-    print(f"معدل النجاح: {analyzer.analytics['performance']['success_rate']}%")
+    print(f"إجمالي الحيوانات المرعاية: {analyzer.analytics['overall']['total_animals_cared']}")
+    print(f"متوسط التسجيلات الشهرية: {analyzer.analytics['performance']['average_monthly_registrations']}")
     print()
     
     print("الاتجاهات:")
