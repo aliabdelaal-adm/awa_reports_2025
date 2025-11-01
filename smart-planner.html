@@ -532,6 +532,14 @@
     <input type="file" id="importInput" accept=".json" style="display: none;" onchange="handleImport(event)">
 
     <script>
+        // ⚠️ SECURITY WARNING: This is a client-side only authentication system.
+        // For production environments with sensitive data:
+        // 1. Implement server-side authentication (OAuth, JWT, etc.)
+        // 2. Store credentials securely on the server
+        // 3. Use HTTPS for all connections
+        // 4. Implement proper session management
+        // Client-side localStorage can be manipulated via browser developer tools.
+        
         // Configuration
         const DEFAULT_PASSWORD = "Ali@2025";
         const STORAGE_KEY = "smartPlannerConfig";

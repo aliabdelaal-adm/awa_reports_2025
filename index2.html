@@ -1090,6 +1090,8 @@
     
     <script>
         // Check if this file should be visible based on smart planner settings
+        // ⚠️ SECURITY NOTE: Client-side visibility checks can be bypassed.
+        // For production security, implement server-side access control.
         (function() {
             const STORAGE_KEY = "smartPlannerConfig";
             const FILE_ID = "index2";

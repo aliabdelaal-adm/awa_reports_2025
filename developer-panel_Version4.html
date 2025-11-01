@@ -67,12 +67,17 @@
   </div>
   <div class="copyright">جميع الحقوق محفوظة &copy; المطور د. علي عبدالعال</div>
   <script>
+    // ⚠️ SECURITY NOTE: This is client-side authentication only!
+    // For production use with sensitive data, implement server-side authentication.
+    // Client-side checks can be bypassed via browser developer tools.
+    
     // Check authentication - redirect if not authenticated
     (function() {
       const isAuthenticated = localStorage.getItem('smartPlannerAuth') === 'true';
       if (!isAuthenticated) {
         alert('⚠️ يجب عليك تسجيل الدخول أولاً من لوحة التحكم الذكية');
         window.location.href = 'smart-planner.html';
+        return;
       }
       
       // Update navigation link visibility on page load
