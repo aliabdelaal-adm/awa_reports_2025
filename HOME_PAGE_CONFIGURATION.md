@@ -16,6 +16,7 @@ As of the latest update, the home page displays **only ONE file** by default:
 ### Hidden Files (by default)
 ❌ **الخطة التحسينية المستمرة** (Continuous Improvement Plan)
 - File: `index.html`
+- Status: Already hidden before this update
 - Can be enabled through Smart Planner
 
 ❌ **تقرير حملات التوعية والتوجيه والإرشاد الموحد** (Unified Awareness Campaign Report)
