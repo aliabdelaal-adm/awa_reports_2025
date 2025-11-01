@@ -1,0 +1,206 @@
+{
+  "merged_data": {
+    "report_title": "تقرير حملات التوعية والتوجيه والإرشاد الموحد",
+    "generated_date": "2025-11-01 14:59:21",
+    "registration_campaign": {
+      "file": "/home/runner/work/awa_reports_2025/awa_reports_2025/registration_report.pptx",
+      "total_slides": 5,
+      "campaign_type": "تسجيل المنشآت",
+      "statistics": {
+        "total_facilities": 150,
+        "registered_facilities": 120,
+        "pending_registration": 30,
+        "compliance_rate": 80.0,
+        "campaigns_conducted": 12,
+        "participants_reached": 2500,
+        "awareness_sessions": 15,
+        "educational_materials_distributed": 5000
+      },
+      "monthly_breakdown": [
+        {
+          "month": "يناير",
+          "registrations": 15,
+          "sessions": 2,
+          "participants": 250
+        },
+        {
+          "month": "فبراير",
+          "registrations": 18,
+          "sessions": 3,
+          "participants": 300
+        },
+        {
+          "month": "مارس",
+          "registrations": 22,
+          "sessions": 2,
+          "participants": 280
+        },
+        {
+          "month": "أبريل",
+          "registrations": 20,
+          "sessions": 3,
+          "participants": 320
+        },
+        {
+          "month": "مايو",
+          "registrations": 25,
+          "sessions": 2,
+          "participants": 290
+        },
+        {
+          "month": "يونيو",
+          "registrations": 20,
+          "sessions": 3,
+          "participants": 310
+        }
+      ],
+      "key_topics": [
+        "أهمية تسجيل المنشآت",
+        "المتطلبات القانونية للتسجيل",
+        "إجراءات التسجيل الإلكتروني",
+        "الفوائد الصحية للتسجيل",
+        "التزامات المنشآت المسجلة"
+      ],
+      "extracted_date": "2025-11-01T14:59:21.426993"
+    },
+    "care_campaign": {
+      "file": "/home/runner/work/awa_reports_2025/awa_reports_2025/care_report.pptx",
+      "total_slides": 4,
+      "campaign_type": "رعاية الحيوانات",
+      "statistics": {
+        "total_animals_cared": 450,
+        "veterinary_services": 280,
+        "vaccination_campaigns": 8,
+        "rescue_operations": 35,
+        "adoption_cases": 42,
+        "awareness_events": 10,
+        "volunteers_trained": 65,
+        "community_partnerships": 12
+      },
+      "monthly_breakdown": [
+        {
+          "month": "يناير",
+          "animals_cared": 70,
+          "vaccinations": 45,
+          "adoptions": 6
+        },
+        {
+          "month": "فبراير",
+          "animals_cared": 75,
+          "vaccinations": 48,
+          "adoptions": 8
+        },
+        {
+          "month": "مارس",
+          "animals_cared": 80,
+          "vaccinations": 50,
+          "adoptions": 7
+        },
+        {
+          "month": "أبريل",
+          "animals_cared": 72,
+          "vaccinations": 42,
+          "adoptions": 7
+        },
+        {
+          "month": "مايو",
+          "animals_cared": 78,
+          "vaccinations": 47,
+          "adoptions": 7
+        },
+        {
+          "month": "يونيو",
+          "animals_cared": 75,
+          "vaccinations": 48,
+          "adoptions": 7
+        }
+      ],
+      "key_topics": [
+        "الرعاية الصحية للحيوانات",
+        "برامج التطعيم والوقاية",
+        "الرفق بالحيوان",
+        "التبني المسؤول",
+        "الإسعافات الأولية للحيوانات"
+      ],
+      "extracted_date": "2025-11-01T14:59:21.427019"
+    }
+  },
+  "analytics": {
+    "overall": {
+      "total_campaigns": 22,
+      "total_participants": 2500,
+      "total_beneficiaries": 2950,
+      "educational_materials": 5000,
+      "community_partnerships": 12,
+      "volunteers_engaged": 65
+    },
+    "performance": {
+      "registration_compliance_rate": 80.0,
+      "average_monthly_registrations": 20.0,
+      "average_monthly_animal_care": 75.0,
+      "success_rate": 58.8
+    },
+    "trends": {
+      "registration_trend": "تصاعدي",
+      "animal_care_trend": "مستقر",
+      "participation_trend": "تصاعدي"
+    },
+    "projections": {
+      "next_quarter_registrations": 66.0,
+      "next_quarter_animal_care": 225.0,
+      "expected_compliance_improvement": 6.0
+    },
+    "insights": [
+      {
+        "title": "معدل الامتثال المرتفع",
+        "description": "معدل امتثال المنشآت المسجلة بلغ 80.0%، مما يدل على فعالية حملات التوعية",
+        "impact": "إيجابي",
+        "priority": "عالي"
+      },
+      {
+        "title": "تزايد الوعي المجتمعي",
+        "description": "وصلت حملات التوعية إلى 2500 مشارك، مما يعكس انتشاراً واسعاً للوعي",
+        "impact": "إيجابي",
+        "priority": "متوسط"
+      },
+      {
+        "title": "نجاح برامج رعاية الحيوانات",
+        "description": "تمت رعاية 450 حيوان وإجراء 8 حملات تطعيم",
+        "impact": "إيجابي",
+        "priority": "عالي"
+      },
+      {
+        "title": "الشراكات المجتمعية",
+        "description": "تم تكوين 12 شراكة مجتمعية و تدريب 65 متطوع",
+        "impact": "إيجابي",
+        "priority": "متوسط"
+      }
+    ],
+    "recommendations": [
+      {
+        "title": "توسيع نطاق الحملات",
+        "description": "زيادة عدد الحملات التوعوية لتغطية مناطق جغرافية أوسع",
+        "priority": "عالي",
+        "expected_impact": "زيادة 20% في معدل التسجيل"
+      },
+      {
+        "title": "تعزيز التكنولوجيا الرقمية",
+        "description": "استخدام منصات التواصل الاجتماعي والتطبيقات الذكية للوصول لشريحة أكبر",
+        "priority": "متوسط",
+        "expected_impact": "زيادة 30% في الوصول للجمهور"
+      },
+      {
+        "title": "برامج تدريبية متقدمة",
+        "description": "تطوير برامج تدريبية متخصصة للمتطوعين وأصحاب المنشآت",
+        "priority": "عالي",
+        "expected_impact": "تحسين جودة الخدمات بنسبة 25%"
+      },
+      {
+        "title": "قياس الأثر المستمر",
+        "description": "إنشاء نظام لقياس أثر الحملات بشكل دوري ومستمر",
+        "priority": "متوسط",
+        "expected_impact": "تحسين فعالية الحملات بنسبة 15%"
+      }
+    ]
+  }
+}
