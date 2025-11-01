@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقرير حملات التوعية والتوجيه والإرشاد الموحد - Unified Awareness Campaign Report</title>
+    
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            animation: fadeInDown 1s ease;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .nav-bar {
+            background: #f8f9fa;
+            padding: 15px 40px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+        
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .chart-container h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .insight-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            border-right: 5px solid #667eea;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .insight-card:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+        
+        .insight-card.positive {
+            border-right-color: #28a745;
+        }
+        
+        .insight-card.warning {
+            border-right-color: #ffc107;
+        }
+        
+        .insight-card.negative {
+            border-right-color: #dc3545;
+        }
+        
+        .insight-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .insight-description {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .priority-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .priority-high {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .priority-medium {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .priority-low {
+            background: #28a745;
+            color: white;
+        }
+        
+        .recommendation-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
+        }
+        
+        .recommendation-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .recommendation-description {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .recommendation-impact {
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .data-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .data-table tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        
+        .data-table tbody tr:hover {
+            background: #e9ecef;
+        }
+        
+        .topic-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .topic-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border-right: 4px solid #667eea;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .topic-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }
+        
+        .trend-indicator {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .trend-up {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .trend-down {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .trend-stable {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.5em;
+            color: #667eea;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 3px solid #667eea;
+            color: #666;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .nav-bar, .nav-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 تقرير حملات التوعية والتوجيه والإرشاد الموحد</h1>
+            <p>Unified Awareness & Guidance Campaign Report 2025</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">بلدية مدينة أبوظبي - إدارة الصحة العامة</p>
+        </div>
+        
+        <div class="nav-bar">
+            <button class="nav-btn active" onclick="showSection('overview')">📈 نظرة عامة</button>
+            <button class="nav-btn" onclick="showSection('registration')">🏢 تسجيل المنشآت</button>
+            <button class="nav-btn" onclick="showSection('care')">🐾 رعاية الحيوانات</button>
+            <button class="nav-btn" onclick="showSection('analytics')">📊 التحليلات</button>
+            <button class="nav-btn" onclick="showSection('insights')">💡 الرؤى</button>
+            <button class="nav-btn" onclick="showSection('recommendations')">🎯 التوصيات</button>
+        </div>
+        
+        <div class="content">
+            <div id="loading" class="loading">
+                جاري تحميل البيانات... ⏳
+            </div>
+            
+            <!-- Overview Section -->
+            <div id="overview" class="section">
+                <h2 style="color: #667eea; margin-bottom: 30px;">📈 النظرة العامة</h2>
+                
+                <div class="stats-grid" id="overallStats"></div>
+                
+                <div class="chart-container">
+                    <h3>📊 مقارنة الأداء الشامل</h3>
+                    <canvas id="overallChart"></canvas>
+                </div>
+                
+                <div class="chart-container">
+                    <h3>📈 الاتجاهات الشهرية</h3>
+                    <canvas id="trendsChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Registration Campaign Section -->
+            <div id="registration" class="section">
+                <h2 style="color: #667eea; margin-bottom: 30px;">🏢 حملة تسجيل المنشآت</h2>
+                
+                <div class="stats-grid" id="registrationStats"></div>
+                
+                <div class="chart-container">
+                    <h3>📊 الإحصائيات الشهرية للتسجيل</h3>
+                    <canvas id="registrationChart"></canvas>
+                </div>
+                
+                <h3 style="color: #667eea; margin-top: 30px; margin-bottom: 15px;">📋 المواضيع الرئيسية</h3>
+                <ul class="topic-list" id="registrationTopics"></ul>
+                
+                <h3 style="color: #667eea; margin-top: 30px; margin-bottom: 15px;">📅 البيانات الشهرية التفصيلية</h3>
+                <table class="data-table" id="registrationTable"></table>
+            </div>
+            
+            <!-- Animal Care Section -->
+            <div id="care" class="section">
+                <h2 style="color: #667eea; margin-bottom: 30px;">🐾 حملة رعاية الحيوانات</h2>
+                
+                <div class="stats-grid" id="careStats"></div>
+                
+                <div class="chart-container">
+                    <h3>📊 الإحصائيات الشهرية لرعاية الحيوانات</h3>
+                    <canvas id="careChart"></canvas>
+                </div>
+                
+                <h3 style="color: #667eea; margin-top: 30px; margin-bottom: 15px;">📋 المواضيع الرئيسية</h3>
+                <ul class="topic-list" id="careTopics"></ul>
+                
+                <h3 style="color: #667eea; margin-top: 30px; margin-bottom: 15px;">📅 البيانات الشهرية التفصيلية</h3>
+                <table class="data-table" id="careTable"></table>
+            </div>
+            
+            <!-- Analytics Section -->
+            <div id="analytics" class="section">
+                <h2 style="color: #667eea; margin-bottom: 30px;">📊 التحليلات الذكية</h2>
+                
+                <h3 style="color: #667eea; margin-bottom: 15px;">📈 مؤشرات الأداء</h3>
+                <div class="stats-grid" id="performanceStats"></div>
+                
+                <h3 style="color: #667eea; margin-top: 30px; margin-bottom: 15px;">🔮 التوقعات للربع القادم</h3>
+                <div class="stats-grid" id="projectionStats"></div>
+                
+                <div class="chart-container">
+                    <h3>📊 تحليل الاتجاهات</h3>
+                    <canvas id="trendAnalysisChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- Insights Section -->
+            <div id="insights" class="section">
+                <h2 style="color: #667eea; margin-bottom: 30px;">💡 الرؤى الاستراتيجية</h2>
+                <div class="insights-grid" id="insightsContainer"></div>
+            </div>
+            
+            <!-- Recommendations Section -->
+            <div id="recommendations" class="section">
+                <h2 style="color: #667eea; margin-bottom: 30px;">🎯 التوصيات والمقترحات</h2>
+                <div id="recommendationsContainer"></div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>المطور:</strong> د. علي عبدالعال</p>
+            <p><strong>البريد الإلكتروني:</strong> ali.abdelaal@adm.gov.ae | <strong>الهاتف:</strong> 0581187777</p>
+            <p style="margin-top: 10px;">© 2025 بلدية مدينة أبوظبي - إدارة الصحة العامة - قسم الرقابة والرفق بالحيوان</p>
+        </div>
+    </div>
+    
+    <script>
+        let analyticsData = null;
+        
+        // Load data from JSON file
+        async function loadData() {
+            try {
+                const response = await fetch('awareness_campaign_analytics.json');
+                analyticsData = await response.json();
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('overview').classList.add('active');
+                
+                renderAllSections();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('loading').innerHTML = '❌ حدث خطأ في تحميل البيانات';
+            }
+        }
+        
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+        
+        function renderAllSections() {
+            renderOverview();
+            renderRegistrationCampaign();
+            renderCareCampaign();
+            renderAnalytics();
+            renderInsights();
+            renderRecommendations();
+        }
+        
+        function renderOverview() {
+            const overall = analyticsData.analytics.overall;
+            
+            const statsHTML = `
+                <div class="stat-card">
+                    <div class="stat-label">إجمالي الحملات</div>
+                    <div class="stat-number">${overall.total_campaigns}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">إجمالي المشاركين</div>
+                    <div class="stat-number">${overall.total_participants.toLocaleString()}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">إجمالي المستفيدين</div>
+                    <div class="stat-number">${overall.total_beneficiaries.toLocaleString()}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">المواد التعليمية الموزعة</div>
+                    <div class="stat-number">${overall.educational_materials.toLocaleString()}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">الشراكات المجتمعية</div>
+                    <div class="stat-number">${overall.community_partnerships}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">المتطوعون المدربون</div>
+                    <div class="stat-number">${overall.volunteers_engaged}</div>
+                </div>
+            `;
+            
+            document.getElementById('overallStats').innerHTML = statsHTML;
+            
+            // Overall Chart
+            const ctx1 = document.getElementById('overallChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: ['الحملات', 'المشاركون', 'المستفيدون', 'المواد التعليمية', 'الشراكات', 'المتطوعون'],
+                    datasets: [{
+                        label: 'الإحصائيات الشاملة',
+                        data: [
+                            overall.total_campaigns,
+                            overall.total_participants,
+                            overall.total_beneficiaries,
+                            overall.educational_materials,
+                            overall.community_partnerships,
+                            overall.volunteers_engaged
+                        ],
+                        backgroundColor: [
+                            'rgba(102, 126, 234, 0.8)',
+                            'rgba(118, 75, 162, 0.8)',
+                            'rgba(240, 147, 251, 0.8)',
+                            'rgba(245, 87, 108, 0.8)',
+                            'rgba(40, 167, 69, 0.8)',
+                            'rgba(255, 193, 7, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(102, 126, 234, 1)',
+                            'rgba(118, 75, 162, 1)',
+                            'rgba(240, 147, 251, 1)',
+                            'rgba(245, 87, 108, 1)',
+                            'rgba(40, 167, 69, 1)',
+                            'rgba(255, 193, 7, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            
+            // Trends Chart
+            const regMonthly = analyticsData.merged_data.registration_campaign.monthly_breakdown;
+            const careMonthly = analyticsData.merged_data.care_campaign.monthly_breakdown;
+            
+            const ctx2 = document.getElementById('trendsChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: regMonthly.map(m => m.month),
+                    datasets: [
+                        {
+                            label: 'التسجيلات الشهرية',
+                            data: regMonthly.map(m => m.registrations),
+                            borderColor: 'rgb(102, 126, 234)',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'رعاية الحيوانات الشهرية',
+                            data: careMonthly.map(m => m.animals_cared),
+                            borderColor: 'rgb(245, 87, 108)',
+                            backgroundColor: 'rgba(245, 87, 108, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'المشاركون',
+                            data: regMonthly.map(m => m.participants),
+                            borderColor: 'rgb(40, 167, 69)',
+                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderRegistrationCampaign() {
+            const regData = analyticsData.merged_data.registration_campaign;
+            const stats = regData.statistics;
+            
+            const statsHTML = `
+                <div class="stat-card">
+                    <div class="stat-label">إجمالي المنشآت</div>
+                    <div class="stat-number">${stats.total_facilities}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">المنشآت المسجلة</div>
+                    <div class="stat-number">${stats.registered_facilities}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">معدل الامتثال</div>
+                    <div class="stat-number">${stats.compliance_rate}%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">الحملات المنفذة</div>
+                    <div class="stat-number">${stats.campaigns_conducted}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">المشاركون</div>
+                    <div class="stat-number">${stats.participants_reached.toLocaleString()}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">جلسات التوعية</div>
+                    <div class="stat-number">${stats.awareness_sessions}</div>
+                </div>
+            `;
+            
+            document.getElementById('registrationStats').innerHTML = statsHTML;
+            
+            // Topics
+            const topicsHTML = regData.key_topics.map(topic => 
+                `<li class="topic-item">✓ ${topic}</li>`
+            ).join('');
+            document.getElementById('registrationTopics').innerHTML = topicsHTML;
+            
+            // Table
+            let tableHTML = `
+                <thead>
+                    <tr>
+                        <th>الشهر</th>
+                        <th>التسجيلات</th>
+                        <th>الجلسات</th>
+                        <th>المشاركون</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+            
+            regData.monthly_breakdown.forEach(month => {
+                tableHTML += `
+                    <tr>
+                        <td><strong>${month.month}</strong></td>
+                        <td>${month.registrations}</td>
+                        <td>${month.sessions}</td>
+                        <td>${month.participants}</td>
+                    </tr>
+                `;
+            });
+            
+            tableHTML += '</tbody>';
+            document.getElementById('registrationTable').innerHTML = tableHTML;
+            
+            // Chart
+            const ctx = document.getElementById('registrationChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: regData.monthly_breakdown.map(m => m.month),
+                    datasets: [
+                        {
+                            label: 'التسجيلات',
+                            data: regData.monthly_breakdown.map(m => m.registrations),
+                            backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                            borderColor: 'rgba(102, 126, 234, 1)',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'الجلسات',
+                            data: regData.monthly_breakdown.map(m => m.sessions),
+                            backgroundColor: 'rgba(245, 87, 108, 0.8)',
+                            borderColor: 'rgba(245, 87, 108, 1)',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderCareCampaign() {
+            const careData = analyticsData.merged_data.care_campaign;
+            const stats = careData.statistics;
+            
+            const statsHTML = `
+                <div class="stat-card">
+                    <div class="stat-label">الحيوانات المرعية</div>
+                    <div class="stat-number">${stats.total_animals_cared}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">الخدمات البيطرية</div>
+                    <div class="stat-number">${stats.veterinary_services}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">حملات التطعيم</div>
+                    <div class="stat-number">${stats.vaccination_campaigns}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">عمليات الإنقاذ</div>
+                    <div class="stat-number">${stats.rescue_operations}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">حالات التبني</div>
+                    <div class="stat-number">${stats.adoption_cases}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">المتطوعون المدربون</div>
+                    <div class="stat-number">${stats.volunteers_trained}</div>
+                </div>
+            `;
+            
+            document.getElementById('careStats').innerHTML = statsHTML;
+            
+            // Topics
+            const topicsHTML = careData.key_topics.map(topic => 
+                `<li class="topic-item">✓ ${topic}</li>`
+            ).join('');
+            document.getElementById('careTopics').innerHTML = topicsHTML;
+            
+            // Table
+            let tableHTML = `
+                <thead>
+                    <tr>
+                        <th>الشهر</th>
+                        <th>الحيوانات المرعية</th>
+                        <th>التطعيمات</th>
+                        <th>حالات التبني</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+            
+            careData.monthly_breakdown.forEach(month => {
+                tableHTML += `
+                    <tr>
+                        <td><strong>${month.month}</strong></td>
+                        <td>${month.animals_cared}</td>
+                        <td>${month.vaccinations}</td>
+                        <td>${month.adoptions}</td>
+                    </tr>
+                `;
+            });
+            
+            tableHTML += '</tbody>';
+            document.getElementById('careTable').innerHTML = tableHTML;
+            
+            // Chart
+            const ctx = document.getElementById('careChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: careData.monthly_breakdown.map(m => m.month),
+                    datasets: [
+                        {
+                            label: 'الحيوانات المرعية',
+                            data: careData.monthly_breakdown.map(m => m.animals_cared),
+                            borderColor: 'rgb(102, 126, 234)',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'التطعيمات',
+                            data: careData.monthly_breakdown.map(m => m.vaccinations),
+                            borderColor: 'rgb(40, 167, 69)',
+                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'حالات التبني',
+                            data: careData.monthly_breakdown.map(m => m.adoptions),
+                            borderColor: 'rgb(245, 87, 108)',
+                            backgroundColor: 'rgba(245, 87, 108, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderAnalytics() {
+            const performance = analyticsData.analytics.performance;
+            const projections = analyticsData.analytics.projections;
+            const trends = analyticsData.analytics.trends;
+            
+            // Performance Stats
+            const perfHTML = `
+                <div class="stat-card">
+                    <div class="stat-label">معدل الامتثال</div>
+                    <div class="stat-number">${performance.registration_compliance_rate}%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">معدل النجاح</div>
+                    <div class="stat-number">${performance.success_rate}%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">متوسط التسجيلات الشهرية</div>
+                    <div class="stat-number">${performance.average_monthly_registrations}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">متوسط رعاية الحيوانات الشهرية</div>
+                    <div class="stat-number">${performance.average_monthly_animal_care}</div>
+                </div>
+            `;
+            
+            document.getElementById('performanceStats').innerHTML = perfHTML;
+            
+            // Projections
+            const projHTML = `
+                <div class="stat-card">
+                    <div class="stat-label">توقع التسجيلات (الربع القادم)</div>
+                    <div class="stat-number">${projections.next_quarter_registrations}</div>
+                    <div style="margin-top:10px">${getTrendBadge(trends.registration_trend)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">توقع رعاية الحيوانات (الربع القادم)</div>
+                    <div class="stat-number">${projections.next_quarter_animal_care}</div>
+                    <div style="margin-top:10px">${getTrendBadge(trends.animal_care_trend)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">تحسن الامتثال المتوقع</div>
+                    <div class="stat-number">+${projections.expected_compliance_improvement}%</div>
+                </div>
+            `;
+            
+            document.getElementById('projectionStats').innerHTML = projHTML;
+            
+            // Trend Analysis Chart
+            const ctx = document.getElementById('trendAnalysisChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['معدل الامتثال', 'معدل النجاح', 'التسجيلات الشهرية', 'رعاية الحيوانات', 'المشاركة المجتمعية'],
+                    datasets: [{
+                        label: 'مؤشرات الأداء',
+                        data: [
+                            performance.registration_compliance_rate,
+                            performance.success_rate,
+                            performance.average_monthly_registrations * 4, // Normalized
+                            performance.average_monthly_animal_care / 2, // Normalized
+                            75 // Community engagement score
+                        ],
+                        backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                        borderColor: 'rgb(102, 126, 234)',
+                        pointBackgroundColor: 'rgb(102, 126, 234)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(102, 126, 234)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderInsights() {
+            const insights = analyticsData.analytics.insights;
+            
+            const html = insights.map(insight => `
+                <div class="insight-card ${insight.impact === 'إيجابي' ? 'positive' : 'warning'}">
+                    <div class="insight-title">${insight.title}</div>
+                    <div class="insight-description">${insight.description}</div>
+                    <span class="priority-badge priority-${insight.priority === 'عالي' ? 'high' : 'medium'}">
+                        أولوية ${insight.priority}
+                    </span>
+                </div>
+            `).join('');
+            
+            document.getElementById('insightsContainer').innerHTML = html;
+        }
+        
+        function renderRecommendations() {
+            const recommendations = analyticsData.analytics.recommendations;
+            
+            const html = recommendations.map(rec => `
+                <div class="recommendation-card">
+                    <div class="recommendation-title">🎯 ${rec.title}</div>
+                    <div class="recommendation-description">${rec.description}</div>
+                    <div class="recommendation-impact">
+                        <strong>الأثر المتوقع:</strong> ${rec.expected_impact}
+                    </div>
+                    <span class="priority-badge priority-${rec.priority === 'عالي' ? 'high' : 'medium'}" style="margin-top: 10px;">
+                        أولوية ${rec.priority}
+                    </span>
+                </div>
+            `).join('');
+            
+            document.getElementById('recommendationsContainer').innerHTML = html;
+        }
+        
+        function getTrendBadge(trend) {
+            if (trend === 'تصاعدي') {
+                return '<span class="trend-indicator trend-up">📈 تصاعدي</span>';
+            } else if (trend === 'تنازلي') {
+                return '<span class="trend-indicator trend-down">📉 تنازلي</span>';
+            } else {
+                return '<span class="trend-indicator trend-stable">➡️ مستقر</span>';
+            }
+        }
+        
+        // Load data on page load
+        window.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>
