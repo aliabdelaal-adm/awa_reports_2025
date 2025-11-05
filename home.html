@@ -296,10 +296,10 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🏥 نظام التقارير الإلكترونية</h1>
-            <p>إدارة الصحة العامة - قسم الرقابة والرفق بالحيوان</p>
-            <p class="subtitle">بلدية مدينة أبوظبي</p>
+        <div class="header" style="display: block; background: white; padding: 50px 30px; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); text-align: center; animation: slideDown 1s ease;">
+            <h1 style="font-size: 3em; margin-bottom: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🏥 نظام تقارير التوعية والرفق بالحيوان</h1>
+            <p style="font-size: 1.3em; color: #555; margin-bottom: 5px;">إدارة الصحة العامة - قسم الرقابة والرفق بالحيوان</p>
+            <p class="subtitle" style="font-size: 1.1em; color: #777; font-style: italic;">بلدية مدينة أبوظبي</p>
         </div>
 
         <div class="cards-container" id="cardsContainer">
@@ -315,11 +315,11 @@
         // File definitions (matching smart-planner.html)
         const files = [
             {
-                id: "index",
-                name: "الخطة التحسينية المستمرة",
-                description: "عرض شامل للخطة التحسينية المستمرة لنظام التفتيش الموحد مع جميع التقارير الشهرية والإحصائيات التفصيلية",
-                path: "index.html",
-                icon: "📋",
+                id: "awareness-campaign",
+                name: "تقرير حملات التوعية والتوجيه والإرشاد الموحد",
+                description: "تقرير شامل يدمج بيانات حملات تسجيل المنشآت ورعاية الحيوانات مع تحليلات ذكية ورؤى استراتيجية ونتائج متوقعة",
+                path: "awareness-campaign-report.html",
+                icon: "📊",
                 defaultVisible: true,
                 gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
             },
@@ -328,25 +328,25 @@
                 name: "تقرير التوعية الاحترافي",
                 description: "تقرير تفصيلي عن برنامج التوعية والتدريب لموظفي محلات بيع الحيوانات الأليفة مع معرض الصور",
                 path: "index2.html",
-                icon: "📊",
+                icon: "📋",
                 defaultVisible: true,
                 gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
             },
             {
-                id: "awareness-campaign",
-                name: "تقرير حملات التوعية والتوجيه والإرشاد الموحد",
-                description: "تقرير شامل يدمج بيانات حملات تسجيل المنشآت ورعاية الحيوانات مع تحليلات ذكية ورؤى استراتيجية ونتائج متوقعة",
-                path: "awareness-campaign-report.html",
-                icon: "📊",
+                id: "index",
+                name: "الخطة التحسينية المستمرة",
+                description: "عرض شامل للخطة التحسينية المستمرة لنظام التفتيش الموحد مع جميع التقارير الشهرية والإحصائيات التفصيلية",
+                path: "index.html",
+                icon: "📈",
                 defaultVisible: false,
                 gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)"
             },
             {
                 id: "developer-panel",
-                name: "لوحة المطور",
-                description: "لوحة إدارة خطة التفتيش الشهرية وتوزيع المحلات على المفتشين",
-                path: "developer-panel_Version4.html",
-                icon: "🔧",
+                name: "لوحة تحكم المطور",
+                description: "نظام إدارة احترافي متكامل لتقارير التوعية وحملات الرفق بالحيوان مع أدوات تحليل ذكية",
+                path: "developer-panel.html",
+                icon: "🎛️",
                 defaultVisible: false,
                 gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
             }

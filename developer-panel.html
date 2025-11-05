@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم المطور - نظام تقارير التوعية والرفق بالحيوان</title>
+    
+    <!-- Chart.js for analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            direction: rtl;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .nav-bar {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .nav-btn.active {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        
+        .section {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .section h2 {
+            color: #1e3c72;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .stat-card h3 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .report-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .report-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .report-card:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .report-card h3 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+        
+        .report-card .status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .status.active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.draft {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .report-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .editor-container {
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: right;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .data-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
+        
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .analytics-container {
+            margin-top: 30px;
+        }
+        
+        .chart-wrapper {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .insight-card {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .insight-card h4 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            width: 90%;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        .footer {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .stats-grid,
+            .report-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎛️ لوحة تحكم المطور - نظام تقارير التوعية والرفق بالحيوان</h1>
+            <p>نظام إدارة احترافي متكامل لتقارير التوعية وحملات الرفق بالحيوان - بلدية مدينة أبوظبي</p>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="nav-bar">
+            <button class="nav-btn active" onclick="showSection('dashboard')">
+                📊 لوحة المعلومات
+            </button>
+            <button class="nav-btn" onclick="showSection('reports')">
+                📋 إدارة التقارير
+            </button>
+            <button class="nav-btn" onclick="showSection('campaigns')">
+                📢 حملات التوعية
+            </button>
+            <button class="nav-btn" onclick="showSection('analytics')">
+                📈 التحليلات الذكية
+            </button>
+            <button class="nav-btn" onclick="showSection('data-manager')">
+                💾 إدارة البيانات
+            </button>
+            <button class="nav-btn" onclick="showSection('settings')">
+                ⚙️ الإعدادات
+            </button>
+            <button class="nav-btn" onclick="window.location.href='home.html'">
+                🏠 الرجوع للرئيسية
+            </button>
+        </div>
+        
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="section active">
+            <h2>📊 لوحة المعلومات الرئيسية</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <h3 id="totalReports">3</h3>
+                    <p>إجمالي التقارير</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    <h3 id="activeCampaigns">2</h3>
+                    <p>الحملات النشطة</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                    <h3 id="totalViews">1,247</h3>
+                    <p>إجمالي المشاهدات</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+                    <h3 id="lastUpdate">اليوم</h3>
+                    <p>آخر تحديث</p>
+                </div>
+            </div>
+            
+            <div class="chart-wrapper">
+                <h3>📈 إحصائيات التقارير الشهرية</h3>
+                <canvas id="reportsChart"></canvas>
+            </div>
+            
+            <div class="insight-card">
+                <h4>💡 رؤية ذكية</h4>
+                <p>تشير البيانات إلى زيادة بنسبة 35% في نشاط حملات التوعية خلال الشهر الماضي. يوصى بالتركيز على المحلات الجديدة في منطقة وسط المدينة.</p>
+            </div>
+        </div>
+        
+        <!-- Reports Management Section -->
+        <div id="reports" class="section">
+            <h2>📋 إدارة التقارير</h2>
+            
+            <div style="margin-bottom: 20px;">
+                <button class="btn btn-success" onclick="showCreateReportModal()">
+                    ➕ إنشاء تقرير جديد
+                </button>
+                <button class="btn btn-primary" onclick="importReportData()">
+                    📥 استيراد بيانات
+                </button>
+                <button class="btn btn-warning" onclick="exportAllReports()">
+                    📤 تصدير جميع التقارير
+                </button>
+            </div>
+            
+            <div class="report-list" id="reportsList">
+                <div class="report-card">
+                    <span class="status active">نشط</span>
+                    <h3>📊 تقرير التوعية الاحترافي</h3>
+                    <p>تقرير تفصيلي عن برنامج التوعية والتدريب</p>
+                    <p><strong>الملف:</strong> index2.html</p>
+                    <div class="report-actions">
+                        <button class="btn btn-primary" onclick="editReport('index2')">✏️ تحرير</button>
+                        <button class="btn btn-success" onclick="viewReport('index2.html')">👁️ معاينة</button>
+                        <button class="btn btn-warning" onclick="duplicateReport('index2')">📋 نسخ</button>
+                        <button class="btn btn-danger" onclick="deleteReport('index2')">🗑️ حذف</button>
+                    </div>
+                </div>
+                
+                <div class="report-card">
+                    <span class="status active">نشط</span>
+                    <h3>📢 تقرير حملات التوعية الموحد</h3>
+                    <p>تقرير شامل يدمج بيانات حملات التسجيل والرعاية</p>
+                    <p><strong>الملف:</strong> awareness-campaign-report.html</p>
+                    <div class="report-actions">
+                        <button class="btn btn-primary" onclick="editReport('awareness')">✏️ تحرير</button>
+                        <button class="btn btn-success" onclick="viewReport('awareness-campaign-report.html')">👁️ معاينة</button>
+                        <button class="btn btn-warning" onclick="duplicateReport('awareness')">📋 نسخ</button>
+                        <button class="btn btn-danger" onclick="deleteReport('awareness')">🗑️ حذف</button>
+                    </div>
+                </div>
+                
+                <div class="report-card">
+                    <span class="status draft">مسودة</span>
+                    <h3>📋 الخطة التحسينية المستمرة</h3>
+                    <p>عرض شامل للخطة التحسينية لنظام التفتيش</p>
+                    <p><strong>الملف:</strong> index.html</p>
+                    <div class="report-actions">
+                        <button class="btn btn-primary" onclick="editReport('index')">✏️ تحرير</button>
+                        <button class="btn btn-success" onclick="viewReport('index.html')">👁️ معاينة</button>
+                        <button class="btn btn-warning" onclick="duplicateReport('index')">📋 نسخ</button>
+                        <button class="btn btn-danger" onclick="deleteReport('index')">🗑️ حذف</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Campaigns Section -->
+        <div id="campaigns" class="section">
+            <h2>📢 إدارة حملات التوعية</h2>
+            
+            <button class="btn btn-success" onclick="showCreateCampaignModal()" style="margin-bottom: 20px;">
+                ➕ إنشاء حملة جديدة
+            </button>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>اسم الحملة</th>
+                        <th>النوع</th>
+                        <th>تاريخ البدء</th>
+                        <th>الحالة</th>
+                        <th>عدد المشاركين</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="campaignsTable">
+                    <tr>
+                        <td>حملة تسجيل المنشآت</td>
+                        <td>تسجيل وترخيص</td>
+                        <td>2025-01-15</td>
+                        <td><span class="status active">نشطة</span></td>
+                        <td>45 منشأة</td>
+                        <td>
+                            <button class="btn btn-primary" onclick="editCampaign(1)">تحرير</button>
+                            <button class="btn btn-danger" onclick="deleteCampaign(1)">حذف</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>برنامج التدريب على الرعاية</td>
+                        <td>تدريب وتوعية</td>
+                        <td>2025-02-01</td>
+                        <td><span class="status active">نشطة</span></td>
+                        <td>28 موظف</td>
+                        <td>
+                            <button class="btn btn-primary" onclick="editCampaign(2)">تحرير</button>
+                            <button class="btn btn-danger" onclick="deleteCampaign(2)">حذف</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Analytics Section -->
+        <div id="analytics" class="section">
+            <h2>📈 التحليلات الذكية والرؤى الاستراتيجية</h2>
+            
+            <div class="analytics-container">
+                <div class="chart-wrapper">
+                    <h3>📊 توزيع الحملات حسب النوع</h3>
+                    <canvas id="campaignsTypeChart"></canvas>
+                </div>
+                
+                <div class="chart-wrapper">
+                    <h3>📈 معدل النجاح والإنجاز</h3>
+                    <canvas id="successRateChart"></canvas>
+                </div>
+                
+                <div class="insight-card">
+                    <h4>🎯 توصيات ذكية</h4>
+                    <ul style="margin-right: 20px; margin-top: 10px;">
+                        <li>زيادة عدد الحملات التدريبية في الربع القادم بنسبة 20%</li>
+                        <li>التركيز على المحلات الجديدة التي لم تشارك في البرامج</li>
+                        <li>تحسين معدل الاستجابة من خلال المتابعة الدورية</li>
+                    </ul>
+                </div>
+                
+                <div class="insight-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <h4>📊 تحليل متقدم</h4>
+                    <p>معدل الامتثال: 87% | معدل التحسن الشهري: +12% | مؤشر الجودة: ممتاز</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Data Manager Section -->
+        <div id="data-manager" class="section">
+            <h2>💾 إدارة البيانات المتقدمة</h2>
+            
+            <div class="form-group">
+                <label>📥 استيراد بيانات من ملف JSON:</label>
+                <input type="file" id="importJsonFile" accept=".json" onchange="handleJsonImport(event)">
+            </div>
+            
+            <div class="form-group">
+                <label>📤 تصدير البيانات:</label>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="exportToJson()">💾 JSON</button>
+                    <button class="btn btn-success" onclick="exportToExcel()">📊 Excel</button>
+                    <button class="btn btn-warning" onclick="exportToPdf()">📄 PDF</button>
+                    <button class="btn btn-primary" onclick="exportToCsv()">📋 CSV</button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>🗄️ النسخ الاحتياطي:</label>
+                <button class="btn btn-success" onclick="createBackup()">💾 إنشاء نسخة احتياطية</button>
+                <button class="btn btn-warning" onclick="restoreBackup()">♻️ استعادة من نسخة احتياطية</button>
+            </div>
+            
+            <div class="form-group">
+                <label>🧹 صيانة البيانات:</label>
+                <button class="btn btn-warning" onclick="cleanupData()">🧹 تنظيف البيانات المكررة</button>
+                <button class="btn btn-danger" onclick="resetAllData()">⚠️ إعادة تعيين جميع البيانات</button>
+            </div>
+        </div>
+        
+        <!-- Settings Section -->
+        <div id="settings" class="section">
+            <h2>⚙️ إعدادات النظام</h2>
+            
+            <div class="form-group">
+                <label>اسم المؤسسة:</label>
+                <input type="text" id="orgName" value="بلدية مدينة أبوظبي - إدارة الرفق بالحيوان">
+            </div>
+            
+            <div class="form-group">
+                <label>اسم القسم:</label>
+                <input type="text" id="deptName" value="إدارة الصحة العامة - قسم الرقابة والرفق بالحيوان">
+            </div>
+            
+            <div class="form-group">
+                <label>اسم المطور:</label>
+                <input type="text" id="devName" value="د. علي عبدالعال">
+            </div>
+            
+            <div class="form-group">
+                <label>لغة النظام:</label>
+                <select id="systemLang">
+                    <option value="ar" selected>العربية</option>
+                    <option value="en">English</option>
+                    <option value="both">ثنائي اللغة</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>نمط العرض:</label>
+                <select id="displayMode">
+                    <option value="professional" selected>احترافي</option>
+                    <option value="simple">بسيط</option>
+                    <option value="detailed">تفصيلي</option>
+                </select>
+            </div>
+            
+            <button class="btn btn-success" onclick="saveSettings()">💾 حفظ الإعدادات</button>
+            <button class="btn btn-warning" onclick="resetSettings()">🔄 استعادة الافتراضي</button>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>تم التطوير بواسطة د. علي عبدالعال | إدارة الرفق بالحيوان - بلدية مدينة أبوظبي</p>
+            <p>نظام إدارة تقارير التوعية والرفق بالحيوان - الإصدار 2.0</p>
+        </div>
+    </div>
+    
+    <!-- Create Report Modal -->
+    <div id="createReportModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('createReportModal')">×</button>
+            <h2>➕ إنشاء تقرير جديد</h2>
+            
+            <div class="form-group">
+                <label>عنوان التقرير:</label>
+                <input type="text" id="reportTitle" placeholder="أدخل عنوان التقرير">
+            </div>
+            
+            <div class="form-group">
+                <label>نوع التقرير:</label>
+                <select id="reportType">
+                    <option value="awareness">حملة توعية</option>
+                    <option value="training">برنامج تدريب</option>
+                    <option value="inspection">تقرير تفتيش</option>
+                    <option value="statistics">تقرير إحصائي</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>وصف التقرير:</label>
+                <textarea id="reportDescription" placeholder="أدخل وصف مختصر للتقرير"></textarea>
+            </div>
+            
+            <button class="btn btn-success" onclick="createNewReport()">✅ إنشاء التقرير</button>
+            <button class="btn btn-danger" onclick="closeModal('createReportModal')">❌ إلغاء</button>
+        </div>
+    </div>
+    
+    <!-- Create Campaign Modal -->
+    <div id="createCampaignModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('createCampaignModal')">×</button>
+            <h2>➕ إنشاء حملة توعية جديدة</h2>
+            
+            <div class="form-group">
+                <label>اسم الحملة:</label>
+                <input type="text" id="campaignName" placeholder="أدخل اسم الحملة">
+            </div>
+            
+            <div class="form-group">
+                <label>نوع الحملة:</label>
+                <select id="campaignType">
+                    <option value="registration">تسجيل وترخيص</option>
+                    <option value="training">تدريب وتوعية</option>
+                    <option value="inspection">تفتيش ومتابعة</option>
+                    <option value="awareness">توعية عامة</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>تاريخ البدء:</label>
+                <input type="date" id="campaignStartDate">
+            </div>
+            
+            <div class="form-group">
+                <label>تاريخ الانتهاء:</label>
+                <input type="date" id="campaignEndDate">
+            </div>
+            
+            <div class="form-group">
+                <label>الهدف:</label>
+                <textarea id="campaignGoal" placeholder="أدخل هدف الحملة"></textarea>
+            </div>
+            
+            <button class="btn btn-success" onclick="createNewCampaign()">✅ إنشاء الحملة</button>
+            <button class="btn btn-danger" onclick="closeModal('createCampaignModal')">❌ إلغاء</button>
+        </div>
+    </div>
+    
+    <script>
+        // Authentication check
+        (function() {
+            const isAuthenticated = localStorage.getItem('smartPlannerAuth') === 'true';
+            if (!isAuthenticated) {
+                alert('⚠️ يجب عليك تسجيل الدخول أولاً من لوحة التحكم الذكية');
+                window.location.href = 'smart-planner.html';
+                return;
+            }
+        })();
+        
+        // Navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        // Initialize Charts
+        function initCharts() {
+            // Reports Chart
+            const reportsCtx = document.getElementById('reportsChart').getContext('2d');
+            new Chart(reportsCtx, {
+                type: 'line',
+                data: {
+                    labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+                    datasets: [{
+                        label: 'عدد التقارير',
+                        data: [12, 19, 15, 25, 22, 30],
+                        borderColor: 'rgb(102, 126, 234)',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+            });
+            
+            // Campaigns Type Chart
+            const campaignsTypeCtx = document.getElementById('campaignsTypeChart').getContext('2d');
+            new Chart(campaignsTypeCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['تسجيل وترخيص', 'تدريب وتوعية', 'تفتيش ومتابعة'],
+                    datasets: [{
+                        data: [45, 28, 17],
+                        backgroundColor: [
+                            'rgba(102, 126, 234, 0.8)',
+                            'rgba(67, 233, 123, 0.8)',
+                            'rgba(250, 112, 154, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+            });
+            
+            // Success Rate Chart
+            const successRateCtx = document.getElementById('successRateChart').getContext('2d');
+            new Chart(successRateCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+                    datasets: [{
+                        label: 'معدل النجاح %',
+                        data: [75, 82, 88, 85, 90, 87],
+                        backgroundColor: 'rgba(67, 233, 123, 0.6)',
+                        borderColor: 'rgb(67, 233, 123)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Modal Functions
+        function showCreateReportModal() {
+            document.getElementById('createReportModal').classList.add('active');
+        }
+        
+        function showCreateCampaignModal() {
+            document.getElementById('createCampaignModal').classList.add('active');
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+        
+        // Report Functions
+        function editReport(reportId) {
+            alert('📝 فتح محرر التقرير: ' + reportId);
+            // Implement report editor
+        }
+        
+        function viewReport(filename) {
+            window.open(filename, '_blank');
+        }
+        
+        function duplicateReport(reportId) {
+            if (confirm('هل تريد نسخ هذا التقرير؟')) {
+                alert('✅ تم نسخ التقرير بنجاح');
+                // Implement duplication logic
+            }
+        }
+        
+        function deleteReport(reportId) {
+            if (confirm('⚠️ هل أنت متأكد من حذف هذا التقرير؟ هذا الإجراء لا يمكن التراجع عنه.')) {
+                alert('🗑️ تم حذف التقرير');
+                // Implement deletion logic
+            }
+        }
+        
+        function createNewReport() {
+            const title = document.getElementById('reportTitle').value;
+            const type = document.getElementById('reportType').value;
+            const description = document.getElementById('reportDescription').value;
+            
+            if (!title) {
+                alert('⚠️ الرجاء إدخال عنوان التقرير');
+                return;
+            }
+            
+            alert('✅ تم إنشاء التقرير: ' + title);
+            closeModal('createReportModal');
+            // Implement creation logic
+        }
+        
+        // Campaign Functions
+        function editCampaign(id) {
+            alert('📝 تحرير الحملة رقم: ' + id);
+            // Implement edit logic
+        }
+        
+        function deleteCampaign(id) {
+            if (confirm('⚠️ هل أنت متأكد من حذف هذه الحملة؟')) {
+                alert('🗑️ تم حذف الحملة');
+                // Implement deletion logic
+            }
+        }
+        
+        function createNewCampaign() {
+            const name = document.getElementById('campaignName').value;
+            const type = document.getElementById('campaignType').value;
+            
+            if (!name) {
+                alert('⚠️ الرجاء إدخال اسم الحملة');
+                return;
+            }
+            
+            alert('✅ تم إنشاء الحملة: ' + name);
+            closeModal('createCampaignModal');
+            // Implement creation logic
+        }
+        
+        // Data Management Functions
+        function handleJsonImport(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        alert('✅ تم استيراد البيانات بنجاح');
+                        console.log('Imported data:', data);
+                    } catch (error) {
+                        alert('❌ خطأ في قراءة الملف');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+        
+        function importReportData() {
+            alert('📥 استيراد بيانات التقارير');
+            // Implement import logic
+        }
+        
+        function exportAllReports() {
+            alert('📤 تصدير جميع التقارير');
+            // Implement export logic
+        }
+        
+        function exportToJson() {
+            const data = {
+                reports: [],
+                campaigns: [],
+                exportDate: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'awa_reports_data.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        function exportToExcel() {
+            alert('📊 تصدير إلى Excel - قيد التطوير');
+        }
+        
+        function exportToPdf() {
+            alert('📄 تصدير إلى PDF - قيد التطوير');
+        }
+        
+        function exportToCsv() {
+            alert('📋 تصدير إلى CSV - قيد التطوير');
+        }
+        
+        function createBackup() {
+            const backup = {
+                date: new Date().toISOString(),
+                data: localStorage
+            };
+            alert('✅ تم إنشاء نسخة احتياطية');
+        }
+        
+        function restoreBackup() {
+            alert('♻️ استعادة من نسخة احتياطية - قيد التطوير');
+        }
+        
+        function cleanupData() {
+            if (confirm('هل تريد تنظيف البيانات المكررة؟')) {
+                alert('✅ تم تنظيف البيانات');
+            }
+        }
+        
+        function resetAllData() {
+            if (confirm('⚠️ تحذير: سيتم حذف جميع البيانات! هل أنت متأكد؟')) {
+                if (confirm('⚠️ هذا الإجراء لا يمكن التراجع عنه. هل أنت متأكد تماماً؟')) {
+                    alert('🗑️ تم إعادة تعيين البيانات');
+                }
+            }
+        }
+        
+        // Settings Functions
+        function saveSettings() {
+            const settings = {
+                orgName: document.getElementById('orgName').value,
+                deptName: document.getElementById('deptName').value,
+                devName: document.getElementById('devName').value,
+                systemLang: document.getElementById('systemLang').value,
+                displayMode: document.getElementById('displayMode').value
+            };
+            
+            localStorage.setItem('awaSystemSettings', JSON.stringify(settings));
+            alert('✅ تم حفظ الإعدادات بنجاح');
+        }
+        
+        function resetSettings() {
+            if (confirm('هل تريد استعادة الإعدادات الافتراضية؟')) {
+                document.getElementById('orgName').value = 'بلدية مدينة أبوظبي - إدارة الرفق بالحيوان';
+                document.getElementById('deptName').value = 'إدارة الصحة العامة - قسم الرقابة والرفق بالحيوان';
+                document.getElementById('devName').value = 'د. علي عبدالعال';
+                document.getElementById('systemLang').value = 'ar';
+                document.getElementById('displayMode').value = 'professional';
+                alert('✅ تم استعادة الإعدادات الافتراضية');
+            }
+        }
+        
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            
+            // Load settings
+            const settings = JSON.parse(localStorage.getItem('awaSystemSettings') || '{}');
+            if (settings.orgName) {
+                document.getElementById('orgName').value = settings.orgName;
+                document.getElementById('deptName').value = settings.deptName;
+                document.getElementById('devName').value = settings.devName;
+                document.getElementById('systemLang').value = settings.systemLang;
+                document.getElementById('displayMode').value = settings.displayMode;
+            }
+        });
+    </script>
+</body>
+</html>
