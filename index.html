@@ -2149,6 +2149,18 @@
                         screenSwitcher.style.display = 'none';
                     }
                     
+                    // Hide navigation buttons section
+                    const navigation = document.querySelector('.navigation');
+                    if (navigation) {
+                        navigation.style.display = 'none';
+                    }
+                    
+                    // Hide export buttons section
+                    const exportSection = document.querySelector('.export-section');
+                    if (exportSection) {
+                        exportSection.style.display = 'none';
+                    }
+                    
                     return; // Skip other visibility checks in viewer mode
                 }
                 
