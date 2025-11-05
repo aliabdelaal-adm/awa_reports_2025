@@ -406,11 +406,17 @@
         }
         
         .footer {
-            text-align: center;
+            background: rgba(255,255,255,0.1);
             color: white;
-            padding: 20px;
+            padding: 8px 20px;
+            text-align: center;
+            font-size: 0.85em;
+            border-top: 1px solid rgba(255,255,255,0.2);
             margin-top: 30px;
-            font-size: 1.1em;
+        }
+        
+        .footer p {
+            margin: 3px 0;
         }
         
         @media (max-width: 768px) {
@@ -525,8 +531,7 @@
     </div>
 
     <div class="footer" id="footer" style="display: none;">
-        <p>🚀 تم التطوير بواسطة د. علي عبدالعال</p>
-        <p>© 2025 جميع الحقوق محفوظة</p>
+        <p>تم التطوير بواسطة د. علي عبدالعال | إدارة الرفق بالحيوان - بلدية مدينة أبوظبى</p>
     </div>
 
     <input type="file" id="importInput" accept=".json" style="display: none;" onchange="handleImport(event)">
