@@ -398,7 +398,7 @@
             <button class="nav-btn" onclick="showSection('campaigns')">
                 📢 حملات التوعية
             </button>
-            <button class="nav-btn" onclick="showSection('analytics')">
+            <button class="nav-btn" onclick="window.location.href='data-analyzer.html'">
                 📈 التحليلات الذكية
             </button>
             <button class="nav-btn" onclick="showSection('data-manager')">
@@ -451,7 +451,7 @@
             <h2>📋 إدارة التقارير</h2>
             
             <div style="margin-bottom: 20px;">
-                <button class="btn btn-success" onclick="showCreateReportModal()">
+                <button class="btn btn-success" onclick="window.location.href='report-editor.html'">
                     ➕ إنشاء تقرير جديد
                 </button>
                 <button class="btn btn-primary" onclick="importReportData()">
@@ -842,8 +842,8 @@
         
         // Report Functions
         function editReport(reportId) {
-            alert('📝 فتح محرر التقرير: ' + reportId);
-            // Implement report editor
+            // Redirect to report editor with the report ID
+            window.location.href = 'report-editor.html?id=' + reportId;
         }
         
         function viewReport(filename) {
