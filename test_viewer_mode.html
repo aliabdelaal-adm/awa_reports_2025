@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار وضع العرض - Viewer Mode Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            direction: rtl;
+            padding: 40px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .description {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+        
+        .test-section {
+            margin-bottom: 40px;
+        }
+        
+        .test-section h2 {
+            color: #3498db;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .link-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .test-link {
+            display: block;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .test-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+        
+        .test-link.viewer {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        }
+        
+        .test-link.viewer:hover {
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.5);
+        }
+        
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .comparison-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .comparison-item h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .comparison-item ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .comparison-item li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-item li:last-child {
+            border-bottom: none;
+        }
+        
+        .visible {
+            color: #27ae60;
+        }
+        
+        .hidden {
+            color: #e74c3c;
+            text-decoration: line-through;
+        }
+        
+        .note {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .note h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .note p {
+            color: #856404;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 اختبار وضع العرض</h1>
+        <h1 style="font-size: 1.5em; margin-top: -20px;">Viewer Mode Test</h1>
+        
+        <div class="description">
+            <p><strong>الهدف:</strong> اختبار ميزة إخفاء أزرار التنقل عند عرض التقرير</p>
+            <p><strong>Purpose:</strong> Test the feature to hide navigation buttons when displaying the report</p>
+        </div>
+        
+        <div class="test-section">
+            <h2>🔗 روابط الاختبار | Test Links</h2>
+            
+            <div class="link-container">
+                <a href="index.html" class="test-link" target="_blank">
+                    📋 الوضع العادي | Normal Mode<br>
+                    <small style="font-size: 0.8em; opacity: 0.9;">جميع الأزرار والروابط مرئية | All buttons and links visible</small>
+                </a>
+                
+                <a href="index.html?view=true" class="test-link viewer" target="_blank">
+                    👁️ وضع العرض (view=true) | Viewer Mode<br>
+                    <small style="font-size: 0.8em; opacity: 0.9;">بدون أزرار التنقل | Without navigation buttons</small>
+                </a>
+                
+                <a href="index.html?viewer=1" class="test-link viewer" target="_blank">
+                    👁️ وضع العرض (viewer=1) | Viewer Mode<br>
+                    <small style="font-size: 0.8em; opacity: 0.9;">بدون أزرار التنقل | Without navigation buttons</small>
+                </a>
+            </div>
+        </div>
+        
+        <div class="comparison">
+            <div class="comparison-item">
+                <h3>✅ الوضع العادي | Normal Mode</h3>
+                <ul>
+                    <li class="visible">✓ شريط التبديل بين الصفحات</li>
+                    <li class="visible">✓ أزرار التنقل بين الأقسام</li>
+                    <li class="visible">✓ أزرار التصدير (PDF, Excel, PowerPoint)</li>
+                    <li class="visible">✓ جميع الوظائف متاحة</li>
+                </ul>
+            </div>
+            
+            <div class="comparison-item">
+                <h3>👁️ وضع العرض | Viewer Mode</h3>
+                <ul>
+                    <li class="hidden">✗ شريط التبديل بين الصفحات</li>
+                    <li class="hidden">✗ أزرار التنقل بين الأقسام</li>
+                    <li class="hidden">✗ أزرار التصدير</li>
+                    <li class="visible">✓ محتوى التقرير فقط</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="note">
+            <h3>📝 ملاحظة هامة | Important Note</h3>
+            <p>
+                <strong>العربية:</strong> وضع العرض مصمم لعرض التقرير للمشاهدين دون السماح لهم بالتنقل أو التصدير. 
+                هذه الميزة تعمل على جانب العميل ويمكن تجاوزها من خلال أدوات المطور، لذلك لا تعتمد عليها للأمان الحقيقي.
+            </p>
+            <p style="margin-top: 10px;">
+                <strong>English:</strong> Viewer mode is designed to display the report to viewers without allowing navigation or export. 
+                This feature works on the client-side and can be bypassed through developer tools, so don't rely on it for real security.
+            </p>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+            <p style="color: #555; font-size: 0.9em;">
+                تم التطوير بواسطة د. علي عبدالعال | Developed by Dr. Ali Abdelaal<br>
+                إدارة الرقابة والرفق بالحيوان - بلدية مدينة أبوظبي
+            </p>
+        </div>
+    </div>
+</body>
+</html>
