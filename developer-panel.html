@@ -1490,7 +1490,9 @@
             'smart-planner.html'
         ];
         
-        // Authentication check
+        // Authentication check - Disabled for direct access
+        // Uncomment to enable authentication requirement
+        /*
         (function() {
             const isAuthenticated = localStorage.getItem('smartPlannerAuth') === 'true';
             if (!isAuthenticated) {
@@ -1499,6 +1501,7 @@
                 return;
             }
         })();
+        */
         
         // Toast Notification System
         function showToast(message, type = 'success') {
