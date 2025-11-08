@@ -1065,6 +1065,12 @@
                 if (screenSwitcher) {
                     screenSwitcher.style.display = 'none';
                 }
+                
+                // Hide navigation bar (section buttons)
+                const navBar = document.querySelector('.nav-bar');
+                if (navBar) {
+                    navBar.style.display = 'none';
+                }
             }
         }
         
