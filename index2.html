@@ -1096,11 +1096,17 @@
                         screenSwitcher.style.display = 'none';
                     }
                     
-                    // Hide navigation buttons marked for viewer mode hiding
-                    const navButtons = document.querySelectorAll('.nav-button[data-viewer-hide="true"]');
-                    navButtons.forEach(button => {
-                        button.style.display = 'none';
-                    });
+                    // Hide ALL navigation buttons (not just marked ones)
+                    const navigation = document.querySelector('.navigation');
+                    if (navigation) {
+                        navigation.style.display = 'none';
+                    }
+                    
+                    // Hide ALL export buttons
+                    const exportSection = document.querySelector('.export-section');
+                    if (exportSection) {
+                        exportSection.style.display = 'none';
+                    }
                     
                     return; // Skip other visibility checks in viewer mode
                 }

@@ -724,9 +724,25 @@
             // Construct URL more robustly with viewer mode parameter
             const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
             const fullUrl = baseUrl + path + '?view=1';
+            
+            // Try to copy to clipboard with proper error handling
             navigator.clipboard.writeText(fullUrl).then(() => {
-                alert('✅ تم نسخ الرابط بنجاح!\n\nسيتم فتح الملف في وضع العرض (بدون أزرار التنقل)');
+                alert('✅ تم نسخ الرابط بنجاح!\n\n' + 
+                      'الرابط: ' + fullUrl + '\n\n' +
+                      'سيتم فتح الملف في وضع العرض (بدون أزرار التنقل)\n' +
+                      'يمكنك الآن مشاركة هذا الرابط مع أي شخص');
                 addLog(`تم نسخ رابط المشاهد: ${path}`, 'success');
+            }).catch((err) => {
+                // Fallback: show the link in a prompt so user can copy manually
+                const copied = prompt(
+                    '⚠️ لم نتمكن من النسخ التلقائي للحافظة.\n\n' +
+                    'يرجى نسخ الرابط يدوياً من الصندوق أدناه:\n\n' +
+                    'اضغط Ctrl+C (أو Cmd+C على Mac) ثم موافق',
+                    fullUrl
+                );
+                if (copied !== null) {
+                    addLog(`تم عرض رابط المشاهد للنسخ اليدوي: ${path}`, 'success');
+                }
             });
         }
 
