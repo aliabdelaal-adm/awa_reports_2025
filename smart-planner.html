@@ -462,7 +462,7 @@
         <div class="header">
             <button class="logout-btn" onclick="handleLogout()">🚪 تسجيل الخروج</button>
             <h1>🎛️ Smart Planner - لوحة التحكم الذكية</h1>
-            <p>التحكم الكامل في نظام تقارير التوعية والرفق بالحيوان - نظام إدارة محتوى احترافي 100%</p>
+            <p>التحكم الكامل في عرض وإخفاء الملفات - نظام إدارة محتوى احترافي 100%</p>
         </div>
 
         <!-- Statistics Section -->
@@ -555,35 +555,35 @@
         // File definitions
         const files = [
             {
-                id: "awareness-campaign",
-                name: "تقرير حملات التوعية والتوجيه والإرشاد الموحد",
-                description: "تقرير شامل يدمج بيانات حملات تسجيل المنشآت ورعاية الحيوانات مع تحليلات ذكية",
-                path: "awareness-campaign-report.html",
-                icon: "📊",
-                defaultVisible: true
+                id: "index",
+                name: "الخطة التحسينية المستمرة",
+                description: "ملف الخطة التحسينية الشامل مع جميع التقارير والإحصائيات",
+                path: "index.html",
+                icon: "📋",
+                defaultVisible: false // Hidden by default as requested
             },
             {
                 id: "index2",
                 name: "تقرير التوعية الاحترافي",
                 description: "تقرير التوعية والتدريب لموظفي محلات بيع الحيوانات الأليفة",
                 path: "index2.html",
-                icon: "📋",
+                icon: "📊",
                 defaultVisible: true
             },
             {
-                id: "index",
-                name: "الخطة التحسينية المستمرة",
-                description: "ملف الخطة التحسينية الشامل مع جميع التقارير والإحصائيات",
-                path: "index.html",
-                icon: "📈",
+                id: "awareness-campaign",
+                name: "تقرير حملات التوعية والتوجيه والإرشاد الموحد",
+                description: "تقرير شامل يدمج بيانات حملات تسجيل المنشآت ورعاية الحيوانات مع تحليلات ذكية",
+                path: "awareness-campaign-report.html",
+                icon: "📊",
                 defaultVisible: false
             },
             {
                 id: "developer-panel",
-                name: "لوحة تحكم المطور",
-                description: "نظام إدارة احترافي متكامل لتقارير التوعية وحملات الرفق بالحيوان",
-                path: "developer-panel.html",
-                icon: "🎛️",
+                name: "لوحة المطور",
+                description: "لوحة إدارة خطة التفتيش الشهرية وتوزيع المحلات",
+                path: "developer-panel_Version4.html",
+                icon: "🔧",
                 defaultVisible: false
             }
         ];
@@ -724,25 +724,9 @@
             // Construct URL more robustly with viewer mode parameter
             const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
             const fullUrl = baseUrl + path + '?view=1';
-            
-            // Try to copy to clipboard with proper error handling
             navigator.clipboard.writeText(fullUrl).then(() => {
-                alert('✅ تم نسخ الرابط بنجاح!\n\n' + 
-                      'الرابط: ' + fullUrl + '\n\n' +
-                      'سيتم فتح الملف في وضع العرض (بدون أزرار التنقل)\n' +
-                      'يمكنك الآن مشاركة هذا الرابط مع أي شخص');
+                alert('✅ تم نسخ الرابط بنجاح!\n\nسيتم فتح الملف في وضع العرض (بدون أزرار التنقل)');
                 addLog(`تم نسخ رابط المشاهد: ${path}`, 'success');
-            }).catch((err) => {
-                // Fallback: show the link in a prompt so user can copy manually
-                const copied = prompt(
-                    '⚠️ لم نتمكن من النسخ التلقائي للحافظة.\n\n' +
-                    'يرجى نسخ الرابط يدوياً من الصندوق أدناه:\n\n' +
-                    'اضغط Ctrl+C (أو Cmd+C على Mac) ثم موافق',
-                    fullUrl
-                );
-                if (copied !== null) {
-                    addLog(`تم عرض رابط المشاهد للنسخ اليدوي: ${path}`, 'success');
-                }
             });
         }
 

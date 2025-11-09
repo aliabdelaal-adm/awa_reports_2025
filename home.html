@@ -296,10 +296,10 @@
 </head>
 <body>
     <div class="container">
-        <div class="header" style="display: block; background: white; padding: 50px 30px; border-radius: 20px; margin-bottom: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); text-align: center; animation: slideDown 1s ease;">
-            <h1 style="font-size: 3em; margin-bottom: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🏥 نظام تقارير التوعية والرفق بالحيوان</h1>
-            <p style="font-size: 1.3em; color: #555; margin-bottom: 5px;">إدارة الصحة العامة - قسم الرقابة والرفق بالحيوان</p>
-            <p class="subtitle" style="font-size: 1.1em; color: #777; font-style: italic;">بلدية مدينة أبوظبي</p>
+        <div class="header">
+            <h1>🏥 نظام التقارير الإلكترونية</h1>
+            <p>إدارة الصحة العامة - قسم الرقابة والرفق بالحيوان</p>
+            <p class="subtitle">بلدية مدينة أبوظبي</p>
         </div>
 
         <div class="cards-container" id="cardsContainer">
@@ -312,14 +312,14 @@
     </div>
 
     <script>
-        // File definitions (matching unified-control-panel.html)
+        // File definitions (matching smart-planner.html)
         const files = [
             {
-                id: "awareness-campaign",
-                name: "تقرير حملات التوعية والتوجيه والإرشاد الموحد",
-                description: "تقرير شامل يدمج بيانات حملات تسجيل المنشآت ورعاية الحيوانات مع تحليلات ذكية ورؤى استراتيجية ونتائج متوقعة",
-                path: "awareness-campaign-report.html",
-                icon: "📊",
+                id: "index",
+                name: "الخطة التحسينية المستمرة",
+                description: "عرض شامل للخطة التحسينية المستمرة لنظام التفتيش الموحد مع جميع التقارير الشهرية والإحصائيات التفصيلية",
+                path: "index.html",
+                icon: "📋",
                 defaultVisible: true,
                 gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
             },
@@ -328,49 +328,39 @@
                 name: "تقرير التوعية الاحترافي",
                 description: "تقرير تفصيلي عن برنامج التوعية والتدريب لموظفي محلات بيع الحيوانات الأليفة مع معرض الصور",
                 path: "index2.html",
-                icon: "📋",
+                icon: "📊",
                 defaultVisible: true,
                 gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
             },
             {
-                id: "index",
-                name: "الخطة التحسينية المستمرة",
-                description: "عرض شامل للخطة التحسينية المستمرة لنظام التفتيش الموحد مع جميع التقارير الشهرية والإحصائيات التفصيلية",
-                path: "index.html",
-                icon: "📈",
+                id: "awareness-campaign",
+                name: "تقرير حملات التوعية والتوجيه والإرشاد الموحد",
+                description: "تقرير شامل يدمج بيانات حملات تسجيل المنشآت ورعاية الحيوانات مع تحليلات ذكية ورؤى استراتيجية ونتائج متوقعة",
+                path: "awareness-campaign-report.html",
+                icon: "📊",
                 defaultVisible: false,
                 gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)"
             },
             {
                 id: "developer-panel",
-                name: "لوحة تحكم المطور (قديمة)",
-                description: "نظام إدارة احترافي متكامل - النسخة القديمة (استخدم لوحة التحكم الموحدة للوصول إلى جميع المميزات)",
-                path: "developer-panel.html",
-                icon: "🎛️",
+                name: "لوحة المطور",
+                description: "لوحة إدارة خطة التفتيش الشهرية وتوزيع المحلات على المفتشين",
+                path: "developer-panel_Version4.html",
+                icon: "🔧",
                 defaultVisible: false,
                 gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
-            },
-            {
-                id: "smart-planner",
-                name: "المخطط الذكي (قديم)",
-                description: "نظام التخطيط والإدارة - النسخة القديمة (استخدم لوحة التحكم الموحدة للوصول إلى جميع المميزات)",
-                path: "smart-planner.html",
-                icon: "🎯",
-                defaultVisible: false,
-                gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)"
             }
         ];
 
-        const STORAGE_KEY = "unifiedControlPanelConfig";
+        const STORAGE_KEY = "smartPlannerConfig";
 
         // ⚠️ SECURITY NOTE: This uses client-side authentication only.
         // For production with sensitive data, implement server-side authentication.
         // Client-side checks can be bypassed via browser developer tools.
         
-        // Check if user is authenticated (check both old and new auth keys)
+        // Check if user is authenticated
         function isAuthenticated() {
-            return localStorage.getItem('unifiedControlAuth') === 'true' || 
-                   localStorage.getItem('smartPlannerAuth') === 'true';
+            return localStorage.getItem('smartPlannerAuth') === 'true';
         }
 
         // Get configuration from localStorage
@@ -413,20 +403,20 @@
                 html += `
                     <div class="card admin-card">
                         <div class="card-icon">🎛️</div>
-                        <h2>🌟 لوحة التحكم الموحدة المتقدمة</h2>
-                        <p>لوحة تحكم شاملة تجمع جميع مميزات المطور والتخطيط الذكي - نظام إدارة متكامل احترافي 100%</p>
-                        <a href="unified-control-panel.html" class="btn">
-                            🔐 دخول لوحة التحكم الموحدة
+                        <h2>لوحة التحكم الذكية</h2>
+                        <p>التحكم الكامل في عرض وإخفاء التقارير والملفات - للمطورين فقط</p>
+                        <a href="smart-planner.html" class="btn">
+                            🔐 دخول لوحة التحكم
                         </a>
                     </div>
                 `;
             }
 
             if (visibleCount === 0) {
-                const unifiedPanelLink = isAuthenticated() ? 
+                const smartPlannerLink = isAuthenticated() ? 
                     `<p style="margin-top: 20px;">
-                        <a href="unified-control-panel.html" style="color: #667eea; text-decoration: none; font-weight: bold; font-size: 1.1em;">
-                            🔐 دخول لوحة التحكم الموحدة المتقدمة
+                        <a href="smart-planner.html" style="color: #667eea; text-decoration: none; font-weight: bold; font-size: 1.1em;">
+                            🔐 دخول لوحة التحكم الذكية
                         </a>
                     </p>` : '';
                     
@@ -434,7 +424,7 @@
                     <div class="no-files-message">
                         <h2>📁 لا توجد تقارير معروضة حالياً</h2>
                         <p>لم يتم تفعيل أي تقارير للعرض من قبل المطور.</p>
-                        ${unifiedPanelLink}
+                        ${smartPlannerLink}
                     </div>
                 `;
             }
