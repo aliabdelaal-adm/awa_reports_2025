@@ -115,7 +115,7 @@
         .navigation {
             background: #ecf0f1;
             padding: 15px 30px;
-            display: flex;
+            display: none; /* Hide navigation buttons to show only continuous improvement plan */
             gap: 10px;
             flex-wrap: wrap;
             justify-content: center;
@@ -672,7 +672,7 @@
         .screen-switcher {
             background: #34495e;
             padding: 10px 30px;
-            display: flex;
+            display: none; /* Hide screen switcher to show only continuous improvement plan */
             gap: 10px;
             justify-content: center;
             border-bottom: 2px solid #2c3e50;
@@ -715,7 +715,7 @@
         .export-section {
             background: #ecf0f1;
             padding: 15px 30px;
-            display: flex;
+            display: none; /* Hide export section to show only continuous improvement plan */
             gap: 10px;
             flex-wrap: wrap;
             justify-content: center;
@@ -2716,9 +2716,9 @@
         window.addEventListener('DOMContentLoaded', function() {
             // Initialize data tables
             processTableData();
-            populateStatistics();
-            // Show statistics by default
-            showSection('statistics');
+            // Keep only the "all" section (continuous improvement plan) visible
+            // Don't show statistics section - only show the plan
+            showSection('all');
         });
         
  main
@@ -3124,11 +3124,15 @@
             animateTableRows();
             addSparkleEffect();
             
-            // Show statistics section by default with animation
+            // Keep only the "all" section (continuous improvement plan) visible
+            // Remove the statistics section activation to show only the plan
             setTimeout(() => {
-                document.getElementById('statistics').classList.add('active');
-                populateStatistics();
-            }, 500);
+                // Ensure only the "all" section is active
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById('all').classList.add('active');
+            }, 100);
         });
     </script>
 </body>
