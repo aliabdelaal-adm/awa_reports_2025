@@ -362,6 +362,10 @@
             padding: 15px 0;
             z-index: 1000;
             animation: slideUp 0.5s ease;
+            /* Additional fixes for mobile browsers */
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            will-change: transform;
         }
         
         @keyframes slideUp {
@@ -636,6 +640,22 @@
             .nav-label {
                 font-size: 0.75em;
             }
+            
+            /* Ensure bottom navigation stays fixed on mobile */
+            .bottom-nav {
+                position: fixed;
+                bottom: 0;
+                /* Force GPU acceleration for better performance */
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+                -webkit-perspective: 1000;
+                perspective: 1000;
+            }
+            
+            /* Ensure container has proper padding for scrolling */
+            .container {
+                padding-bottom: 120px; /* Increased space for bottom nav on mobile */
+            }
         }
     </style>
 </head>
@@ -675,7 +695,11 @@
                 <div class="nav-icon">📊</div>
                 <div class="nav-label">التقارير</div>
             </div>
+ copilot/fix-bottom-icons-position
+            <div class="nav-item" onclick="filterByCategory('campaign', event)">
+
             <div class="nav-item" onclick="openCampaignsModal()">
+ main
                 <div class="nav-icon">📢</div>
                 <div class="nav-label">الحملات</div>
             </div>
@@ -886,8 +910,12 @@
                 description: "لوحة تحكم تحليلية شاملة مع رسوم بيانية تفاعلية وإحصائيات متقدمة في الوقت الفعلي",
                 path: "dashboard-view.html",
                 icon: "📊",
+ copilot/fix-bottom-icons-position
+                gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)"
+
                 gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
                 mainCategory: "report"
+ main
             }
         ];
 
@@ -1068,7 +1096,11 @@
             }
 
             // Add categorized files (all hidden by default)
+ copilot/fix-bottom-icons-position
+            const categoryOrder = ['خطط تحسينية', 'حملات توعية', 'لوحات التحكم', 'أدوات التطوير'];
+
             const categoryOrder = ['التقارير', 'لوحات التحكم', 'أدوات التطوير'];
+ main
             
             categoryOrder.forEach(categoryName => {
                 if (categorizedFiles[categoryName]) {
