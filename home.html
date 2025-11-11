@@ -667,15 +667,19 @@
     <!-- Bottom Navigation Bar -->
     <div class="bottom-nav">
         <div class="nav-container">
-            <a href="home.html" class="nav-item active" onclick="filterByCategory('all')">
+            <div class="nav-item active" onclick="filterByCategory('none', event)">
                 <div class="nav-icon">🏠</div>
                 <div class="nav-label">الرئيسية</div>
-            </a>
-            <div class="nav-item" onclick="filterByCategory('report')">
+            </div>
+            <div class="nav-item" onclick="filterByCategory('report', event)">
                 <div class="nav-icon">📊</div>
                 <div class="nav-label">التقارير</div>
             </div>
+ copilot/hide-dashboard-and-update-reports
             <div class="nav-item" onclick="openCampaignsModal()">
+
+            <div class="nav-item" onclick="filterByCategory('campaign', event)">
+ main
                 <div class="nav-icon">📢</div>
                 <div class="nav-label">الحملات</div>
             </div>
@@ -867,13 +871,14 @@
             }
         ];
         
-        // Special view screens (always visible, not controlled by config)
+        // Special view screens for reports section (only shown when reports filter is active)
         const specialViews = [
             {
-                name: "معرض التقارير التفاعلي",
+                name: "التقارير",
                 description: "عرض بطاقات ثلاثية الأبعاد احترافي وتفاعلي لجميع التقارير مع إمكانية الفلترة والبحث",
                 path: "gallery-view.html",
                 icon: "🎨",
+ copilot/hide-dashboard-and-update-reports
                 gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
             }
         ];
@@ -886,6 +891,10 @@
                 path: "dashboard-view.html",
                 icon: "📊",
                 gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)"
+
+                gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
+                mainCategory: "report"
+ main
             }
         ];
 
@@ -931,8 +940,8 @@
             return file ? file.defaultVisible : true;
         }
 
-        // Current filter state
-        let currentCategoryFilter = 'all';
+        // Current filter state - start with 'none' to hide everything by default
+        let currentCategoryFilter = 'none';
 
         // Filter reports by search input
         function filterReports() {
@@ -954,27 +963,38 @@
         }
 
         // Filter by category from bottom navigation
-        function filterByCategory(category) {
+        function filterByCategory(category, event) {
             currentCategoryFilter = category;
             
             // Update active state on nav items
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            event.currentTarget.classList.add('active');
+            if (event && event.currentTarget) {
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                event.currentTarget.classList.add('active');
+            }
             
             const cards = document.querySelectorAll('.card:not(.admin-card)');
+            const sections = document.querySelectorAll('.category-section');
             
-            cards.forEach(card => {
-                const mainCategory = card.dataset.maincategory;
-                
-                if (category === 'all' || mainCategory === category) {
-                    card.style.display = '';
-                    card.style.animation = 'fadeInUp 0.5s ease';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
+            // Hide everything first
+            cards.forEach(card => card.style.display = 'none');
+            sections.forEach(section => section.style.display = 'none');
+            
+            if (category !== 'none') {
+                cards.forEach(card => {
+                    const mainCategory = card.dataset.maincategory;
+                    
+                    if (category === 'all' || mainCategory === category) {
+                        card.style.display = '';
+                        card.style.animation = 'fadeInUp 0.5s ease';
+                        // Show parent section if card is visible
+                        if (card.closest('.category-section')) {
+                            card.closest('.category-section').style.display = 'block';
+                        }
+                    }
+                });
+            }
             
             // Clear search
             document.getElementById('searchInput').value = '';
@@ -982,9 +1002,17 @@
             // Show notification
             const categoryNames = {
                 'all': 'جميع العناصر',
+ copilot/hide-dashboard-and-update-reports
                 'report': 'التقارير'
+
+                'report': 'التقارير',
+                'campaign': 'الحملات',
+                'none': 'الصفحة الرئيسية'
+ main
             };
-            showNotification(`عرض: ${categoryNames[category] || category}`);
+            if (category !== 'none') {
+                showNotification(`عرض: ${categoryNames[category] || category}`);
+            }
         }
 
         // Populate cards
@@ -1008,20 +1036,20 @@
                 categorizedFiles[cat].push(file);
             });
 
-            // Add special view screens first (always visible)
+            // Add special view for reports (shown only when report category is active)
             if (specialViews.length > 0) {
-                html += `<div class="category-section">
-                    <h2 class="category-title">📊 عروض خاصة</h2>
+                html += `<div class="category-section" style="display: none;">
+                    <h2 class="category-title">📊 التقارير المميزة</h2>
                     <div class="category-cards">`;
                 
                 specialViews.forEach((view, index) => {
                     html += `
-                        <div class="card" onclick="navigateTo('${view.path}')" data-maincategory="report" data-category="عروض خاصة">
+                        <div class="card" onclick="navigateTo('${view.path}')" data-maincategory="${view.mainCategory}" data-category="التقارير المميزة">
                             <div class="card-icon">${view.icon}</div>
                             <h2>${view.name}</h2>
                             <p>${view.description}</p>
                             <a href="${view.path}" class="btn">
-                                🚀 فتح العرض
+                                📊 عرض التقارير
                             </a>
                         </div>
                     `;
@@ -1029,6 +1057,7 @@
                 html += `</div></div>`;
             }
 
+ copilot/hide-dashboard-and-update-reports
             // Add developer-only special views (only if authenticated)
             if (userAuthenticated && developerSpecialViews.length > 0) {
                 html += `<div class="category-section">
@@ -1052,10 +1081,14 @@
 
             // Add categorized files
             const categoryOrder = ['التقارير', 'لوحات التحكم', 'أدوات التطوير'];
+
+            // Add categorized files (all hidden by default)
+            const categoryOrder = ['خطط تحسينية', 'حملات توعية', 'لوحات التحكم', 'أدوات التطوير'];
+ main
             
             categoryOrder.forEach(categoryName => {
                 if (categorizedFiles[categoryName]) {
-                    html += `<div class="category-section">
+                    html += `<div class="category-section" style="display: none;">
                         <h2 class="category-title">${getCategoryIcon(categoryName)} ${categoryName}</h2>
                         <div class="category-cards">`;
                     
@@ -1082,9 +1115,9 @@
                 }
             });
 
-            // Add any remaining categories
+            // Add any remaining categories (all hidden by default)
             Object.keys(categorizedFiles).forEach(categoryName => {
-                html += `<div class="category-section">
+                html += `<div class="category-section" style="display: none;">
                     <h2 class="category-title">${getCategoryIcon(categoryName)} ${categoryName}</h2>
                     <div class="category-cards">`;
                 
@@ -1124,6 +1157,11 @@
             }
 
             container.innerHTML = html;
+            
+            // Apply current category filter to show/hide content
+            if (currentCategoryFilter !== 'all') {
+                filterByCategory(currentCategoryFilter);
+            }
         }
 
         // Get icon for category
