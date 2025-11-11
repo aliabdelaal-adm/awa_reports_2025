@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 معرض التقارير التفاعلي - عرض احترافي</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f172a;
+            color: white;
+            direction: rtl;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.5);
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: white;
+            color: #1e3a8a;
+            transform: translateY(-2px);
+        }
+        
+        /* Gallery Container */
+        .gallery-container {
+            padding: 50px 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        /* Filter Buttons */
+        .filter-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .filter-btn {
+            padding: 12px 30px;
+            margin: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn:hover {
+            background: rgba(59, 130, 246, 0.5);
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+        
+        .filter-btn.active {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            border-color: #3b82f6;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.5);
+        }
+        
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 35px;
+            animation: fadeIn 0.6s ease;
+        }
+        
+        /* Gallery Card */
+        .gallery-card {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.6) 0%, rgba(59, 130, 246, 0.3) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 0;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+        
+        .gallery-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        .gallery-card:hover::before {
+            left: 100%;
+        }
+        
+        .gallery-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(59, 130, 246, 0.5);
+            border-color: #3b82f6;
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .card-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .card-title {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .card-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        .card-status {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .status-visible {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .status-hidden {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .action-btn:hover {
+            background: rgba(59, 130, 246, 0.5);
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 100px 20px;
+            animation: fadeIn 0.6s ease;
+        }
+        
+        .empty-state h2 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        
+        .empty-state p {
+            font-size: 1.3em;
+            opacity: 0.7;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .filter-btn {
+                display: block;
+                width: 90%;
+                margin: 10px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="home.html" class="back-btn">🏠 العودة للرئيسية</a>
+    
+    <div class="header">
+        <h1>🎨 معرض التقارير التفاعلي</h1>
+        <p>عرض احترافي وذكي لجميع التقارير والملفات</p>
+    </div>
+    
+    <div class="gallery-container">
+        <div class="filter-section">
+            <button class="filter-btn active" onclick="filterGallery('all')">🗂️ الكل</button>
+            <button class="filter-btn" onclick="filterGallery('visible')">✅ المعروضة</button>
+            <button class="filter-btn" onclick="filterGallery('hidden')">❌ المخفية</button>
+            <button class="filter-btn" onclick="filterGallery('reports')">📊 التقارير</button>
+        </div>
+        
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Will be populated by JavaScript -->
+        </div>
+        
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <h2>📭</h2>
+            <p>لا توجد ملفات تطابق الفلتر المحدد</p>
+        </div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = "masterControlPanel";
+        const OLD_STORAGE_KEY = "smartPlannerConfig";
+        
+        // File definitions
+        const files = [
+            {
+                id: "index",
+                name: "الخطة التحسينية المستمرة",
+                description: "عرض شامل للخطة التحسينية لنظام التفتيش الموحد مع جميع التقارير الشهرية والإحصائيات",
+                path: "index.html",
+                icon: "📋",
+                defaultVisible: false,
+                category: "report"
+            },
+            {
+                id: "index2",
+                name: "تقرير التوعية الاحترافي",
+                description: "تقرير تفصيلي عن برنامج التوعية والتدريب لموظفي محلات بيع الحيوانات الأليفة",
+                path: "index2.html",
+                icon: "📊",
+                defaultVisible: true,
+                category: "report"
+            },
+            {
+                id: "awareness-campaign",
+                name: "تقرير حملات التوعية الموحد",
+                description: "تقرير شامل يدمج بيانات حملات تسجيل المنشآت ورعاية الحيوانات",
+                path: "awareness-campaign-report.html",
+                icon: "📊",
+                defaultVisible: true,
+                category: "report"
+            }
+        ];
+        
+        let currentFilter = 'all';
+        
+        // Get configuration
+        function getConfig() {
+            let stored = localStorage.getItem(STORAGE_KEY);
+            if (!stored) {
+                stored = localStorage.getItem(OLD_STORAGE_KEY);
+            }
+            return stored ? JSON.parse(stored) : {};
+        }
+        
+        // Check visibility
+        function isFileVisible(fileId) {
+            const config = getConfig();
+            const file = files.find(f => f.id === fileId);
+            if (config.visibility && config.visibility[fileId] !== undefined) {
+                return config.visibility[fileId];
+            }
+            if (config[fileId] !== undefined) {
+                return config[fileId];
+            }
+            return file ? file.defaultVisible : true;
+        }
+        
+        // Filter gallery
+        function filterGallery(filter) {
+            currentFilter = filter;
+            
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            renderGallery();
+        }
+        
+        // Render gallery
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            const emptyState = document.getElementById('emptyState');
+            let html = '';
+            let count = 0;
+            
+            files.forEach(file => {
+                const visible = isFileVisible(file.id);
+                
+                // Apply filter
+                if (currentFilter === 'visible' && !visible) return;
+                if (currentFilter === 'hidden' && visible) return;
+                if (currentFilter === 'reports' && file.category !== 'report') return;
+                
+                count++;
+                
+                const statusClass = visible ? 'status-visible' : 'status-hidden';
+                const statusText = visible ? '✅ معروض' : '❌ مخفي';
+                
+                html += `
+                    <div class="gallery-card">
+                        <div class="card-header">
+                            <div class="card-icon">${file.icon}</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-status ${statusClass}">${statusText}</div>
+                            <div class="card-title">${file.name}</div>
+                            <div class="card-description">${file.description}</div>
+                            <div class="card-actions">
+                                <a href="${file.path}" target="_blank" class="action-btn">👁️ عرض</a>
+                                <a href="${file.path}" download class="action-btn">💾 تحميل</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            if (count === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+            } else {
+                grid.style.display = 'grid';
+                emptyState.style.display = 'none';
+                grid.innerHTML = html;
+            }
+        }
+        
+        // Initialize
+        window.addEventListener('DOMContentLoaded', function() {
+            renderGallery();
+        });
+    </script>
+</body>
+</html>
