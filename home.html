@@ -848,11 +848,7 @@
                 <div class="nav-icon">📊</div>
                 <div class="nav-label">التقارير</div>
             </div>
- copilot/fix-bottom-icons-position
-            <div class="nav-item" onclick="filterByCategory('campaign', event)">
-
             <div class="nav-item" onclick="openCampaignsModal()">
- main
                 <div class="nav-icon">📢</div>
                 <div class="nav-label">الحملات</div>
             </div>
@@ -1063,12 +1059,8 @@
                 description: "لوحة تحكم تحليلية شاملة مع رسوم بيانية تفاعلية وإحصائيات متقدمة في الوقت الفعلي",
                 path: "dashboard-view.html",
                 icon: "📊",
- copilot/fix-bottom-icons-position
-                gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)"
-
                 gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
                 mainCategory: "report"
- main
             }
         ];
 
@@ -1249,11 +1241,7 @@
             }
 
             // Add categorized files (all hidden by default)
- copilot/fix-bottom-icons-position
-            const categoryOrder = ['خطط تحسينية', 'حملات توعية', 'لوحات التحكم', 'أدوات التطوير'];
-
             const categoryOrder = ['التقارير', 'لوحات التحكم', 'أدوات التطوير'];
- main
             
             categoryOrder.forEach(categoryName => {
                 if (categorizedFiles[categoryName]) {
