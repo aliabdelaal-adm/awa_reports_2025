@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎛️ لوحة التحكم الرئيسية الموحدة - نظام إدارة المحتوى الشامل</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #3b82f6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #06b6d4;
+            --dark: #1f2937;
+            --light: #f3f4f6;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #1e3a8a 100%);
+            direction: rtl;
+            min-height: 100vh;
+        }
+        
+        /* Login Screen */
+        .login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .login-box {
+            background: white;
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            max-width: 500px;
+            width: 100%;
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        .login-box .logo {
+            text-align: center;
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+        
+        .login-box h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+        
+        .login-box p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .error-msg {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+        }
+        
+        /* Main Dashboard */
+        .dashboard {
+            display: none;
+            padding: 20px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        .topbar {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 25px 35px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .topbar-title h1 {
+            font-size: 2.2em;
+            margin-bottom: 8px;
+        }
+        
+        .topbar-title p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .topbar-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .topbar-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .topbar-btn:hover {
+            background: white;
+            color: var(--primary);
+        }
+        
+        /* Navigation Tabs */
+        .nav-tabs {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .nav-tab {
+            padding: 15px 25px;
+            background: var(--light);
+            color: #333;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        /* Section Content */
+        .section {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .section-header {
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .section-header h2 {
+            color: var(--primary);
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .section-header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.4);
+        }
+        
+        .stat-card h3 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stat-card p {
+            font-size: 1.1em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .content-card {
+            background: var(--light);
+            padding: 28px;
+            border-radius: 15px;
+            border-left: 6px solid var(--secondary);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .content-card:hover {
+            transform: translateX(-8px);
+            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.25);
+        }
+        
+        .content-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        
+        .content-card p {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+        
+        .content-card .file-path {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            color: #555;
+            font-size: 0.9em;
+            margin-bottom: 18px;
+            word-break: break-all;
+        }
+        
+        /* Toggle Switch */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 75px;
+            height: 38px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 38px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 30px;
+            width: 30px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background: var(--success);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(37px);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .badge-visible {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .badge-hidden {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+        }
+        
+        .btn-info {
+            background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+        
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 15px;
+            text-align: right;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .data-table th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            font-weight: bold;
+            font-size: 1.05em;
+        }
+        
+        .data-table tr:hover {
+            background: var(--light);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 35px;
+            right: 35px;
+            background: white;
+            padding: 22px 35px;
+            border-radius: 15px;
+            box-shadow: 0 12px 45px rgba(0, 0, 0, 0.35);
+            z-index: 100000;
+            transform: translateX(500px);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            min-width: 300px;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast-success {
+            border-left: 6px solid var(--success);
+        }
+        
+        .toast-error {
+            border-left: 6px solid var(--danger);
+        }
+        
+        .toast-info {
+            border-left: 6px solid var(--info);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(35px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .topbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .topbar-title h1 {
+                font-size: 1.8em;
+            }
+            
+            .topbar-actions {
+                flex-direction: column;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <div class="logo">🎛️</div>
+            <h1>لوحة التحكم الرئيسية</h1>
+            <p>نظام إدارة المحتوى الشامل - بلدية مدينة أبوظبي</p>
+            <div class="error-msg" id="errorMsg">❌ كلمة المرور غير صحيحة</div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>👤 اسم المستخدم:</label>
+                    <input type="text" value="admin" readonly>
+                </div>
+                <div class="form-group">
+                    <label>🔑 كلمة المرور:</label>
+                    <input type="password" id="password" placeholder="أدخل كلمة المرور" required autofocus>
+                </div>
+                <button type="submit" class="login-btn">🔓 دخول النظام</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <!-- Top Bar -->
+        <div class="topbar">
+            <div class="topbar-title">
+                <h1>🎛️ لوحة التحكم الرئيسية الموحدة</h1>
+                <p>نظام إدارة المحتوى الشامل - التحكم الكامل في جميع التقارير والملفات</p>
+            </div>
+            <div class="topbar-actions">
+                <button class="topbar-btn" onclick="window.location.href='home.html'">🏠 الصفحة الرئيسية</button>
+                <button class="topbar-btn" onclick="handleLogout()">🚪 تسجيل الخروج</button>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('dashboard')">📊 لوحة المعلومات</button>
+            <button class="nav-tab" onclick="showTab('manage')">📁 إدارة المحتوى</button>
+            <button class="nav-tab" onclick="showTab('create')">➕ إنشاء جديد</button>
+            <button class="nav-tab" onclick="showTab('analytics')">📈 التحليلات</button>
+            <button class="nav-tab" onclick="showTab('settings')">⚙️ الإعدادات</button>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="section active">
+            <div class="section-header">
+                <h2>📊 لوحة المعلومات الرئيسية</h2>
+                <p>نظرة شاملة على جميع التقارير والملفات في النظام</p>
+            </div>
+            
+            <div class="stats-grid" id="statsGrid">
+                <!-- Will be populated by JavaScript -->
+            </div>
+            
+            <div class="section-header" style="margin-top: 40px;">
+                <h2>📈 إحصائيات متقدمة</h2>
+            </div>
+            <div style="background: white; padding: 25px; border-radius: 15px;">
+                <canvas id="statsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Manage Content Section -->
+        <div id="manage" class="section">
+            <div class="section-header">
+                <h2>📁 إدارة المحتوى والتقارير</h2>
+                <p>التحكم الكامل في عرض وإخفاء وتحرير جميع الملفات</p>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-success" onclick="showAllFiles()">✅ عرض الكل</button>
+                <button class="btn btn-danger" onclick="hideAllFiles()">❌ إخفاء الكل</button>
+                <button class="btn btn-info" onclick="resetToDefault()">🔄 استعادة الافتراضي</button>
+                <button class="btn btn-warning" onclick="exportAllData()">💾 تصدير الكل</button>
+            </div>
+            
+            <div class="content-grid" id="contentGrid">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Create New Section -->
+        <div id="create" class="section">
+            <div class="section-header">
+                <h2>➕ إنشاء تقرير أو ملف جديد</h2>
+                <p>إضافة محتوى جديد إلى النظام</p>
+            </div>
+            
+            <form id="createForm" onsubmit="createNewFile(event)">
+                <div class="form-group">
+                    <label>📋 اسم الملف/التقرير:</label>
+                    <input type="text" id="newFileName" required>
+                </div>
+                <div class="form-group">
+                    <label>📝 الوصف:</label>
+                    <input type="text" id="newFileDesc" required>
+                </div>
+                <div class="form-group">
+                    <label>🔗 المسار:</label>
+                    <input type="text" id="newFilePath" placeholder="example.html" required>
+                </div>
+                <div class="form-group">
+                    <label>🎨 الأيقونة:</label>
+                    <input type="text" id="newFileIcon" value="📄" required>
+                </div>
+                <div class="form-group">
+                    <label class="toggle-container">
+                        <input type="checkbox" id="newFileVisible" checked>
+                        <span>معروض بشكل افتراضي</span>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-success">✅ إنشاء الملف</button>
+            </form>
+        </div>
+
+        <!-- Analytics Section -->
+        <div id="analytics" class="section">
+            <div class="section-header">
+                <h2>📈 التحليلات والإحصائيات المتقدمة</h2>
+                <p>تحليل شامل لاستخدام النظام والتقارير</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%);">
+                    <h3 id="activeReports">0</h3>
+                    <p>التقارير النشطة</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);">
+                    <h3 id="hiddenReports">0</h3>
+                    <p>التقارير المخفية</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);">
+                    <h3 id="totalViews">1,234</h3>
+                    <p>إجمالي المشاهدات</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);">
+                    <h3 id="lastUpdateTime">الآن</h3>
+                    <p>آخر تحديث</p>
+                </div>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 30px;">
+                <div style="background: white; padding: 25px; border-radius: 15px;">
+                    <h3 style="color: var(--primary); margin-bottom: 20px;">📊 توزيع الملفات</h3>
+                    <canvas id="filesChart"></canvas>
+                </div>
+                <div style="background: white; padding: 25px; border-radius: 15px;">
+                    <h3 style="color: var(--primary); margin-bottom: 20px;">📈 الاستخدام الشهري</h3>
+                    <canvas id="usageChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Section -->
+        <div id="settings" class="section">
+            <div class="section-header">
+                <h2>⚙️ إعدادات النظام</h2>
+                <p>تخصيص وضبط إعدادات النظام</p>
+            </div>
+            
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>💾 إدارة البيانات</h3>
+                    <div class="btn-group" style="flex-direction: column;">
+                        <button class="btn btn-info" onclick="exportSettings()">📤 تصدير الإعدادات</button>
+                        <button class="btn btn-warning" onclick="importSettings()">📥 استيراد الإعدادات</button>
+                        <button class="btn btn-success" onclick="createBackup()">💾 نسخة احتياطية</button>
+                        <button class="btn btn-danger" onclick="resetSystem()">🔄 إعادة تعيين النظام</button>
+                    </div>
+                </div>
+                
+                <div class="content-card">
+                    <h3>🎨 المظهر والعرض</h3>
+                    <div class="form-group">
+                        <label>نمط العرض:</label>
+                        <select style="width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #ddd;">
+                            <option>احترافي</option>
+                            <option>بسيط</option>
+                            <option>تفصيلي</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="content-card">
+                    <h3>🔐 الأمان</h3>
+                    <button class="btn btn-warning" onclick="changePassword()">🔑 تغيير كلمة المرور</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="importInput" accept=".json" style="display: none;">
+
+    <script>
+        // Configuration
+        const DEFAULT_PASSWORD = "Ali@2025";
+        const STORAGE_KEY = "masterControlPanel";
+        
+        // Initialize file definitions
+        let files = [
+            {
+                id: "index",
+                name: "الخطة التحسينية المستمرة",
+                description: "عرض شامل للخطة التحسينية لنظام التفتيش الموحد",
+                path: "index.html",
+                icon: "📋",
+                defaultVisible: false
+            },
+            {
+                id: "index2",
+                name: "تقرير التوعية الاحترافي",
+                description: "تقرير تفصيلي عن برنامج التوعية والتدريب",
+                path: "index2.html",
+                icon: "📊",
+                defaultVisible: true
+            },
+            {
+                id: "awareness-campaign",
+                name: "تقرير حملات التوعية الموحد",
+                description: "تقرير شامل لحملات التوعية مع تحليلات ذكية",
+                path: "awareness-campaign-report.html",
+                icon: "📊",
+                defaultVisible: true
+            }
+        ];
+        
+        // Authentication
+        function handleLogin(event) {
+            event.preventDefault();
+            const password = document.getElementById('password').value;
+            
+            if (password === DEFAULT_PASSWORD) {
+                localStorage.setItem('masterAuth', 'true');
+                showDashboard();
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('errorMsg').style.display = 'none';
+                }, 3000);
+            }
+        }
+        
+        function handleLogout() {
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                localStorage.removeItem('masterAuth');
+                location.reload();
+            }
+        }
+        
+        function checkAuth() {
+            return localStorage.getItem('masterAuth') === 'true';
+        }
+        
+        function showDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            initializeSystem();
+        }
+        
+        // Initialize System
+        function initializeSystem() {
+            loadFiles();
+            updateStats();
+            populateContentGrid();
+            initCharts();
+        }
+        
+        // File Management
+        function loadFiles() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                const data = JSON.parse(stored);
+                if (data.files) {
+                    files = data.files;
+                }
+            }
+        }
+        
+        function saveFiles() {
+            const data = {
+                files: files,
+                lastUpdate: new Date().toISOString()
+            };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            updateStats();
+            populateContentGrid();
+        }
+        
+        function getConfig() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            return stored ? JSON.parse(stored) : {};
+        }
+        
+        function isFileVisible(fileId) {
+            const config = getConfig();
+            const file = files.find(f => f.id === fileId);
+            if (config.visibility && config.visibility[fileId] !== undefined) {
+                return config.visibility[fileId];
+            }
+            return file ? file.defaultVisible : true;
+        }
+        
+        function setFileVisibility(fileId, visible) {
+            const config = getConfig();
+            if (!config.visibility) {
+                config.visibility = {};
+            }
+            config.visibility[fileId] = visible;
+            config.lastUpdate = new Date().toISOString();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+            showToast(`تم ${visible ? 'عرض' : 'إخفاء'} الملف بنجاح`, 'success');
+            updateStats();
+            populateContentGrid();
+        }
+        
+        // Update Statistics
+        function updateStats() {
+            let totalFiles = files.length;
+            let visibleFiles = 0;
+            let hiddenFiles = 0;
+            
+            files.forEach(file => {
+                if (isFileVisible(file.id)) {
+                    visibleFiles++;
+                } else {
+                    hiddenFiles++;
+                }
+            });
+            
+            const statsHtml = `
+                <div class="stat-card">
+                    <h3>${totalFiles}</h3>
+                    <p>إجمالي الملفات</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%);">
+                    <h3>${visibleFiles}</h3>
+                    <p>الملفات المعروضة</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);">
+                    <h3>${hiddenFiles}</h3>
+                    <p>الملفات المخفية</p>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);">
+                    <h3>${Math.round((visibleFiles / totalFiles) * 100)}%</h3>
+                    <p>نسبة العرض</p>
+                </div>
+            `;
+            
+            document.getElementById('statsGrid').innerHTML = statsHtml;
+            
+            // Update analytics
+            document.getElementById('activeReports').textContent = visibleFiles;
+            document.getElementById('hiddenReports').textContent = hiddenFiles;
+            
+            const config = getConfig();
+            if (config.lastUpdate) {
+                const date = new Date(config.lastUpdate);
+                document.getElementById('lastUpdateTime').textContent = date.toLocaleDateString('ar-SA');
+            }
+        }
+        
+        // Populate Content Grid
+        function populateContentGrid() {
+            let html = '';
+            
+            files.forEach(file => {
+                const visible = isFileVisible(file.id);
+                const badge = visible ? 
+                    '<span class="status-badge badge-visible">معروض</span>' :
+                    '<span class="status-badge badge-hidden">مخفي</span>';
+                
+                html += `
+                    <div class="content-card">
+                        <h3>${file.icon} ${file.name} ${badge}</h3>
+                        <p>${file.description}</p>
+                        <div class="file-path">${file.path}</div>
+                        <div class="toggle-container">
+                            <label class="toggle-switch">
+                                <input type="checkbox" ${visible ? 'checked' : ''} 
+                                       onchange="setFileVisibility('${file.id}', this.checked)">
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span>${visible ? 'معروض' : 'مخفي'}</span>
+                        </div>
+                        <div class="btn-group" style="margin-top: 15px;">
+                            <a href="${file.path}" target="_blank" class="btn btn-primary">👁️ معاينة</a>
+                            <button class="btn btn-warning" onclick="editFile('${file.id}')">✏️ تحرير</button>
+                            <button class="btn btn-danger" onclick="deleteFile('${file.id}')">🗑️ حذف</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('contentGrid').innerHTML = html;
+        }
+        
+        // File Actions
+        function showAllFiles() {
+            files.forEach(file => {
+                setFileVisibility(file.id, true);
+            });
+            showToast('✅ تم عرض جميع الملفات', 'success');
+        }
+        
+        function hideAllFiles() {
+            if (confirm('⚠️ هل أنت متأكد من إخفاء جميع الملفات؟')) {
+                files.forEach(file => {
+                    setFileVisibility(file.id, false);
+                });
+                showToast('❌ تم إخفاء جميع الملفات', 'info');
+            }
+        }
+        
+        function resetToDefault() {
+            if (confirm('هل تريد استعادة الإعدادات الافتراضية؟')) {
+                localStorage.removeItem(STORAGE_KEY);
+                showToast('🔄 تم استعادة الإعدادات الافتراضية', 'success');
+                location.reload();
+            }
+        }
+        
+        function createNewFile(event) {
+            event.preventDefault();
+            
+            const newFile = {
+                id: 'file-' + Date.now(),
+                name: document.getElementById('newFileName').value,
+                description: document.getElementById('newFileDesc').value,
+                path: document.getElementById('newFilePath').value,
+                icon: document.getElementById('newFileIcon').value,
+                defaultVisible: document.getElementById('newFileVisible').checked
+            };
+            
+            files.push(newFile);
+            saveFiles();
+            
+            document.getElementById('createForm').reset();
+            showToast('✅ تم إنشاء الملف بنجاح', 'success');
+            showTab('manage');
+        }
+        
+        function editFile(fileId) {
+            const file = files.find(f => f.id === fileId);
+            if (file) {
+                alert(`تحرير الملف: ${file.name}\n\nهذه الميزة قيد التطوير...`);
+            }
+        }
+        
+        function deleteFile(fileId) {
+            const file = files.find(f => f.id === fileId);
+            if (confirm(`⚠️ هل أنت متأكد من حذف "${file.name}"؟`)) {
+                files = files.filter(f => f.id !== fileId);
+                saveFiles();
+                showToast('🗑️ تم حذف الملف', 'success');
+            }
+        }
+        
+        // Export/Import
+        function exportAllData() {
+            const data = {
+                files: files,
+                config: getConfig(),
+                exportDate: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `master-control-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showToast('💾 تم تصدير البيانات', 'success');
+        }
+        
+        function exportSettings() {
+            exportAllData();
+        }
+        
+        function importSettings() {
+            document.getElementById('importInput').click();
+        }
+        
+        function createBackup() {
+            exportAllData();
+        }
+        
+        function resetSystem() {
+            if (confirm('⚠️ سيتم حذف جميع البيانات والإعدادات. هل أنت متأكد؟')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+        
+        function changePassword() {
+            alert('🔑 تغيير كلمة المرور\n\nلتغيير كلمة المرور، يرجى الاتصال بمسؤول النظام.');
+        }
+        
+        // Tab Navigation
+        function showTab(tabId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        // Toast Notification
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => document.body.removeChild(toast), 500);
+            }, 3000);
+        }
+        
+        // Charts
+        function initCharts() {
+            const visibleCount = files.filter(f => isFileVisible(f.id)).length;
+            const hiddenCount = files.length - visibleCount;
+            
+            // Stats Chart
+            const statsCtx = document.getElementById('statsChart');
+            if (statsCtx) {
+                new Chart(statsCtx.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+                        datasets: [{
+                            label: 'عدد المشاهدات',
+                            data: [120, 190, 150, 220, 180, 240],
+                            backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                            borderColor: 'rgb(59, 130, 246)',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true
+                    }
+                });
+            }
+            
+            // Files Chart
+            const filesCtx = document.getElementById('filesChart');
+            if (filesCtx) {
+                new Chart(filesCtx.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['معروضة', 'مخفية'],
+                        datasets: [{
+                            data: [visibleCount, hiddenCount],
+                            backgroundColor: ['rgb(16, 185, 129)', 'rgb(239, 68, 68)']
+                        }]
+                    }
+                });
+            }
+            
+            // Usage Chart
+            const usageCtx = document.getElementById('usageChart');
+            if (usageCtx) {
+                new Chart(usageCtx.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: ['الأسبوع 1', 'الأسبوع 2', 'الأسبوع 3', 'الأسبوع 4'],
+                        datasets: [{
+                            label: 'الاستخدام',
+                            data: [65, 80, 75, 90],
+                            borderColor: 'rgb(124, 58, 237)',
+                            backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    }
+                });
+            }
+        }
+        
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', function() {
+            if (checkAuth()) {
+                showDashboard();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -352,7 +352,8 @@
             }
         ];
 
-        const STORAGE_KEY = "smartPlannerConfig";
+        const STORAGE_KEY = "masterControlPanel";
+        const OLD_STORAGE_KEY = "smartPlannerConfig";
 
         // ⚠️ SECURITY NOTE: This uses client-side authentication only.
         // For production with sensitive data, implement server-side authentication.
@@ -360,12 +361,15 @@
         
         // Check if user is authenticated
         function isAuthenticated() {
-            return localStorage.getItem('smartPlannerAuth') === 'true';
+            return localStorage.getItem('masterAuth') === 'true' || localStorage.getItem('smartPlannerAuth') === 'true';
         }
 
-        // Get configuration from localStorage
+        // Get configuration from localStorage (check both new and old keys)
         function getConfig() {
-            const stored = localStorage.getItem(STORAGE_KEY);
+            let stored = localStorage.getItem(STORAGE_KEY);
+            if (!stored) {
+                stored = localStorage.getItem(OLD_STORAGE_KEY);
+            }
             return stored ? JSON.parse(stored) : {};
         }
 
@@ -373,7 +377,14 @@
         function isFileVisible(fileId) {
             const config = getConfig();
             const file = files.find(f => f.id === fileId);
-            return config[fileId] !== undefined ? config[fileId] : (file ? file.defaultVisible : true);
+            // Check both visibility config formats
+            if (config.visibility && config.visibility[fileId] !== undefined) {
+                return config.visibility[fileId];
+            }
+            if (config[fileId] !== undefined) {
+                return config[fileId];
+            }
+            return file ? file.defaultVisible : true;
         }
 
         // Populate cards
@@ -403,10 +414,10 @@
                 html += `
                     <div class="card admin-card">
                         <div class="card-icon">🎛️</div>
-                        <h2>لوحة التحكم الذكية</h2>
-                        <p>التحكم الكامل في عرض وإخفاء التقارير والملفات - للمطورين فقط</p>
-                        <a href="smart-planner.html" class="btn">
-                            🔐 دخول لوحة التحكم
+                        <h2>لوحة التحكم الرئيسية الموحدة</h2>
+                        <p>نظام إدارة المحتوى الشامل - التحكم الكامل في جميع التقارير والملفات</p>
+                        <a href="master-control-panel.html" class="btn">
+                            🔐 دخول لوحة التحكم الرئيسية
                         </a>
                     </div>
                 `;
@@ -415,8 +426,8 @@
             if (visibleCount === 0) {
                 const smartPlannerLink = isAuthenticated() ? 
                     `<p style="margin-top: 20px;">
-                        <a href="smart-planner.html" style="color: #667eea; text-decoration: none; font-weight: bold; font-size: 1.1em;">
-                            🔐 دخول لوحة التحكم الذكية
+                        <a href="master-control-panel.html" style="color: #667eea; text-decoration: none; font-weight: bold; font-size: 1.1em;">
+                            🔐 دخول لوحة التحكم الرئيسية
                         </a>
                     </p>` : '';
                     
