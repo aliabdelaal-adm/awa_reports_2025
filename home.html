@@ -362,6 +362,10 @@
             padding: 15px 0;
             z-index: 1000;
             animation: slideUp 0.5s ease;
+            /* Additional fixes for mobile browsers */
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            will-change: transform;
         }
         
         @keyframes slideUp {
@@ -636,6 +640,22 @@
             .nav-label {
                 font-size: 0.75em;
             }
+            
+            /* Ensure bottom navigation stays fixed on mobile */
+            .bottom-nav {
+                position: fixed;
+                bottom: 0;
+                /* Force GPU acceleration for better performance */
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+                -webkit-perspective: 1000;
+                perspective: 1000;
+            }
+            
+            /* Ensure container has proper padding for scrolling */
+            .container {
+                padding-bottom: 120px; /* Increased space for bottom nav on mobile */
+            }
         }
     </style>
 </head>
@@ -675,11 +695,7 @@
                 <div class="nav-icon">📊</div>
                 <div class="nav-label">التقارير</div>
             </div>
- copilot/hide-dashboard-and-update-reports
-            <div class="nav-item" onclick="openCampaignsModal()">
-
             <div class="nav-item" onclick="filterByCategory('campaign', event)">
- main
                 <div class="nav-icon">📢</div>
                 <div class="nav-label">الحملات</div>
             </div>
@@ -878,8 +894,8 @@
                 description: "عرض بطاقات ثلاثية الأبعاد احترافي وتفاعلي لجميع التقارير مع إمكانية الفلترة والبحث",
                 path: "gallery-view.html",
                 icon: "🎨",
- copilot/hide-dashboard-and-update-reports
-                gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
+                gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
+                mainCategory: "report"
             }
         ];
 
@@ -891,10 +907,6 @@
                 path: "dashboard-view.html",
                 icon: "📊",
                 gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)"
-
-                gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
-                mainCategory: "report"
- main
             }
         ];
 
@@ -1002,13 +1014,9 @@
             // Show notification
             const categoryNames = {
                 'all': 'جميع العناصر',
- copilot/hide-dashboard-and-update-reports
-                'report': 'التقارير'
-
                 'report': 'التقارير',
                 'campaign': 'الحملات',
                 'none': 'الصفحة الرئيسية'
- main
             };
             if (category !== 'none') {
                 showNotification(`عرض: ${categoryNames[category] || category}`);
@@ -1057,7 +1065,6 @@
                 html += `</div></div>`;
             }
 
- copilot/hide-dashboard-and-update-reports
             // Add developer-only special views (only if authenticated)
             if (userAuthenticated && developerSpecialViews.length > 0) {
                 html += `<div class="category-section">
@@ -1079,12 +1086,8 @@
                 html += `</div></div>`;
             }
 
-            // Add categorized files
-            const categoryOrder = ['التقارير', 'لوحات التحكم', 'أدوات التطوير'];
-
             // Add categorized files (all hidden by default)
             const categoryOrder = ['خطط تحسينية', 'حملات توعية', 'لوحات التحكم', 'أدوات التطوير'];
- main
             
             categoryOrder.forEach(categoryName => {
                 if (categorizedFiles[categoryName]) {
