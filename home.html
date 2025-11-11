@@ -473,6 +473,10 @@
             padding: 15px 0;
             z-index: 1000;
             animation: slideUp 0.5s ease;
+            /* Additional fixes for mobile browsers */
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            will-change: transform;
         }
         
         @keyframes slideUp {
@@ -747,6 +751,22 @@
             .nav-label {
                 font-size: 0.75em;
             }
+            
+            /* Ensure bottom navigation stays fixed on mobile */
+            .bottom-nav {
+                position: fixed;
+                bottom: 0;
+                /* Force GPU acceleration for better performance */
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+                -webkit-perspective: 1000;
+                perspective: 1000;
+            }
+            
+            /* Ensure container has proper padding for scrolling */
+            .container {
+                padding-bottom: 120px; /* Increased space for bottom nav on mobile */
+            }
         }
     </style>
     <link rel="stylesheet" href="ai-background.css">
@@ -808,7 +828,11 @@
                 <div class="nav-icon">📊</div>
                 <div class="nav-label">التقارير</div>
             </div>
+ copilot/fix-bottom-icons-position
             <div class="nav-item" onclick="filterByCategory('campaign', event)">
+
+            <div class="nav-item" onclick="openCampaignsModal()">
+ main
                 <div class="nav-icon">📢</div>
                 <div class="nav-label">الحملات</div>
             </div>
@@ -889,6 +913,19 @@
         </div>
     </div>
 
+    <!-- Campaigns Modal -->
+    <div class="modal" id="campaignsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">📢 حملات التوعية والإرشاد</h2>
+                <button class="close-btn" onclick="closeModal('campaignsModal')">&times;</button>
+            </div>
+            <div id="campaignsContent" style="display: grid; grid-template-columns: 1fr; gap: 20px;">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
     <script>
         // File definitions with detailed categorization
         const files = [
@@ -900,35 +937,9 @@
                 icon: "📋",
                 defaultVisible: true,
                 gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                category: "خطط تحسينية",
+                category: "التقارير",
                 mainCategory: "report",
                 type: "plan",
-                year: "2024-2025"
-            },
-            {
-                id: "index2",
-                name: "تقرير التوعية الاحترافي",
-                description: "تقرير تفصيلي عن برنامج التوعية والتدريب لموظفي محلات بيع الحيوانات الأليفة مع معرض الصور",
-                path: "index2.html",
-                icon: "📊",
-                defaultVisible: true,
-                gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-                category: "حملات توعية",
-                mainCategory: "campaign",
-                type: "campaign",
-                year: "2024"
-            },
-            {
-                id: "awareness-campaign",
-                name: "تقرير حملات التوعية والتوجيه والإرشاد الموحد",
-                description: "تقرير شامل يدمج بيانات حملات تسجيل المنشآت ورعاية الحيوانات مع تحليلات ذكية ورؤى استراتيجية ونتائج متوقعة",
-                path: "awareness-campaign-report.html",
-                icon: "📢",
-                defaultVisible: true,
-                gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-                category: "حملات توعية",
-                mainCategory: "campaign",
-                type: "campaign",
                 year: "2024-2025"
             },
             {
@@ -953,10 +964,11 @@
                 icon: "📑",
                 defaultVisible: true,
                 gradient: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
-                category: "خطط تحسينية",
+                category: "التقارير",
                 mainCategory: "report",
                 type: "plan",
-                year: "2024-2025"
+                year: "2024-2025",
+                developerOnly: true
             },
             {
                 id: "report-data",
@@ -966,10 +978,11 @@
                 icon: "📄",
                 defaultVisible: true,
                 gradient: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
-                category: "خطط تحسينية",
+                category: "التقارير",
                 mainCategory: "report",
                 type: "report",
-                year: "2024-2025"
+                year: "2024-2025",
+                developerOnly: true
             },
             {
                 id: "unified-control",
@@ -984,8 +997,31 @@
                 type: "control",
                 year: "2024-2025",
                 developerOnly: true
-            },
+            }
+        ];
 
+        // Campaign files (accessible from bottom navigation campaigns button)
+        const campaignFiles = [
+            {
+                id: "index2",
+                name: "تقرير التوعية الاحترافي",
+                description: "تقرير تفصيلي عن برنامج التوعية والتدريب لموظفي محلات بيع الحيوانات الأليفة مع معرض الصور",
+                path: "index2.html",
+                icon: "📊",
+                gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+                type: "campaign",
+                year: "2024"
+            },
+            {
+                id: "awareness-campaign",
+                name: "تقرير حملات التوعية والتوجيه والإرشاد الموحد",
+                description: "تقرير شامل يدمج بيانات حملات تسجيل المنشآت ورعاية الحيوانات مع تحليلات ذكية ورؤى استراتيجية ونتائج متوقعة",
+                path: "awareness-campaign-report.html",
+                icon: "📢",
+                gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+                type: "campaign",
+                year: "2024-2025"
+            }
         ];
         
         // Special view screens for reports section (only shown when reports filter is active)
@@ -997,6 +1033,22 @@
                 icon: "🎨",
                 gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
                 mainCategory: "report"
+            }
+        ];
+
+        // Developer-only special views (visible only when authenticated)
+        const developerSpecialViews = [
+            {
+                name: "لوحة المعلومات الذكية",
+                description: "لوحة تحكم تحليلية شاملة مع رسوم بيانية تفاعلية وإحصائيات متقدمة في الوقت الفعلي",
+                path: "dashboard-view.html",
+                icon: "📊",
+ copilot/fix-bottom-icons-position
+                gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)"
+
+                gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)",
+                mainCategory: "report"
+ main
             }
         ];
 
@@ -1155,8 +1207,33 @@
                 html += `</div></div>`;
             }
 
+            // Add developer-only special views (only if authenticated)
+            if (userAuthenticated && developerSpecialViews.length > 0) {
+                html += `<div class="category-section" style="display: none;">
+                    <h2 class="category-title">🔧 عروض خاصة - للمطور فقط</h2>
+                    <div class="category-cards">`;
+                
+                developerSpecialViews.forEach((view, index) => {
+                    html += `
+                        <div class="card" onclick="navigateTo('${view.path}')" data-maincategory="report" data-category="عروض خاصة - للمطور">
+                            <div class="card-icon">${view.icon}</div>
+                            <h2>${view.name}</h2>
+                            <p>${view.description}</p>
+                            <a href="${view.path}" class="btn">
+                                🚀 فتح العرض
+                            </a>
+                        </div>
+                    `;
+                });
+                html += `</div></div>`;
+            }
+
             // Add categorized files (all hidden by default)
+ copilot/fix-bottom-icons-position
             const categoryOrder = ['خطط تحسينية', 'حملات توعية', 'لوحات التحكم', 'أدوات التطوير'];
+
+            const categoryOrder = ['التقارير', 'لوحات التحكم', 'أدوات التطوير'];
+ main
             
             categoryOrder.forEach(categoryName => {
                 if (categorizedFiles[categoryName]) {
@@ -1239,8 +1316,7 @@
         // Get icon for category
         function getCategoryIcon(categoryName) {
             const icons = {
-                'خطط تحسينية': '📋',
-                'حملات توعية': '📢',
+                'التقارير': '📊',
                 'لوحات التحكم': '🎛️',
                 'أدوات التطوير': '🔧',
                 'عروض خاصة': '✨'
@@ -1259,6 +1335,28 @@
 
         function openLoginModal() {
             document.getElementById('loginModal').classList.add('active');
+        }
+
+        function openCampaignsModal() {
+            const modal = document.getElementById('campaignsModal');
+            const content = document.getElementById('campaignsContent');
+            
+            // Populate campaigns
+            let html = '';
+            campaignFiles.forEach(campaign => {
+                html += `
+                    <div class="card" style="margin: 0; cursor: pointer;" onclick="navigateTo('${campaign.path}')">
+                        <div class="card-icon">${campaign.icon}</div>
+                        <h2>${campaign.name}</h2>
+                        <p>${campaign.description}</p>
+                        <a href="${campaign.path}" class="btn">
+                            📂 فتح الحملة
+                        </a>
+                    </div>
+                `;
+            });
+            content.innerHTML = html;
+            modal.classList.add('active');
         }
 
         function closeModal(modalId) {
