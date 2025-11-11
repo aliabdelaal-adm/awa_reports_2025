@@ -1011,7 +1011,7 @@
         const files = [
             {
                 id: "index",
-                name: "الخطة التحسينية المستمرة",
+                name: "تقرير الخطة التحسينية المستمرة",
                 description: "عرض شامل للخطة التحسينية المستمرة لنظام التفتيش الموحد مع جميع التقارير الشهرية والإحصائيات التفصيلية",
                 path: "index.html",
                 icon: "📋",
@@ -1265,7 +1265,6 @@
             // Add special view for reports (shown only when report category is active)
             if (specialViews.length > 0) {
                 html += `<div class="category-section" style="display: none;">
-                    <h2 class="category-title">📊 التقارير المميزة</h2>
                     <div class="category-cards">`;
                 
                 specialViews.forEach((view, index) => {
@@ -1309,9 +1308,14 @@
             
             categoryOrder.forEach(categoryName => {
                 if (categorizedFiles[categoryName]) {
-                    html += `<div class="category-section" style="display: none;">
-                        <h2 class="category-title">${getCategoryIcon(categoryName)} ${categoryName}</h2>
-                        <div class="category-cards">`;
+                    html += `<div class="category-section" style="display: none;">`;
+                    
+                    // Only show category title for non-report categories
+                    if (categoryName !== 'التقارير') {
+                        html += `<h2 class="category-title">${getCategoryIcon(categoryName)} ${categoryName}</h2>`;
+                    }
+                    
+                    html += `<div class="category-cards">`;
                     
                     categorizedFiles[categoryName].forEach(file => {
                         html += `
