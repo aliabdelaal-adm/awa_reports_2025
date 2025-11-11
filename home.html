@@ -17,9 +17,9 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 25%, #2c5364 50%, #203a43 75%, #0f2027 100%);
             background-size: 400% 400%;
-            animation: gradientAnimation 15s ease infinite;
+            animation: aiGradientFlow 20s ease infinite;
             direction: rtl;
             min-height: 100vh;
             padding: 20px;
@@ -27,40 +27,151 @@
             overflow-x: hidden;
         }
         
-        @keyframes gradientAnimation {
+        @keyframes aiGradientFlow {
             0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 50% 25%; }
             50% { background-position: 100% 50%; }
+            75% { background-position: 50% 75%; }
         }
         
-        body::before,
-        body::after {
+        /* AI Neural Network Background Layer */
+        body::before {
             content: '';
             position: fixed;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            opacity: 0.1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(118, 75, 162, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(67, 233, 123, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 90% 20%, rgba(252, 70, 107, 0.1) 0%, transparent 50%);
+            animation: neuralPulse 15s ease-in-out infinite;
             z-index: 0;
             pointer-events: none;
         }
         
-        body::before {
-            background: radial-gradient(circle, #fff 0%, transparent 70%);
-            top: -150px;
-            left: -150px;
-            animation: float 8s ease-in-out infinite;
+        @keyframes neuralPulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.05); }
         }
         
+        /* AI Data Particles Layer */
         body::after {
-            background: radial-gradient(circle, #fff 0%, transparent 70%);
-            bottom: -150px;
-            right: -150px;
-            animation: float 12s ease-in-out infinite reverse;
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.3), transparent),
+                radial-gradient(2px 2px at 60% 70%, rgba(255, 255, 255, 0.3), transparent),
+                radial-gradient(1px 1px at 50% 50%, rgba(102, 126, 234, 0.4), transparent),
+                radial-gradient(1px 1px at 80% 10%, rgba(118, 75, 162, 0.4), transparent),
+                radial-gradient(2px 2px at 90% 60%, rgba(67, 233, 123, 0.3), transparent),
+                radial-gradient(1px 1px at 30% 80%, rgba(252, 70, 107, 0.3), transparent),
+                radial-gradient(1px 1px at 15% 60%, rgba(255, 255, 255, 0.2), transparent),
+                radial-gradient(2px 2px at 70% 40%, rgba(255, 255, 255, 0.2), transparent);
+            background-size: 200% 200%;
+            animation: dataParticlesFloat 25s linear infinite;
+            z-index: 0;
+            pointer-events: none;
         }
         
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(5deg); }
+        @keyframes dataParticlesFloat {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        
+        /* AI Grid Network Overlay */
+        .ai-grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(102, 126, 234, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(102, 126, 234, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridPulse 10s ease-in-out infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+        
+        /* AI Document Flow Animation */
+        .ai-document-flow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .ai-doc-particle {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.15;
+            animation: documentFloat 30s linear infinite;
+        }
+        
+        @keyframes documentFloat {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.15;
+            }
+            90% {
+                opacity: 0.15;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* AI Circuit Lines */
+        .ai-circuit-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .circuit-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.3), transparent);
+            animation: circuitFlow 8s linear infinite;
+        }
+        
+        @keyframes circuitFlow {
+            0% {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            50% {
+                opacity: 0.6;
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(100%);
+            }
         }
         
         .container {
@@ -640,6 +751,27 @@
     </style>
 </head>
 <body>
+    <!-- AI Animated Background Elements -->
+    <div class="ai-grid-overlay"></div>
+    <div class="ai-circuit-lines">
+        <div class="circuit-line" style="top: 20%; width: 300px; animation-delay: 0s;"></div>
+        <div class="circuit-line" style="top: 40%; width: 400px; animation-delay: 2s;"></div>
+        <div class="circuit-line" style="top: 60%; width: 350px; animation-delay: 4s;"></div>
+        <div class="circuit-line" style="top: 80%; width: 450px; animation-delay: 6s;"></div>
+    </div>
+    <div class="ai-document-flow">
+        <div class="ai-doc-particle" style="left: 10%; animation-delay: 0s;">📄</div>
+        <div class="ai-doc-particle" style="left: 25%; animation-delay: 3s;">📊</div>
+        <div class="ai-doc-particle" style="left: 40%; animation-delay: 6s;">📈</div>
+        <div class="ai-doc-particle" style="left: 55%; animation-delay: 9s;">📋</div>
+        <div class="ai-doc-particle" style="left: 70%; animation-delay: 12s;">📑</div>
+        <div class="ai-doc-particle" style="left: 85%; animation-delay: 15s;">💼</div>
+        <div class="ai-doc-particle" style="left: 15%; animation-delay: 18s;">🤖</div>
+        <div class="ai-doc-particle" style="left: 50%; animation-delay: 21s;">⚡</div>
+        <div class="ai-doc-particle" style="left: 75%; animation-delay: 24s;">🎯</div>
+        <div class="ai-doc-particle" style="left: 30%; animation-delay: 27s;">✨</div>
+    </div>
+    
     <div class="container">
         <div class="header">
             <h1>🏥 نظام التقارير الإلكترونية</h1>
