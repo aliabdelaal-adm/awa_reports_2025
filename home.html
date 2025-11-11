@@ -698,7 +698,7 @@
                 <input type="text" class="filter-input" id="filterName" placeholder="اسم التقرير...">
             </div>
             <div class="filter-group">
-                <label class="filter-label">التاريخ</label>
+                <label class="filter-label">التاريخ الميلادي</label>
                 <input type="date" class="filter-input" id="filterDate">
             </div>
             <div class="filter-group">
@@ -780,9 +780,9 @@
                 icon: "📊",
                 defaultVisible: true,
                 gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-                category: "تقارير توعية",
-                mainCategory: "report",
-                type: "awareness",
+                category: "حملات توعية",
+                mainCategory: "campaign",
+                type: "campaign",
                 year: "2024"
             },
             {
@@ -804,12 +804,13 @@
                 description: "لوحة إدارة خطة التفتيش الشهرية وتوزيع المحلات على المفتشين",
                 path: "developer-panel_Version4.html",
                 icon: "🔧",
-                defaultVisible: true,
+                defaultVisible: false,
                 gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
                 category: "لوحات التحكم",
                 mainCategory: "report",
                 type: "inspection",
-                year: "2024-2025"
+                year: "2024-2025",
+                developerOnly: true
             },
             {
                 id: "plan-data",
@@ -832,7 +833,7 @@
                 icon: "📄",
                 defaultVisible: true,
                 gradient: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
-                category: "تقارير عامة",
+                category: "خطط تحسينية",
                 mainCategory: "report",
                 type: "report",
                 year: "2024-2025"
@@ -843,26 +844,15 @@
                 description: "لوحة تحكم موحدة شاملة لإدارة جميع أنظمة التقارير والحملات",
                 path: "unified-control-panel.html",
                 icon: "🎛️",
-                defaultVisible: true,
+                defaultVisible: false,
                 gradient: "linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)",
                 category: "لوحات التحكم",
                 mainCategory: "report",
                 type: "control",
-                year: "2024-2025"
+                year: "2024-2025",
+                developerOnly: true
             },
-            {
-                id: "test-viewer",
-                name: "وضع العرض التجريبي",
-                description: "وضع عرض خاص لاختبار واجهات المستخدم والتقارير",
-                path: "test_viewer_mode.html",
-                icon: "🔬",
-                defaultVisible: true,
-                gradient: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",
-                category: "أدوات التطوير",
-                mainCategory: "report",
-                type: "tool",
-                year: "2024-2025"
-            }
+
         ];
         
         // Special view screens (always visible, not controlled by config)
@@ -873,13 +863,6 @@
                 path: "gallery-view.html",
                 icon: "🎨",
                 gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
-            },
-            {
-                name: "الجدول الزمني للتقارير",
-                description: "عرض تسلسلي احترافي لجميع التقارير مرتبة زمنياً مع تأثيرات بصرية مميزة",
-                path: "timeline-view.html",
-                icon: "📅",
-                gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
             },
             {
                 name: "لوحة المعلومات الذكية",
@@ -994,10 +977,15 @@
             const container = document.getElementById('cardsContainer');
             let html = '';
             const filesToShow = filteredFiles || files;
+            const userAuthenticated = isAuthenticated();
 
             // Group files by category
             const categorizedFiles = {};
             filesToShow.forEach(file => {
+                // Skip developer-only items if user is not authenticated
+                if (file.developerOnly && !userAuthenticated) {
+                    return;
+                }
                 const cat = file.category || 'غير مصنف';
                 if (!categorizedFiles[cat]) {
                     categorizedFiles[cat] = [];
@@ -1027,7 +1015,7 @@
             }
 
             // Add categorized files
-            const categoryOrder = ['خطط تحسينية', 'تقارير توعية', 'حملات توعية', 'تقارير عامة', 'لوحات التحكم', 'أدوات التطوير'];
+            const categoryOrder = ['خطط تحسينية', 'حملات توعية', 'لوحات التحكم', 'أدوات التطوير'];
             
             categoryOrder.forEach(categoryName => {
                 if (categorizedFiles[categoryName]) {
@@ -1106,9 +1094,7 @@
         function getCategoryIcon(categoryName) {
             const icons = {
                 'خطط تحسينية': '📋',
-                'تقارير توعية': '📊',
                 'حملات توعية': '📢',
-                'تقارير عامة': '📄',
                 'لوحات التحكم': '🎛️',
                 'أدوات التطوير': '🔧',
                 'عروض خاصة': '✨'
