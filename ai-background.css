@@ -1,0 +1,170 @@
+/* AI Animated Background Styles for All Pages */
+/* خلفية ذكاء اصطناعي متحركة لجميع الصفحات */
+
+/* Main Body Background with AI-inspired gradient */
+body {
+    background: linear-gradient(135deg, #0f2027 0%, #203a43 25%, #2c5364 50%, #203a43 75%, #0f2027 100%) !important;
+    background-size: 400% 400% !important;
+    animation: aiGradientFlow 20s ease infinite !important;
+    position: relative !important;
+    overflow-x: hidden !important;
+}
+
+@keyframes aiGradientFlow {
+    0%, 100% { background-position: 0% 50%; }
+    25% { background-position: 50% 25%; }
+    50% { background-position: 100% 50%; }
+    75% { background-position: 50% 75%; }
+}
+
+/* AI Neural Network Background Layer */
+body::before {
+    content: '' !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(118, 75, 162, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(67, 233, 123, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 90% 20%, rgba(252, 70, 107, 0.1) 0%, transparent 50%) !important;
+    animation: neuralPulse 15s ease-in-out infinite !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+}
+
+@keyframes neuralPulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.05); }
+}
+
+/* AI Data Particles Layer */
+body::after {
+    content: '' !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-image: 
+        radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.3), transparent),
+        radial-gradient(2px 2px at 60% 70%, rgba(255, 255, 255, 0.3), transparent),
+        radial-gradient(1px 1px at 50% 50%, rgba(102, 126, 234, 0.4), transparent),
+        radial-gradient(1px 1px at 80% 10%, rgba(118, 75, 162, 0.4), transparent),
+        radial-gradient(2px 2px at 90% 60%, rgba(67, 233, 123, 0.3), transparent),
+        radial-gradient(1px 1px at 30% 80%, rgba(252, 70, 107, 0.3), transparent),
+        radial-gradient(1px 1px at 15% 60%, rgba(255, 255, 255, 0.2), transparent),
+        radial-gradient(2px 2px at 70% 40%, rgba(255, 255, 255, 0.2), transparent) !important;
+    background-size: 200% 200% !important;
+    animation: dataParticlesFloat 25s linear infinite !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+}
+
+@keyframes dataParticlesFloat {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+}
+
+/* AI Grid Network Overlay */
+.ai-grid-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(102, 126, 234, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(102, 126, 234, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridPulse 10s ease-in-out infinite;
+    z-index: 0;
+    pointer-events: none;
+}
+
+@keyframes gridPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+}
+
+/* AI Document Flow Animation */
+.ai-document-flow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.ai-doc-particle {
+    position: absolute;
+    font-size: 20px;
+    opacity: 0.15;
+    animation: documentFloat 30s linear infinite;
+}
+
+@keyframes documentFloat {
+    0% {
+        transform: translateY(100vh) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.15;
+    }
+    90% {
+        opacity: 0.15;
+    }
+    100% {
+        transform: translateY(-100px) translateX(100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* AI Circuit Lines */
+.ai-circuit-lines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.circuit-line {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.3), transparent);
+    animation: circuitFlow 8s linear infinite;
+}
+
+@keyframes circuitFlow {
+    0% {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    50% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+/* Ensure content stays above background */
+.container,
+.header,
+.main-content,
+.content,
+main,
+article,
+section {
+    position: relative;
+    z-index: 1;
+}
