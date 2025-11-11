@@ -162,20 +162,28 @@
         
         .ai-doc-particle {
             position: absolute;
-            font-size: 28px;
-            font-weight: 700;
+            font-size: 32px;
+            font-weight: 800;
             opacity: 0;
             animation: documentFloat 35s ease-in-out infinite;
-            filter: drop-shadow(0 0 12px rgba(102, 126, 234, 1)) 
-                    drop-shadow(0 0 20px rgba(236, 72, 153, 0.8))
-                    drop-shadow(0 0 30px rgba(168, 85, 247, 0.6));
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            filter: drop-shadow(0 0 15px rgba(102, 126, 234, 1.2)) 
+                    drop-shadow(0 0 25px rgba(236, 72, 153, 1))
+                    drop-shadow(0 0 35px rgba(168, 85, 247, 0.8))
+                    drop-shadow(0 0 45px rgba(255, 255, 255, 0.6));
+            background: linear-gradient(135deg, #667eea 0%, #e94cff 30%, #764ba2 50%, #ff6ec7 70%, #f093fb 100%);
+            background-size: 200% 200%;
+            animation: documentFloat 35s ease-in-out infinite, gradientShift 8s ease-in-out infinite;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
             white-space: nowrap;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            letter-spacing: 1px;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
         
         @keyframes documentFloat {
@@ -939,26 +947,26 @@
         <div class="circuit-line" style="top: 80%; width: 450px; animation-delay: 6s;"></div>
     </div>
     <div class="ai-document-flow">
-        <div class="ai-doc-particle" style="left: 10%; animation-delay: 0s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 25%; animation-delay: 3s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 40%; animation-delay: 6s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 55%; animation-delay: 9s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 70%; animation-delay: 12s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 85%; animation-delay: 15s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 15%; animation-delay: 18s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 50%; animation-delay: 21s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 75%; animation-delay: 24s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 30%; animation-delay: 27s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 5%; animation-delay: 2s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 20%; animation-delay: 5s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 35%; animation-delay: 8s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 60%; animation-delay: 11s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 80%; animation-delay: 14s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 45%; animation-delay: 17s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 65%; animation-delay: 20s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 90%; animation-delay: 23s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 12%; animation-delay: 26s;">إدارة الرفق بالحيوان</div>
-        <div class="ai-doc-particle" style="left: 38%; animation-delay: 29s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 10%; animation-delay: 0s; animation-duration: 35s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 25%; animation-delay: 3s; animation-duration: 38s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 40%; animation-delay: 6s; animation-duration: 32s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 55%; animation-delay: 9s; animation-duration: 40s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 70%; animation-delay: 12s; animation-duration: 36s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 85%; animation-delay: 15s; animation-duration: 34s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 15%; animation-delay: 18s; animation-duration: 39s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 50%; animation-delay: 21s; animation-duration: 33s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 75%; animation-delay: 24s; animation-duration: 37s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 30%; animation-delay: 27s; animation-duration: 41s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 5%; animation-delay: 2s; animation-duration: 35s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 20%; animation-delay: 5s; animation-duration: 38s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 35%; animation-delay: 8s; animation-duration: 36s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 60%; animation-delay: 11s; animation-duration: 34s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 80%; animation-delay: 14s; animation-duration: 39s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 45%; animation-delay: 17s; animation-duration: 32s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 65%; animation-delay: 20s; animation-duration: 40s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 90%; animation-delay: 23s; animation-duration: 37s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 12%; animation-delay: 26s; animation-duration: 33s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 38%; animation-delay: 29s; animation-duration: 41s;">إدارة الرفق بالحيوان</div>
     </div>
     
     <div class="container">
