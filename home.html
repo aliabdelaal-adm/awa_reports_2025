@@ -351,6 +351,31 @@
                 gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
             }
         ];
+        
+        // Special view screens (always visible, not controlled by config)
+        const specialViews = [
+            {
+                name: "معرض التقارير التفاعلي",
+                description: "عرض بطاقات ثلاثية الأبعاد احترافي وتفاعلي لجميع التقارير مع إمكانية الفلترة والبحث",
+                path: "gallery-view.html",
+                icon: "🎨",
+                gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
+            },
+            {
+                name: "الجدول الزمني للتقارير",
+                description: "عرض تسلسلي احترافي لجميع التقارير مرتبة زمنياً مع تأثيرات بصرية مميزة",
+                path: "timeline-view.html",
+                icon: "📅",
+                gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+            },
+            {
+                name: "لوحة المعلومات الذكية",
+                description: "لوحة تحكم تحليلية شاملة مع رسوم بيانية تفاعلية وإحصائيات متقدمة في الوقت الفعلي",
+                path: "dashboard-view.html",
+                icon: "📊",
+                gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)"
+            }
+        ];
 
         const STORAGE_KEY = "masterControlPanel";
         const OLD_STORAGE_KEY = "smartPlannerConfig";
@@ -393,6 +418,21 @@
             let html = '';
             let visibleCount = 0;
 
+            // Add special view screens first (always visible)
+            specialViews.forEach((view, index) => {
+                html += `
+                    <div class="card" onclick="navigateTo('${view.path}')">
+                        <div class="card-icon">${view.icon}</div>
+                        <h2>${view.name}</h2>
+                        <p>${view.description}</p>
+                        <a href="${view.path}" class="btn">
+                            🚀 فتح العرض
+                        </a>
+                    </div>
+                `;
+            });
+
+            // Add regular files based on visibility settings
             files.forEach((file, index) => {
                 if (isFileVisible(file.id)) {
                     visibleCount++;
@@ -423,7 +463,7 @@
                 `;
             }
 
-            if (visibleCount === 0) {
+            if (visibleCount === 0 && specialViews.length === 0) {
                 const smartPlannerLink = isAuthenticated() ? 
                     `<p style="margin-top: 20px;">
                         <a href="master-control-panel.html" style="color: #667eea; text-decoration: none; font-weight: bold; font-size: 1.1em;">
