@@ -17,7 +17,7 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e0f7ff 0%, #f0e6ff 25%, #ffe6f0 50%, #fff5e6 75%, #e6fff9 100%);
+            background: linear-gradient(135deg, #2a3d66 0%, #3d2a52 25%, #522a3d 50%, #523d2a 75%, #2a5247 100%);
             background-size: 400% 400%;
             animation: aiGradientFlow 20s ease infinite;
             direction: rtl;
@@ -28,10 +28,10 @@
         }
         
         @keyframes aiGradientFlow {
-            0%, 100% { background-position: 0% 50%; }
-            25% { background-position: 50% 25%; }
-            50% { background-position: 100% 50%; }
-            75% { background-position: 50% 75%; }
+            0%, 100% { background-position: 0% 50%; filter: brightness(0.9); }
+            25% { background-position: 50% 25%; filter: brightness(1); }
+            50% { background-position: 100% 50%; filter: brightness(0.95); }
+            75% { background-position: 50% 75%; filter: brightness(1.05); }
         }
         
         /* AI Neural Network Background Layer */
@@ -43,19 +43,22 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(34, 197, 94, 0.25) 0%, transparent 50%),
-                radial-gradient(circle at 90% 20%, rgba(251, 146, 60, 0.25) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.2) 0%, transparent 60%);
+                radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.5) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.5) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(34, 197, 94, 0.45) 0%, transparent 50%),
+                radial-gradient(circle at 90% 20%, rgba(251, 146, 60, 0.45) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.4) 0%, transparent 60%);
             animation: neuralPulse 15s ease-in-out infinite;
             z-index: 0;
             pointer-events: none;
+            filter: blur(40px);
         }
         
         @keyframes neuralPulse {
-            0%, 100% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 0.9; transform: scale(1.05); }
+            0%, 100% { opacity: 0.8; transform: scale(1) rotate(0deg); }
+            25% { opacity: 0.95; transform: scale(1.03) rotate(1deg); }
+            50% { opacity: 1; transform: scale(1.08) rotate(0deg); }
+            75% { opacity: 0.95; transform: scale(1.03) rotate(-1deg); }
         }
         
         /* AI Data Particles Layer */
@@ -67,26 +70,46 @@
             width: 100%;
             height: 100%;
             background-image: 
-                radial-gradient(3px 3px at 20% 30%, rgba(102, 126, 234, 0.6), transparent),
-                radial-gradient(3px 3px at 60% 70%, rgba(236, 72, 153, 0.6), transparent),
-                radial-gradient(2px 2px at 50% 50%, rgba(251, 146, 60, 0.5), transparent),
-                radial-gradient(2px 2px at 80% 10%, rgba(168, 85, 247, 0.5), transparent),
-                radial-gradient(3px 3px at 90% 60%, rgba(34, 197, 94, 0.6), transparent),
-                radial-gradient(2px 2px at 30% 80%, rgba(59, 130, 246, 0.5), transparent),
-                radial-gradient(2px 2px at 15% 60%, rgba(251, 191, 36, 0.5), transparent),
-                radial-gradient(3px 3px at 70% 40%, rgba(236, 72, 153, 0.5), transparent),
-                radial-gradient(2px 2px at 45% 20%, rgba(34, 197, 94, 0.4), transparent),
-                radial-gradient(3px 3px at 85% 85%, rgba(102, 126, 234, 0.5), transparent);
+                radial-gradient(4px 4px at 20% 30%, rgba(102, 126, 234, 0.9), transparent),
+                radial-gradient(4px 4px at 60% 70%, rgba(236, 72, 153, 0.9), transparent),
+                radial-gradient(3px 3px at 50% 50%, rgba(251, 146, 60, 0.8), transparent),
+                radial-gradient(3px 3px at 80% 10%, rgba(168, 85, 247, 0.8), transparent),
+                radial-gradient(4px 4px at 90% 60%, rgba(34, 197, 94, 0.9), transparent),
+                radial-gradient(3px 3px at 30% 80%, rgba(59, 130, 246, 0.8), transparent),
+                radial-gradient(3px 3px at 15% 60%, rgba(251, 191, 36, 0.8), transparent),
+                radial-gradient(4px 4px at 70% 40%, rgba(236, 72, 153, 0.8), transparent),
+                radial-gradient(3px 3px at 45% 20%, rgba(34, 197, 94, 0.7), transparent),
+                radial-gradient(4px 4px at 85% 85%, rgba(102, 126, 234, 0.8), transparent);
             background-size: 200% 200%;
-            animation: dataParticlesFloat 25s linear infinite;
+            animation: dataParticlesFloat 30s ease-in-out infinite;
             z-index: 0;
             pointer-events: none;
-            filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.8));
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 1)) 
+                    drop-shadow(0 0 15px rgba(102, 126, 234, 0.8))
+                    drop-shadow(0 0 20px rgba(236, 72, 153, 0.6));
         }
         
         @keyframes dataParticlesFloat {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 100% 100%; }
+            0% { 
+                background-position: 0% 0%; 
+                opacity: 0.7;
+            }
+            25% { 
+                background-position: 50% 25%; 
+                opacity: 0.9;
+            }
+            50% { 
+                background-position: 100% 50%; 
+                opacity: 1;
+            }
+            75% { 
+                background-position: 50% 75%; 
+                opacity: 0.9;
+            }
+            100% { 
+                background-position: 0% 100%; 
+                opacity: 0.7;
+            }
         }
         
         /* AI Grid Network Overlay */
@@ -97,17 +120,32 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(102, 126, 234, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(168, 85, 247, 0.1) 1px, transparent 1px);
+                linear-gradient(rgba(102, 126, 234, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(168, 85, 247, 0.15) 1px, transparent 1px);
             background-size: 50px 50px;
-            animation: gridPulse 10s ease-in-out infinite;
+            animation: gridPulse 12s ease-in-out infinite;
             z-index: 0;
             pointer-events: none;
+            filter: drop-shadow(0 0 3px rgba(102, 126, 234, 0.5));
         }
         
         @keyframes gridPulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 0.8; }
+            0%, 100% { 
+                opacity: 0.4; 
+                transform: scale(1);
+            }
+            25% { 
+                opacity: 0.6; 
+                transform: scale(1.01);
+            }
+            50% { 
+                opacity: 0.7; 
+                transform: scale(1.02);
+            }
+            75% { 
+                opacity: 0.6; 
+                transform: scale(1.01);
+            }
         }
         
         /* AI Document Flow Animation */
@@ -124,30 +162,61 @@
         
         .ai-doc-particle {
             position: absolute;
-            font-size: 24px;
-            opacity: 0.4;
-            animation: documentFloat 30s linear infinite;
-            filter: drop-shadow(0 0 8px rgba(102, 126, 234, 0.8));
+            font-size: 28px;
+            font-weight: 700;
+            opacity: 0;
+            animation: documentFloat 35s ease-in-out infinite;
+            filter: drop-shadow(0 0 12px rgba(102, 126, 234, 1)) 
+                    drop-shadow(0 0 20px rgba(236, 72, 153, 0.8))
+                    drop-shadow(0 0 30px rgba(168, 85, 247, 0.6));
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+            white-space: nowrap;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         @keyframes documentFloat {
             0% {
-                transform: translateY(100vh) translateX(0) rotate(0deg) scale(0.8);
+                transform: translateY(110vh) translateX(-30px) rotate(0deg) scale(0.7);
                 opacity: 0;
+                filter: brightness(0.8) blur(2px);
             }
-            10% {
-                opacity: 0.5;
+            5% {
+                opacity: 0.3;
+            }
+            15% {
+                opacity: 0.7;
+                filter: brightness(1.2) blur(0px);
+            }
+            30% {
+                opacity: 0.85;
+                transform: translateY(70vh) translateX(40px) rotate(5deg) scale(1);
+                filter: brightness(1.3) blur(0px);
             }
             50% {
-                opacity: 0.6;
-                transform: translateY(50vh) translateX(50px) rotate(180deg) scale(1.2);
+                opacity: 0.95;
+                transform: translateY(40vh) translateX(-30px) rotate(-5deg) scale(1.15);
+                filter: brightness(1.5) blur(0px);
             }
-            90% {
-                opacity: 0.5;
+            70% {
+                opacity: 0.85;
+                transform: translateY(20vh) translateX(50px) rotate(8deg) scale(1.05);
+                filter: brightness(1.3) blur(0px);
+            }
+            85% {
+                opacity: 0.6;
+                filter: brightness(1.1) blur(1px);
+            }
+            95% {
+                opacity: 0.3;
             }
             100% {
-                transform: translateY(-100px) translateX(100px) rotate(360deg) scale(0.8);
+                transform: translateY(-120px) translateX(-40px) rotate(15deg) scale(0.7);
                 opacity: 0;
+                filter: brightness(0.8) blur(3px);
             }
         }
         
@@ -164,23 +233,38 @@
         
         .circuit-line {
             position: absolute;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.6), rgba(236, 72, 153, 0.6), transparent);
-            animation: circuitFlow 8s linear infinite;
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.8), 0 0 20px rgba(236, 72, 153, 0.6);
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.9), rgba(236, 72, 153, 0.9), rgba(168, 85, 247, 0.9), transparent);
+            animation: circuitFlow 10s ease-in-out infinite;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 1), 
+                        0 0 30px rgba(236, 72, 153, 0.9),
+                        0 0 45px rgba(168, 85, 247, 0.7);
+            border-radius: 2px;
         }
         
         @keyframes circuitFlow {
             0% {
                 opacity: 0;
-                transform: translateX(-100%);
+                transform: translateX(-100%) scaleX(0.8);
+                filter: brightness(0.8);
+            }
+            25% {
+                opacity: 0.7;
+                filter: brightness(1.2);
             }
             50% {
-                opacity: 0.6;
+                opacity: 0.9;
+                transform: translateX(0%) scaleX(1.1);
+                filter: brightness(1.5);
+            }
+            75% {
+                opacity: 0.7;
+                filter: brightness(1.2);
             }
             100% {
                 opacity: 0;
-                transform: translateX(100%);
+                transform: translateX(100%) scaleX(0.8);
+                filter: brightness(0.8);
             }
         }
         
@@ -855,26 +939,26 @@
         <div class="circuit-line" style="top: 80%; width: 450px; animation-delay: 6s;"></div>
     </div>
     <div class="ai-document-flow">
-        <div class="ai-doc-particle" style="left: 10%; animation-delay: 0s;">📄</div>
-        <div class="ai-doc-particle" style="left: 25%; animation-delay: 3s;">📊</div>
-        <div class="ai-doc-particle" style="left: 40%; animation-delay: 6s;">📈</div>
-        <div class="ai-doc-particle" style="left: 55%; animation-delay: 9s;">📋</div>
-        <div class="ai-doc-particle" style="left: 70%; animation-delay: 12s;">📑</div>
-        <div class="ai-doc-particle" style="left: 85%; animation-delay: 15s;">💼</div>
-        <div class="ai-doc-particle" style="left: 15%; animation-delay: 18s;">🤖</div>
-        <div class="ai-doc-particle" style="left: 50%; animation-delay: 21s;">⚡</div>
-        <div class="ai-doc-particle" style="left: 75%; animation-delay: 24s;">🎯</div>
-        <div class="ai-doc-particle" style="left: 30%; animation-delay: 27s;">✨</div>
-        <div class="ai-doc-particle" style="left: 5%; animation-delay: 2s;">💡</div>
-        <div class="ai-doc-particle" style="left: 20%; animation-delay: 5s;">🚀</div>
-        <div class="ai-doc-particle" style="left: 35%; animation-delay: 8s;">🔬</div>
-        <div class="ai-doc-particle" style="left: 60%; animation-delay: 11s;">💻</div>
-        <div class="ai-doc-particle" style="left: 80%; animation-delay: 14s;">🎨</div>
-        <div class="ai-doc-particle" style="left: 45%; animation-delay: 17s;">🌟</div>
-        <div class="ai-doc-particle" style="left: 65%; animation-delay: 20s;">📱</div>
-        <div class="ai-doc-particle" style="left: 90%; animation-delay: 23s;">🔮</div>
-        <div class="ai-doc-particle" style="left: 12%; animation-delay: 26s;">🧠</div>
-        <div class="ai-doc-particle" style="left: 38%; animation-delay: 29s;">📚</div>
+        <div class="ai-doc-particle" style="left: 10%; animation-delay: 0s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 25%; animation-delay: 3s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 40%; animation-delay: 6s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 55%; animation-delay: 9s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 70%; animation-delay: 12s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 85%; animation-delay: 15s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 15%; animation-delay: 18s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 50%; animation-delay: 21s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 75%; animation-delay: 24s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 30%; animation-delay: 27s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 5%; animation-delay: 2s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 20%; animation-delay: 5s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 35%; animation-delay: 8s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 60%; animation-delay: 11s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 80%; animation-delay: 14s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 45%; animation-delay: 17s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 65%; animation-delay: 20s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 90%; animation-delay: 23s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 12%; animation-delay: 26s;">إدارة الرفق بالحيوان</div>
+        <div class="ai-doc-particle" style="left: 38%; animation-delay: 29s;">إدارة الرفق بالحيوان</div>
     </div>
     
     <div class="container">
