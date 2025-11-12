@@ -1302,17 +1302,6 @@
             
             // Clear search
             document.getElementById('searchInput').value = '';
-            
-            // Show notification
-            const categoryNames = {
-                'all': 'جميع العناصر',
-                'report': 'التقارير',
-                'campaign': 'الحملات',
-                'none': 'الصفحة الرئيسية'
-            };
-            if (category !== 'none') {
-                showNotification(`عرض: ${categoryNames[category] || category}`);
-            }
         }
 
         // Populate cards
