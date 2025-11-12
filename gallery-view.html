@@ -149,8 +149,8 @@
         }
         
         .card-icon {
-            font-size: 4em;
-            margin-bottom: 15px;
+            font-size: 2em;
+            margin-bottom: 10px;
             filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
             animation: float 3s ease-in-out infinite;
         }
@@ -270,6 +270,13 @@
                 width: 90%;
                 margin: 10px auto;
             }
+            
+            .back-btn {
+                padding: 6px 12px;
+                font-size: 0.75em;
+                top: 10px;
+                left: 10px;
+            }
         }
     </style>
     <link rel="stylesheet" href="ai-background.css">
@@ -278,18 +285,10 @@
     <a href="home.html" class="back-btn">🏠 العودة للرئيسية</a>
     
     <div class="header">
-        <h1>🎨 معرض التقارير التفاعلي</h1>
         <p>عرض احترافي وذكي لجميع التقارير والملفات</p>
     </div>
     
     <div class="gallery-container">
-        <div class="filter-section">
-            <button class="filter-btn active" onclick="filterGallery('all')">🗂️ الكل</button>
-            <button class="filter-btn" onclick="filterGallery('visible')">✅ المعروضة</button>
-            <button class="filter-btn" onclick="filterGallery('hidden')">❌ المخفية</button>
-            <button class="filter-btn" onclick="filterGallery('reports')">📊 التقارير</button>
-        </div>
-        
         <div class="gallery-grid" id="galleryGrid">
             <!-- Will be populated by JavaScript -->
         </div>
@@ -344,13 +343,6 @@
         // Filter gallery
         function filterGallery(filter) {
             currentFilter = filter;
-            
-            // Update button states
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
             renderGallery();
         }
         
