@@ -387,11 +387,43 @@
             box-shadow: none;
         }
         
+        /* Floating Reports Button */
+        .floating-reports-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .floating-reports-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+        
+        .floating-reports-btn:active {
+            transform: translateY(-2px);
+        }
+        
         @media print {
             body {
                 background: white;
             }
-            .nav-bar, .nav-btn, .screen-switcher {
+            .nav-bar, .nav-btn, .screen-switcher, .floating-reports-btn {
                 display: none;
             }
         }
@@ -410,9 +442,6 @@
         <div class="screen-switcher">
             <a href="home.html" class="screen-switch-btn">
                 🏠 الصفحة الرئيسية
-            </a>
-            <a href="index-old.html" class="screen-switch-btn" id="link-index">
-                📋 الخطة التحسينية
             </a>
             <a href="index2.html" class="screen-switch-btn" id="link-index2">
                 📊 التقرير الاحترافي
@@ -525,6 +554,11 @@
             <p>تم التطوير بواسطة د. علي عبدالعال | إدارة الرفق بالحيوان - بلدية مدينة أبوظبى</p>
         </div>
     </div>
+    
+    <!-- Floating Reports Button -->
+    <a href="index-old.html" class="floating-reports-btn" title="الخطة التحسينية المستمرة">
+        📋 التقارير
+    </a>
     
     <script>
         let analyticsData = null;
@@ -1071,6 +1105,12 @@
                 const navBar = document.querySelector('.nav-bar');
                 if (navBar) {
                     navBar.style.display = 'none';
+                }
+                
+                // Hide floating reports button
+                const floatingBtn = document.querySelector('.floating-reports-btn');
+                if (floatingBtn) {
+                    floatingBtn.style.display = 'none';
                 }
             }
         }
