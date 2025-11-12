@@ -285,108 +285,32 @@
     <a href="home.html" class="back-btn">🏠 العودة للرئيسية</a>
     
     <div class="header">
+        <h1>🎨 معرض التقارير التفاعلي</h1>
         <p>عرض احترافي وذكي لجميع التقارير والملفات</p>
     </div>
     
     <div class="gallery-container">
-        <div class="gallery-grid" id="galleryGrid">
-            <!-- Will be populated by JavaScript -->
-        </div>
-        
-        <div class="empty-state" id="emptyState" style="display: none;">
-            <h2>📭</h2>
-            <p>لا توجد ملفات تطابق الفلتر المحدد</p>
+        <!-- Content from index-old.html -->
+        <div class="content-frame">
+            <iframe src="index-old.html" style="width: 100%; min-height: 800px; border: none; border-radius: 15px; background: white; box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3);"></iframe>
         </div>
     </div>
 
     <script>
-        const STORAGE_KEY = "masterControlPanel";
-        const OLD_STORAGE_KEY = "smartPlannerConfig";
-        
-        // File definitions
-        const files = [];
-        
-        let currentFilter = 'all';
-        
-        // Get configuration
-        function getConfig() {
-            let stored = localStorage.getItem(STORAGE_KEY);
-            if (!stored) {
-                stored = localStorage.getItem(OLD_STORAGE_KEY);
-            }
-            return stored ? JSON.parse(stored) : {};
-        }
-        
-        // Check visibility
-        function isFileVisible(fileId) {
-            const config = getConfig();
-            const file = files.find(f => f.id === fileId);
-            if (config.visibility && config.visibility[fileId] !== undefined) {
-                return config.visibility[fileId];
-            }
-            if (config[fileId] !== undefined) {
-                return config[fileId];
-            }
-            return file ? file.defaultVisible : true;
-        }
-        
-        // Filter gallery
-        function filterGallery(filter) {
-            currentFilter = filter;
-            renderGallery();
-        }
-        
-        // Render gallery
-        function renderGallery() {
-            const grid = document.getElementById('galleryGrid');
-            const emptyState = document.getElementById('emptyState');
-            let html = '';
-            let count = 0;
-            
-            files.forEach(file => {
-                const visible = isFileVisible(file.id);
-                
-                // Apply filter
-                if (currentFilter === 'visible' && !visible) return;
-                if (currentFilter === 'hidden' && visible) return;
-                if (currentFilter === 'reports' && file.category !== 'report') return;
-                
-                count++;
-                
-                const statusClass = visible ? 'status-visible' : 'status-hidden';
-                const statusText = visible ? '✅ معروض' : '❌ مخفي';
-                
-                html += `
-                    <div class="gallery-card">
-                        <div class="card-header">
-                            <div class="card-icon">${file.icon}</div>
-                        </div>
-                        <div class="card-body">
-                            <div class="card-status ${statusClass}">${statusText}</div>
-                            <div class="card-title">${file.name}</div>
-                            <div class="card-description">${file.description}</div>
-                            <div class="card-actions">
-                                <a href="${file.path}" target="_blank" class="action-btn">👁️ عرض</a>
-                                <a href="${file.path}" download class="action-btn">💾 تحميل</a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            if (count === 0) {
-                grid.style.display = 'none';
-                emptyState.style.display = 'block';
-            } else {
-                grid.style.display = 'grid';
-                emptyState.style.display = 'none';
-                grid.innerHTML = html;
-            }
-        }
-        
-        // Initialize
+        // Auto-resize iframe based on content
         window.addEventListener('DOMContentLoaded', function() {
-            renderGallery();
+            const iframe = document.querySelector('iframe');
+            if (iframe) {
+                iframe.addEventListener('load', function() {
+                    try {
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        const height = iframeDoc.body.scrollHeight;
+                        iframe.style.height = height + 'px';
+                    } catch (e) {
+                        console.log('Cannot auto-resize iframe due to cross-origin restrictions');
+                    }
+                });
+            }
         });
     </script>
     <script src="ai-background.js"></script>
