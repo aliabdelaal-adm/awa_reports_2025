@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام التقارير - إدارة الصحة العامة</title>
+    <title>بلدية مدينة أبوظبي - Transit Screen Saver</title>
     <style>
         * {
             margin: 0;
@@ -11,1140 +11,334 @@
             box-sizing: border-box;
         }
         
-        html {
-            scroll-behavior: smooth;
-        }
-        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
-            background-size: 400% 400%;
-            animation: gradientAnimation 15s ease infinite;
+            background: #000;
             direction: rtl;
-            min-height: 100vh;
-            padding: 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
-        
-        @keyframes gradientAnimation {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        
-        body::before,
-        body::after {
-            content: '';
-            position: fixed;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            opacity: 0.1;
-            z-index: 0;
-            pointer-events: none;
-        }
-        
-        body::before {
-            background: radial-gradient(circle, #fff 0%, transparent 70%);
-            top: -150px;
-            left: -150px;
-            animation: float 8s ease-in-out infinite;
-        }
-        
-        body::after {
-            background: radial-gradient(circle, #fff 0%, transparent 70%);
-            bottom: -150px;
-            right: -150px;
-            animation: float 12s ease-in-out infinite reverse;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(5deg); }
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-            padding-bottom: 100px; /* Space for bottom navigation */
-        }
-        
-        .header {
-            text-align: center;
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-            margin-bottom: 30px;
-            animation: slideDown 0.8s ease;
-        }
-        
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .header h1 {
-            font-size: 3em;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 3s ease infinite;
-        }
-        
-        @keyframes shimmer {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-        }
-        
-        .header p {
-            font-size: 1.3em;
-            color: #555;
-            margin-bottom: 5px;
-        }
-        
-        .header .subtitle {
-            font-size: 1.1em;
-            color: #777;
-            font-style: italic;
-        }
-        
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        .card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
-            backdrop-filter: blur(10px);
-            padding: 35px;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-            transition: all 0.4s ease;
-            cursor: pointer;
-            position: relative;
             overflow: hidden;
-            animation: fadeInUp 0.8s ease;
-            animation-fill-mode: both;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
         }
         
-        .card:nth-child(1) { animation-delay: 0.1s; }
-        .card:nth-child(2) { animation-delay: 0.2s; }
-        .card:nth-child(3) { animation-delay: 0.3s; }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .card::before {
-            content: '';
-            position: absolute;
+        /* Video container - fullscreen */
+        .video-container {
+            position: fixed;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.7s ease;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
         }
         
-        .card:hover::before {
-            left: 100%;
+        #screenSaverVideo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
         }
         
-        .card:hover {
-            transform: translateY(-15px) scale(1.03);
-            box-shadow: 0 25px 60px rgba(102, 126, 234, 0.4);
+        /* Logo overlay */
+        .logo-overlay {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1s ease;
         }
         
-        .card-icon {
-            font-size: 4em;
-            margin-bottom: 20px;
-            text-align: center;
-            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
-            animation: bounce 2s ease-in-out infinite;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .card h2 {
-            color: #2c3e50;
+        .logo-overlay h1 {
             font-size: 1.8em;
-            margin-bottom: 15px;
-            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-weight: bold;
         }
         
-        .card p {
-            color: #666;
-            line-height: 1.8;
-            text-align: center;
-            font-size: 1.05em;
+        .logo-overlay p {
+            font-size: 1em;
+            color: #555;
+            margin: 3px 0;
         }
         
-        .card .btn {
-            display: block;
-            margin-top: 25px;
+        /* Video controls overlay */
+        .controls-overlay {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.8);
             padding: 15px 30px;
+            border-radius: 50px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .controls-overlay.visible {
+            opacity: 1;
+        }
+        
+        .control-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 10px;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        /* Dashboard link button */
+        .dashboard-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 10;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
             text-decoration: none;
-            border-radius: 10px;
-            text-align: center;
             font-weight: bold;
-            font-size: 1.1em;
+            font-size: 1em;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        .card .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.5);
+        .dashboard-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6);
         }
         
-        .admin-card {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        /* Placeholder message for missing video */
+        .placeholder-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
             color: white;
+            z-index: 5;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 40px 60px;
+            border-radius: 20px;
+            max-width: 600px;
         }
         
-        .admin-card h2,
-        .admin-card p {
-            color: white;
+        .placeholder-message h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #fff;
         }
         
-        .admin-card .btn {
-            background: white;
-            color: #f5576c;
-        }
-        
-        .admin-card .btn:hover {
-            background: rgba(255, 255, 255, 0.9);
+        .placeholder-message p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 10px;
         }
         
         .hidden {
             display: none !important;
         }
         
-        .footer {
-            background: #f8f9fa;
-            color: #555;
-            padding: 8px 20px;
-            text-align: center;
-            font-size: 0.85em;
-            border-top: 1px solid #e0e0e0;
-            border-radius: 0 0 20px 20px;
-        }
-        
-        .footer p {
-            margin: 3px 0;
-        }
-        
-        .no-files-message {
-            text-align: center;
-            padding: 60px 20px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-            animation: fadeInUp 0.8s ease;
-        }
-        
-        .no-files-message h2 {
-            color: #2c3e50;
-            font-size: 2.5em;
-            margin-bottom: 20px;
-        }
-        
-        .no-files-message p {
-            color: #666;
-            font-size: 1.2em;
-            line-height: 1.8;
-        }
-        
-        /* Search Bar Styles */
-        .search-container {
-            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-            margin-bottom: 30px;
-            animation: fadeInUp 0.8s ease;
-            animation-delay: 0.2s;
-            animation-fill-mode: both;
-        }
-        
-        .search-box {
-            display: flex;
-            align-items: center;
-            background: white;
-            border-radius: 50px;
-            padding: 15px 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .search-box:focus-within {
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .search-icon {
-            font-size: 1.5em;
-            margin-left: 15px;
-            color: #667eea;
-        }
-        
-        .search-input {
-            flex: 1;
-            border: none;
-            outline: none;
-            font-size: 1.1em;
-            padding: 5px;
-            background: transparent;
-        }
-        
-        .search-input::placeholder {
-            color: #999;
-        }
-        
-        /* Bottom Navigation Bar */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.95) 100%);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
-            padding: 15px 0;
-            z-index: 1000;
-            animation: slideUp 0.5s ease;
-            /* Additional fixes for mobile browsers */
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            will-change: transform;
-        }
-        
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(100%);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes fadeOut {
-            from {
-                opacity: 1;
-            }
-            to {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-        
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 15px;
-            text-decoration: none;
-            color: #666;
-        }
-        
-        .nav-item:hover {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-            transform: translateY(-5px);
-        }
-        
-        .nav-item.active {
-            color: #667eea;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-        }
-        
-        .nav-icon {
-            font-size: 1.8em;
-            transition: transform 0.3s ease;
-        }
-        
-        .nav-item:hover .nav-icon {
-            transform: scale(1.2);
-        }
-        
-        .nav-label {
-            font-size: 0.9em;
-            font-weight: 600;
-        }
-        
-        /* Reports Filter Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 2000;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .modal.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .modal-content {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            animation: zoomIn 0.3s ease;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-        
-        @keyframes zoomIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-        
-        .modal-title {
-            font-size: 1.8em;
-            color: #2c3e50;
-            font-weight: bold;
-        }
-        
-        .close-btn {
-            font-size: 2em;
-            cursor: pointer;
-            color: #999;
-            transition: all 0.3s ease;
-            border: none;
-            background: none;
-        }
-        
-        .close-btn:hover {
-            color: #f5576c;
-            transform: rotate(90deg);
-        }
-        
-        .filter-group {
-            margin-bottom: 20px;
-        }
-        
-        .filter-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 1.1em;
-        }
-        
-        .filter-input, .filter-select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1em;
-            transition: all 0.3s ease;
-            background: white;
-        }
-        
-        .filter-input:focus, .filter-select:focus {
-            border-color: #667eea;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .filter-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-        }
-        
-        .filter-btn {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .filter-btn.primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .filter-btn.primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-        }
-        
-        .filter-btn.secondary {
-            background: #f0f0f0;
-            color: #666;
-        }
-        
-        .filter-btn.secondary:hover {
-            background: #e0e0e0;
-        }
-        
-        /* User Login Modal */
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .login-icon {
-            text-align: center;
-            font-size: 4em;
-            margin-bottom: 10px;
-        }
-        
-        .login-title {
-            text-align: center;
-            font-size: 1.5em;
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
-        
-        /* Report Category Badge */
-        .category-badge {
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-            margin-top: 10px;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-            color: #667eea;
-        }
-        
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2em;
+            .logo-overlay {
+                top: 15px;
+                right: 15px;
+                padding: 15px 20px;
             }
             
-            .cards-container {
-                grid-template-columns: 1fr;
-                gap: 20px;
+            .logo-overlay h1 {
+                font-size: 1.3em;
             }
             
-            .card {
-                padding: 25px;
+            .logo-overlay p {
+                font-size: 0.85em;
             }
             
-            .card-icon {
-                font-size: 3em;
+            .dashboard-btn {
+                bottom: 15px;
+                right: 15px;
+                padding: 12px 20px;
+                font-size: 0.9em;
             }
             
-            .modal-content {
-                padding: 25px;
-                width: 95%;
+            .controls-overlay {
+                bottom: 15px;
+                padding: 10px 20px;
+                gap: 15px;
             }
             
-            .nav-item {
-                padding: 8px 12px;
+            .control-btn {
+                font-size: 1.2em;
+                padding: 8px;
             }
             
-            .nav-icon {
+            .placeholder-message {
+                padding: 30px 40px;
+                max-width: 90%;
+            }
+            
+            .placeholder-message h2 {
                 font-size: 1.5em;
             }
             
-            .nav-label {
-                font-size: 0.75em;
-            }
-            
-            /* Ensure bottom navigation stays fixed on mobile */
-            .bottom-nav {
-                position: fixed;
-                bottom: 0;
-                /* Force GPU acceleration for better performance */
-                -webkit-backface-visibility: hidden;
-                backface-visibility: hidden;
-                -webkit-perspective: 1000;
-                perspective: 1000;
-            }
-            
-            /* Ensure container has proper padding for scrolling */
-            .container {
-                padding-bottom: 120px; /* Increased space for bottom nav on mobile */
+            .placeholder-message p {
+                font-size: 1em;
             }
         }
     </style>
-    <link rel="stylesheet" href="ai-background.css">
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🏥 نظام التقارير الإلكترونية</h1>
-            <p>إدارة الصحة العامة - قسم الرقابة والرفق بالحيوان</p>
-            <p class="subtitle">بلدية مدينة أبوظبي</p>
-        </div>
-
-        <!-- Search Bar -->
-        <div class="search-container">
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" id="searchInput" placeholder="ابحث عن التقارير بالاسم أو النوع..." onkeyup="filterReports()">
-            </div>
-        </div>
-
-        <div class="cards-container" id="cardsContainer">
-            <!-- Will be populated by JavaScript -->
-        </div>
-
-        <div class="footer">
-            <p>تم التطوير بواسطة د. علي عبدالعال | إدارة الرفق بالحيوان - بلدية مدينة أبوظبى</p>
-        </div>
+    <!-- Logo Overlay -->
+    <div class="logo-overlay">
+        <h1>🏛️ بلدية مدينة أبوظبي</h1>
+        <p>Abu Dhabi Municipality</p>
+        <p>إدارة الصحة العامة</p>
     </div>
 
-    <!-- Bottom Navigation Bar -->
-    <div class="bottom-nav">
-        <div class="nav-container">
-            <a href="home.html" class="nav-item active">
-                <div class="nav-icon">🏠</div>
-                <div class="nav-label">الرئيسية</div>
-            </a>
-            <div class="nav-item" onclick="openReportsModal()">
-                <div class="nav-icon">📊</div>
-                <div class="nav-label">التقارير</div>
-            </div>
-            <div class="nav-item" onclick="openCampaignsModal()">
-                <div class="nav-icon">📢</div>
-                <div class="nav-label">الحملات</div>
-            </div>
-        </div>
+    <!-- Video Container -->
+    <div class="video-container">
+        <video id="screenSaverVideo" autoplay loop muted playsinline>
+            <source src="transit screen saver video.mp4" type="video/mp4">
+            <p>متصفحك لا يدعم عرض الفيديو.</p>
+        </video>
     </div>
 
-    <!-- Reports Filter Modal -->
-    <div class="modal" id="reportsModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">🔍 فلترة التقارير</h2>
-                <button class="close-btn" onclick="closeModal('reportsModal')">&times;</button>
-            </div>
-            <div class="filter-group">
-                <label class="filter-label">البحث بالاسم</label>
-                <input type="text" class="filter-input" id="filterName" placeholder="اسم التقرير...">
-            </div>
-            <div class="filter-group">
-                <label class="filter-label">التاريخ</label>
-                <input type="date" class="filter-input" id="filterDate">
-            </div>
-            <div class="filter-group">
-                <label class="filter-label">السنة</label>
-                <select class="filter-select" id="filterYear">
-                    <option value="">جميع السنوات</option>
-                    <option value="2025">2025</option>
-                    <option value="2024">2024</option>
-                    <option value="2023">2023</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label class="filter-label">نوع التقرير</label>
-                <select class="filter-select" id="filterType">
-                    <option value="">جميع الأنواع</option>
-                    <option value="plan">خطة تحسينية</option>
-                    <option value="awareness">تقارير توعية</option>
-                    <option value="inspection">تقارير تفتيش</option>
-                    <option value="statistics">إحصائيات</option>
-                </select>
-            </div>
-            <div class="filter-buttons">
-                <button class="filter-btn primary" onclick="applyFilters()">تطبيق الفلترة</button>
-                <button class="filter-btn secondary" onclick="resetFilters()">إعادة تعيين</button>
-            </div>
-        </div>
+    <!-- Placeholder Message (shown if video not found) -->
+    <div id="placeholderMessage" class="placeholder-message hidden">
+        <h2>🎬 فيديو Transit Screen Saver</h2>
+        <p>لعرض الفيديو، يرجى رفع الملف:</p>
+        <p><strong>"transit screen saver video.mp4"</strong></p>
+        <p>إلى المجلد الرئيسي للمشروع</p>
     </div>
 
-    <!-- User Login Modal -->
-    <div class="modal" id="loginModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">🔐 تسجيل الدخول</h2>
-                <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
-            </div>
-            <div class="login-form">
-                <div class="login-icon">👤</div>
-                <p class="login-title">تسجيل الدخول بالهوية الرقمية</p>
-                <div class="filter-group">
-                    <label class="filter-label">اسم المستخدم</label>
-                    <input type="text" class="filter-input" id="loginUsername" placeholder="أدخل اسم المستخدم">
-                </div>
-                <div class="filter-group">
-                    <label class="filter-label">كلمة المرور</label>
-                    <input type="password" class="filter-input" id="loginPassword" placeholder="أدخل كلمة المرور">
-                </div>
-                <div class="filter-buttons">
-                    <button class="filter-btn primary" onclick="handleLogin()">تسجيل الدخول</button>
-                    <button class="filter-btn secondary" onclick="closeModal('loginModal')">إلغاء</button>
-                </div>
-                <p style="text-align: center; color: #666; font-size: 0.9em; margin-top: 15px;">
-                    💡 استخدم الهوية الرقمية للاطلاع على المزيد من المعلومات
-                </p>
-            </div>
-        </div>
+    <!-- Video Controls Overlay -->
+    <div class="controls-overlay" id="controlsOverlay">
+        <button class="control-btn" id="playPauseBtn" title="تشغيل/إيقاف">▶️</button>
+        <button class="control-btn" id="muteBtn" title="كتم الصوت">🔊</button>
+        <button class="control-btn" id="fullscreenBtn" title="ملء الشاشة">⛶</button>
     </div>
 
-    <!-- Campaigns Modal -->
-    <div class="modal" id="campaignsModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">📢 حملات التوعية والإرشاد</h2>
-                <button class="close-btn" onclick="closeModal('campaignsModal')">&times;</button>
-            </div>
-            <div id="campaignsContent" style="display: grid; grid-template-columns: 1fr; gap: 20px;">
-                <!-- Will be populated by JavaScript -->
-            </div>
-        </div>
-    </div>
+    <!-- Dashboard Link Button -->
+    <a href="index-dashboard.html" class="dashboard-btn">
+        <span>📊</span>
+        <span>لوحة التقارير</span>
+    </a>
 
     <script>
-        // File definitions (matching smart-planner.html)
-        const files = [
-            {
-                id: "index2",
-                name: "تقرير التوعية الاحترافي",
-                description: "تقرير تفصيلي عن برنامج التوعية والتدريب لموظفي محلات بيع الحيوانات الأليفة مع معرض الصور",
-                path: "index2.html",
-                icon: "📊",
-                defaultVisible: true,
-                gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-                category: "تقارير توعية",
-                type: "awareness",
-                year: "2024"
-            },
-            {
-                id: "awareness-campaign",
-                name: "تقرير حملات التوعية والتوجيه والإرشاد الموحد",
-                description: "تقرير شامل يدمج بيانات حملات تسجيل المنشآت ورعاية الحيوانات مع تحليلات ذكية ورؤى استراتيجية ونتائج متوقعة",
-                path: "awareness-campaign-report.html",
-                icon: "📊",
-                defaultVisible: false,
-                gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-                category: "حملات توعية",
-                type: "awareness",
-                year: "2024-2025"
-            },
-            {
-                id: "developer-panel",
-                name: "لوحة المطور",
-                description: "لوحة إدارة خطة التفتيش الشهرية وتوزيع المحلات على المفتشين",
-                path: "developer-panel_Version4.html",
-                icon: "🔧",
-                defaultVisible: false,
-                gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-                category: "إدارة",
-                type: "inspection",
-                year: "2024-2025"
-            }
-        ];
-        
-        // Campaign files (accessible from bottom navigation campaigns button)
-        const campaignFiles = [
-            {
-                id: "index2",
-                name: "تقرير التوعية الاحترافي",
-                description: "تقرير تفصيلي عن برنامج التوعية والتدريب لموظفي محلات بيع الحيوانات الأليفة مع معرض الصور",
-                path: "index2.html",
-                icon: "📊",
-                gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-                type: "campaign",
-                year: "2024"
-            },
-            {
-                id: "awareness-campaign",
-                name: "تقرير حملات التوعية والتوجيه والإرشاد الموحد",
-                description: "تقرير شامل يدمج بيانات حملات تسجيل المنشآت ورعاية الحيوانات مع تحليلات ذكية ورؤى استراتيجية ونتائج متوقعة",
-                path: "awareness-campaign-report.html",
-                icon: "📢",
-                gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-                type: "campaign",
-                year: "2024-2025"
-            }
-        ];
-        
-        // Special view screens (always visible, not controlled by config)
-        const specialViews = [
-            {
-                name: "معرض التقارير التفاعلي",
-                description: "عرض بطاقات ثلاثية الأبعاد احترافي وتفاعلي لجميع التقارير مع إمكانية الفلترة والبحث",
-                path: "gallery-view.html",
-                icon: "🎨",
-                gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
-            },
-            {
-                name: "الجدول الزمني للتقارير",
-                description: "عرض تسلسلي احترافي لجميع التقارير مرتبة زمنياً مع تأثيرات بصرية مميزة",
-                path: "timeline-view.html",
-                icon: "📅",
-                gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-            },
-            {
-                name: "لوحة المعلومات الذكية",
-                description: "لوحة تحكم تحليلية شاملة مع رسوم بيانية تفاعلية وإحصائيات متقدمة في الوقت الفعلي",
-                path: "dashboard-view.html",
-                icon: "📊",
-                gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)"
-            }
-        ];
+        // Transit Screen Saver Video Player
+        const video = document.getElementById('screenSaverVideo');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const muteBtn = document.getElementById('muteBtn');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const controlsOverlay = document.getElementById('controlsOverlay');
+        const placeholderMessage = document.getElementById('placeholderMessage');
 
-        const STORAGE_KEY = "masterControlPanel";
-        const OLD_STORAGE_KEY = "smartPlannerConfig";
-        let currentFilters = {
-            name: '',
-            date: '',
-            year: '',
-            type: ''
-        };
-
-        // ⚠️ SECURITY NOTE: This uses client-side authentication only.
-        // For production with sensitive data, implement server-side authentication.
-        // Client-side checks can be bypassed via browser developer tools.
-        
-        // Check if user is authenticated
-        function isAuthenticated() {
-            return localStorage.getItem('masterAuth') === 'true' || localStorage.getItem('smartPlannerAuth') === 'true';
-        }
-
-        // Get configuration from localStorage (check both new and old keys)
-        function getConfig() {
-            let stored = localStorage.getItem(STORAGE_KEY);
-            if (!stored) {
-                stored = localStorage.getItem(OLD_STORAGE_KEY);
-            }
-            return stored ? JSON.parse(stored) : {};
-        }
-
-        // Check if file is visible
-        function isFileVisible(fileId) {
-            const config = getConfig();
-            const file = files.find(f => f.id === fileId);
-            // Check both visibility config formats
-            if (config.visibility && config.visibility[fileId] !== undefined) {
-                return config.visibility[fileId];
-            }
-            if (config[fileId] !== undefined) {
-                return config[fileId];
-            }
-            return file ? file.defaultVisible : true;
-        }
-
-        // Filter reports by search input
-        function filterReports() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.card:not(.admin-card)');
-            
-            cards.forEach(card => {
-                const title = card.querySelector('h2').textContent.toLowerCase();
-                const description = card.querySelector('p').textContent.toLowerCase();
-                
-                if (title.includes(searchTerm) || description.includes(searchTerm)) {
-                    card.style.display = '';
-                    card.style.animation = 'fadeInUp 0.5s ease';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        // Populate cards
-        function populateCards(filteredFiles = null) {
-            const container = document.getElementById('cardsContainer');
-            let html = '';
-            let visibleCount = 0;
-            const filesToShow = filteredFiles || files;
-
-            // Add special view screens first (always visible)
-            specialViews.forEach((view, index) => {
-                html += `
-                    <div class="card" onclick="navigateTo('${view.path}')">
-                        <div class="card-icon">${view.icon}</div>
-                        <h2>${view.name}</h2>
-                        <p>${view.description}</p>
-                        <a href="${view.path}" class="btn">
-                            🚀 فتح العرض
-                        </a>
-                    </div>
-                `;
-            });
-
-            // Add regular files based on visibility settings
-            filesToShow.forEach((file, index) => {
-                if (isFileVisible(file.id)) {
-                    visibleCount++;
-                    html += `
-                        <div class="card" onclick="navigateTo('${file.path}')" data-type="${file.type}" data-year="${file.year}">
-                            <div class="card-icon">${file.icon}</div>
-                            <h2>${file.name}</h2>
-                            <p>${file.description}</p>
-                            <span class="category-badge">${file.category}</span>
-                            <a href="${file.path}" class="btn">
-                                📂 فتح التقرير
-                            </a>
-                        </div>
-                    `;
-                }
-            });
-
-            // Add admin card (only if authenticated)
-            if (isAuthenticated()) {
-                html += `
-                    <div class="card admin-card">
-                        <div class="card-icon">🎛️</div>
-                        <h2>لوحة التحكم الرئيسية الموحدة</h2>
-                        <p>نظام إدارة المحتوى الشامل - التحكم الكامل في جميع التقارير والملفات</p>
-                        <a href="master-control-panel.html" class="btn">
-                            🔐 دخول لوحة التحكم الرئيسية
-                        </a>
-                    </div>
-                `;
-            }
-
-            if (visibleCount === 0 && specialViews.length === 0) {
-                const smartPlannerLink = isAuthenticated() ? 
-                    `<p style="margin-top: 20px;">
-                        <a href="master-control-panel.html" style="color: #667eea; text-decoration: none; font-weight: bold; font-size: 1.1em;">
-                            🔐 دخول لوحة التحكم الرئيسية
-                        </a>
-                    </p>` : '';
-                    
-                html = `
-                    <div class="no-files-message">
-                        <h2>📁 لا توجد تقارير معروضة حالياً</h2>
-                        <p>لم يتم تفعيل أي تقارير للعرض من قبل المطور.</p>
-                        ${smartPlannerLink}
-                    </div>
-                `;
-            }
-
-            container.innerHTML = html;
-        }
-
-        function navigateTo(path) {
-            window.location.href = path;
-        }
-
-        // Modal functions
-        function openReportsModal() {
-            document.getElementById('reportsModal').classList.add('active');
-        }
-
-        function openLoginModal() {
-            document.getElementById('loginModal').classList.add('active');
-        }
-
-        function openCampaignsModal() {
-            const modal = document.getElementById('campaignsModal');
-            const content = document.getElementById('campaignsContent');
-            
-            // Populate campaigns
-            let html = '';
-            campaignFiles.forEach(campaign => {
-                html += `
-                    <div class="card" style="margin: 0; cursor: pointer;" onclick="navigateTo('${campaign.path}')">
-                        <div class="card-icon">${campaign.icon}</div>
-                        <h2>${campaign.name}</h2>
-                        <p>${campaign.description}</p>
-                        <a href="${campaign.path}" class="btn">
-                            📂 فتح الحملة
-                        </a>
-                    </div>
-                `;
-            });
-            content.innerHTML = html;
-            modal.classList.add('active');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-
-        // Close modal when clicking outside
-        window.addEventListener('click', function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.classList.remove('active');
-            }
-        });
-
-        // Apply filters
-        function applyFilters() {
-            const nameFilter = document.getElementById('filterName').value.toLowerCase();
-            const dateFilter = document.getElementById('filterDate').value;
-            const yearFilter = document.getElementById('filterYear').value;
-            const typeFilter = document.getElementById('filterType').value;
-
-            currentFilters = {
-                name: nameFilter,
-                date: dateFilter,
-                year: yearFilter,
-                type: typeFilter
-            };
-
-            const filteredFiles = files.filter(file => {
-                let matches = true;
-
-                if (nameFilter && !file.name.toLowerCase().includes(nameFilter)) {
-                    matches = false;
-                }
-
-                if (yearFilter && !file.year.includes(yearFilter)) {
-                    matches = false;
-                }
-
-                if (typeFilter && file.type !== typeFilter) {
-                    matches = false;
-                }
-
-                return matches;
-            });
-
-            populateCards(filteredFiles);
-            closeModal('reportsModal');
-
-            // Show notification
-            showNotification(`تم العثور على ${filteredFiles.length} تقرير`);
-        }
-
-        // Reset filters
-        function resetFilters() {
-            document.getElementById('filterName').value = '';
-            document.getElementById('filterDate').value = '';
-            document.getElementById('filterYear').value = '';
-            document.getElementById('filterType').value = '';
-            currentFilters = { name: '', date: '', year: '', type: '' };
-            populateCards();
-            closeModal('reportsModal');
-            showNotification('تم إعادة تعيين الفلاتر');
-        }
-
-        // Handle login
-        function handleLogin() {
-            const username = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
-
-            if (!username || !password) {
-                showNotification('⚠️ يرجى إدخال اسم المستخدم وكلمة المرور', 'warning');
-                return;
-            }
-
-            // Simple authentication (in production, use proper backend authentication)
-            if (password === '1940') {
-                localStorage.setItem('smartPlannerAuth', 'true');
-                localStorage.setItem('currentUser', username);
-                showNotification('✅ تم تسجيل الدخول بنجاح!', 'success');
-                closeModal('loginModal');
-                populateCards(); // Refresh to show admin card
-            } else {
-                showNotification('❌ كلمة المرور غير صحيحة', 'error');
-            }
-        }
-
-        // Show notification
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.textContent = message;
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: ${type === 'success' ? '#43e97b' : type === 'warning' ? '#ffce56' : '#f5576c'};
-                color: white;
-                padding: 15px 30px;
-                border-radius: 10px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-                z-index: 3000;
-                font-weight: 600;
-                animation: slideDown 0.5s ease;
-            `;
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                notification.style.animation = 'fadeOut 0.5s ease';
-                setTimeout(() => notification.remove(), 500);
+        // Show controls on mouse move
+        let hideControlsTimeout;
+        document.addEventListener('mousemove', function() {
+            controlsOverlay.classList.add('visible');
+            clearTimeout(hideControlsTimeout);
+            hideControlsTimeout = setTimeout(() => {
+                controlsOverlay.classList.remove('visible');
             }, 3000);
-        }
-
-        // Initialize on page load
-        window.addEventListener('DOMContentLoaded', function() {
-            populateCards();
-            
-            // Add keyboard shortcut for search (Ctrl+K or Cmd+K)
-            document.addEventListener('keydown', function(e) {
-                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                    e.preventDefault();
-                    document.getElementById('searchInput').focus();
-                }
-            });
         });
+
+        // Check if video loads successfully
+        video.addEventListener('error', function() {
+            console.error('Video failed to load');
+            placeholderMessage.classList.remove('hidden');
+        });
+
+        video.addEventListener('loadeddata', function() {
+            placeholderMessage.classList.add('hidden');
+        });
+
+        // Play/Pause button
+        playPauseBtn.addEventListener('click', function() {
+            if (video.paused) {
+                video.play();
+                playPauseBtn.textContent = '⏸️';
+                playPauseBtn.title = 'إيقاف';
+            } else {
+                video.pause();
+                playPauseBtn.textContent = '▶️';
+                playPauseBtn.title = 'تشغيل';
+            }
+        });
+
+        // Mute button
+        muteBtn.addEventListener('click', function() {
+            video.muted = !video.muted;
+            muteBtn.textContent = video.muted ? '🔇' : '🔊';
+            muteBtn.title = video.muted ? 'تشغيل الصوت' : 'كتم الصوت';
+        });
+
+        // Fullscreen button
+        fullscreenBtn.addEventListener('click', function() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error('Error attempting to enable fullscreen:', err);
+                });
+                fullscreenBtn.textContent = '⛶';
+                fullscreenBtn.title = 'خروج من ملء الشاشة';
+            } else {
+                document.exitFullscreen();
+                fullscreenBtn.textContent = '⛶';
+                fullscreenBtn.title = 'ملء الشاشة';
+            }
+        });
+
+        // Update play/pause button when video state changes
+        video.addEventListener('play', function() {
+            playPauseBtn.textContent = '⏸️';
+            playPauseBtn.title = 'إيقاف';
+        });
+
+        video.addEventListener('pause', function() {
+            playPauseBtn.textContent = '▶️';
+            playPauseBtn.title = 'تشغيل';
+        });
+
+        // Space bar to play/pause
+        document.addEventListener('keydown', function(e) {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                playPauseBtn.click();
+            }
+        });
+
+        // Log for debugging
+        console.log('Transit Screen Saver Video Player initialized');
+        console.log('Video source:', video.querySelector('source').src);
     </script>
-    <script src="ai-background.js"></script>
 </body>
 </html>
