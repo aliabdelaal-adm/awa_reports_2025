@@ -1094,20 +1094,6 @@
         // File definitions with detailed categorization
         const files = [
             {
-                id: "developer-panel",
-                name: "لوحة المطور",
-                description: "لوحة إدارة خطة التفتيش الشهرية وتوزيع المحلات على المفتشين",
-                path: "developer-panel_Version4.html",
-                icon: "🔧",
-                defaultVisible: false,
-                gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-                category: "لوحات التحكم",
-                mainCategory: "report",
-                type: "inspection",
-                year: "2024-2025",
-                developerOnly: true
-            },
-            {
                 id: "plan-data",
                 name: "بيانات الخطة التفصيلية",
                 description: "عرض تفصيلي لبيانات خطة التفتيش الشهرية مع إمكانية التصدير والطباعة",
@@ -1132,20 +1118,6 @@
                 category: "التقارير",
                 mainCategory: "report",
                 type: "report",
-                year: "2024-2025",
-                developerOnly: true
-            },
-            {
-                id: "unified-control",
-                name: "لوحة التحكم الموحدة",
-                description: "لوحة تحكم موحدة شاملة لإدارة جميع أنظمة التقارير والحملات",
-                path: "unified-control-panel.html",
-                icon: "🎛️",
-                defaultVisible: false,
-                gradient: "linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)",
-                category: "لوحات التحكم",
-                mainCategory: "report",
-                type: "control",
                 year: "2024-2025",
                 developerOnly: true
             }
@@ -1426,20 +1398,6 @@
                 
                 html += `</div></div>`;
             });
-
-            // Add admin card (only if authenticated)
-            if (isAuthenticated()) {
-                html += `
-                    <div class="card admin-card">
-                        <div class="card-icon">🎛️</div>
-                        <h2>لوحة التحكم الرئيسية الموحدة</h2>
-                        <p>نظام إدارة المحتوى الشامل - التحكم الكامل في جميع التقارير والملفات</p>
-                        <a href="master-control-panel.html" class="btn">
-                            🔐 دخول لوحة التحكم الرئيسية
-                        </a>
-                    </div>
-                `;
-            }
 
             container.innerHTML = html;
             
