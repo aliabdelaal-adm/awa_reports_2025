@@ -1081,7 +1081,7 @@
     <div class="modal" id="campaignsModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">📢 حملات التوعية والإرشاد</h2>
+                <h2 class="modal-title">📢 حملات التوعية والتوجيه والإرشاد</h2>
                 <button class="close-btn" onclick="closeModal('campaignsModal')">&times;</button>
             </div>
             <div id="campaignsContent" style="display: grid; grid-template-columns: 1fr; gap: 20px;">
@@ -1127,23 +1127,13 @@
         const campaignFiles = [
             {
                 id: "index2",
-                name: "تقرير التوعية الاحترافي",
+                name: "حملة دليل رعاية الحيوانات الأليفة والطيور وأسماك الزينة",
                 description: "تقرير تفصيلي عن برنامج التوعية والتدريب لموظفي محلات بيع الحيوانات الأليفة مع معرض الصور",
                 path: "index2.html",
                 icon: "📊",
                 gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
                 type: "campaign",
                 year: "2024"
-            },
-            {
-                id: "awareness-campaign",
-                name: "تقرير حملات التوعية والتوجيه والإرشاد الموحد",
-                description: "تقرير شامل يدمج بيانات حملات تسجيل المنشآت ورعاية الحيوانات مع تحليلات ذكية ورؤى استراتيجية ونتائج متوقعة",
-                path: "awareness-campaign-report.html",
-                icon: "📢",
-                gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-                type: "campaign",
-                year: "2024-2025"
             }
         ];
         
@@ -1444,7 +1434,7 @@
                         <h2>${campaign.name}</h2>
                         <p>${campaign.description}</p>
                         <a href="${campaign.path}" class="btn">
-                            📂 فتح الحملة
+                            📂 عرض الحملة
                         </a>
                     </div>
                 `;
