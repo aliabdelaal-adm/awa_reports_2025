@@ -1,0 +1,19 @@
+{
+  "name": "awa-reports-admin",
+  "version": "1.0.0",
+  "description": "Admin Dashboard Backend for AWA Reports 2025",
+  "main": "admin-server.js",
+  "scripts": {
+    "start": "node admin-server.js",
+    "dev": "node admin-server.js"
+  },
+  "keywords": ["admin", "dashboard", "cms"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
+    "body-parser": "^1.20.2"
+  }
+}

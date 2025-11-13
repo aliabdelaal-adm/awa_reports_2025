@@ -1,3 +1,11 @@
 test_splash.html
 preview_splash.html
 *.backup
+
+# Admin Dashboard
+node_modules/
+backups/
+trash/
+site-config.json
+admin-dashboard-backup.html
+admin-dashboard-old-backup.html
