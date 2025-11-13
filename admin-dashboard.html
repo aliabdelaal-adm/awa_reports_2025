@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم المتقدمة - نظام إدارة المحتوى</title>
+    <title>لوحة التحكم المتقدمة - نظام إدارة المحتوى الكامل</title>
     
     <!-- Monaco Editor (VS Code Editor) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
-    
-    <!-- GitHub API Library -->
-    <script src="https://cdn.jsdelivr.net/npm/octokit@3.1.2/dist/octokit.min.js"></script>
     
     <style>
         * {
@@ -226,6 +223,13 @@
             font-weight: 600;
         }
         
+        .sidebar-item .badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+        }
+        
         /* Main Content Area */
         .main-content {
             flex: 1;
@@ -257,6 +261,45 @@
         .section-header p {
             color: #94a3b8;
             font-size: 1.1em;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #334155;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+        
+        .stat-card .stat-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        
+        .stat-card .stat-label {
+            color: #94a3b8;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #3b82f6;
         }
         
         /* File Manager */
@@ -291,13 +334,13 @@
             font-size: 1.3em;
             font-weight: bold;
             margin-bottom: 10px;
+            word-break: break-all;
         }
         
-        .file-card .file-path {
+        .file-card .file-meta {
             color: #94a3b8;
             font-size: 0.9em;
             margin-bottom: 15px;
-            font-family: monospace;
         }
         
         .file-card .file-actions {
@@ -331,13 +374,33 @@
             color: white;
         }
         
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        }
+        
         .btn-danger {
             background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             color: white;
         }
         
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+        }
+        
         .btn-warning {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
             color: white;
         }
         
@@ -438,6 +501,7 @@
         .image-card .image-name {
             font-weight: bold;
             margin-bottom: 8px;
+            word-break: break-all;
         }
         
         .image-card .image-size {
@@ -642,6 +706,31 @@
             border-color: #3b82f6;
         }
         
+        .action-bar select {
+            padding: 12px 20px;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            background: #0f172a;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         /* Responsive */
         @media (max-width: 1024px) {
             .dashboard-container {
@@ -677,6 +766,129 @@
             .file-list, .image-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Page Management */
+        .page-list {
+            display: grid;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .page-item {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .page-item:hover {
+            border-color: #3b82f6;
+            transform: translateX(-5px);
+        }
+        
+        .page-item .page-info {
+            flex: 1;
+        }
+        
+        .page-item .page-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .page-item .page-url {
+            color: #94a3b8;
+            font-size: 0.9em;
+            font-family: monospace;
+        }
+        
+        .page-item .page-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #334155;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #3b82f6;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* Changelog Table */
+        .changelog-table {
+            width: 100%;
+            background: #1e293b;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+        
+        .changelog-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .changelog-table th {
+            background: #334155;
+            padding: 15px;
+            text-align: right;
+            font-weight: bold;
+        }
+        
+        .changelog-table td {
+            padding: 15px;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .changelog-table tr:hover {
+            background: rgba(59, 130, 246, 0.1);
         }
     </style>
 </head>
@@ -685,7 +897,7 @@
     <div class="login-container" id="loginContainer">
         <div class="login-icon">🔐</div>
         <h1>لوحة التحكم المتقدمة</h1>
-        <p class="subtitle">نظام إدارة المحتوى المتكامل</p>
+        <p class="subtitle">نظام إدارة المحتوى الكامل والمتكامل</p>
         
         <div class="error-message" id="loginError">اسم المستخدم أو كلمة المرور غير صحيحة</div>
         
@@ -707,7 +919,7 @@
     <!-- Main Dashboard -->
     <div class="dashboard" id="dashboard">
         <div class="dashboard-header">
-            <h1>🎛️ لوحة التحكم المتقدمة</h1>
+            <h1>🎛️ لوحة التحكم الشاملة</h1>
             <div class="header-actions">
                 <div class="user-info">
                     <span>👤</span>
@@ -721,10 +933,19 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <div class="sidebar-section">
+                    <h3>لوحة المعلومات</h3>
+                    <div class="sidebar-item active" onclick="showSection('dashboard')">
+                        <span class="icon">📊</span>
+                        <span class="label">نظرة عامة</span>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
                     <h3>إدارة الملفات</h3>
-                    <div class="sidebar-item active" onclick="showSection('files')">
+                    <div class="sidebar-item" onclick="showSection('files')">
                         <span class="icon">📁</span>
                         <span class="label">جميع الملفات</span>
+                        <span class="badge" id="filesCount">0</span>
                     </div>
                     <div class="sidebar-item" onclick="showSection('editor')">
                         <span class="icon">✏️</span>
@@ -733,6 +954,19 @@
                     <div class="sidebar-item" onclick="showSection('images')">
                         <span class="icon">🖼️</span>
                         <span class="label">إدارة الصور</span>
+                        <span class="badge" id="imagesCount">0</span>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>إدارة المحتوى</h3>
+                    <div class="sidebar-item" onclick="showSection('pages')">
+                        <span class="icon">🌐</span>
+                        <span class="label">إدارة الصفحات</span>
+                    </div>
+                    <div class="sidebar-item" onclick="showSection('config')">
+                        <span class="icon">⚙️</span>
+                        <span class="label">إعدادات الموقع</span>
                     </div>
                 </div>
                 
@@ -746,51 +980,87 @@
                         <span class="icon">📤</span>
                         <span class="label">رفع صور</span>
                     </div>
-                    <div class="sidebar-item" onclick="saveAllChanges()">
-                        <span class="icon">💾</span>
-                        <span class="label">حفظ التغييرات</span>
-                    </div>
-                </div>
-                
-                <div class="sidebar-section">
-                    <h3>إعدادات</h3>
-                    <div class="sidebar-item" onclick="showSection('settings')">
-                        <span class="icon">⚙️</span>
-                        <span class="label">الإعدادات</span>
-                    </div>
-                    <div class="sidebar-item" onclick="showSection('github')">
-                        <span class="icon">🔗</span>
-                        <span class="label">إعدادات GitHub</span>
+                    <div class="sidebar-item" onclick="showSection('changelog')">
+                        <span class="icon">📜</span>
+                        <span class="label">سجل التغييرات</span>
                     </div>
                 </div>
             </div>
             
             <!-- Main Content -->
             <div class="main-content">
+                <!-- Dashboard Section -->
+                <div class="content-section active" id="section-dashboard">
+                    <div class="section-header">
+                        <h2>📊 نظرة عامة</h2>
+                        <p>إحصائيات ومعلومات شاملة عن الموقع</p>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">📄</div>
+                            <div class="stat-label">إجمالي الملفات</div>
+                            <div class="stat-value" id="totalFiles">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🖼️</div>
+                            <div class="stat-label">إجمالي الصور</div>
+                            <div class="stat-value" id="totalImages">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🌐</div>
+                            <div class="stat-label">الصفحات النشطة</div>
+                            <div class="stat-value" id="activePages">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💾</div>
+                            <div class="stat-label">نسخ احتياطية</div>
+                            <div class="stat-value" id="backupCount">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-bar">
+                        <button class="btn btn-success" onclick="refreshAllData()">🔄 تحديث البيانات</button>
+                        <button class="btn btn-primary" onclick="showSection('files')">📁 إدارة الملفات</button>
+                        <button class="btn btn-warning" onclick="showSection('pages')">🌐 إدارة الصفحات</button>
+                    </div>
+                </div>
+                
                 <!-- Files Section -->
-                <div class="content-section active" id="section-files">
+                <div class="content-section" id="section-files">
                     <div class="section-header">
                         <h2>📁 إدارة الملفات</h2>
-                        <p>عرض وتحرير جميع ملفات الموقع</p>
+                        <p>عرض وتحرير جميع ملفات الموقع بشكل مباشر</p>
                     </div>
                     
                     <div class="action-bar">
                         <div class="search-box">
                             <input type="text" id="fileSearch" placeholder="🔍 البحث عن ملف..." onkeyup="filterFiles()">
                         </div>
+                        <select id="fileTypeFilter" onchange="filterFiles()">
+                            <option value="">جميع الأنواع</option>
+                            <option value="html">HTML</option>
+                            <option value="css">CSS</option>
+                            <option value="js">JavaScript</option>
+                            <option value="json">JSON</option>
+                            <option value="md">Markdown</option>
+                        </select>
                         <button class="btn btn-success" onclick="createNewFile()">➕ ملف جديد</button>
-                        <button class="btn btn-primary" onclick="refreshFileList()">🔄 تحديث</button>
+                        <button class="btn btn-primary" onclick="loadFiles()">🔄 تحديث</button>
                     </div>
                     
                     <div class="file-list" id="fileList">
-                        <!-- Will be populated dynamically -->
+                        <div style="text-align: center; padding: 40px; color: #94a3b8;">
+                            <div class="loading-spinner" style="margin: 0 auto 20px;"></div>
+                            <p>جاري تحميل الملفات...</p>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Editor Section -->
                 <div class="content-section" id="section-editor">
                     <div class="section-header">
-                        <h2>✏️ محرر الأكواد</h2>
+                        <h2>✏️ محرر الأكواد المتقدم</h2>
                         <p>تحرير الملفات مباشرة مع معاينة فورية</p>
                     </div>
                     
@@ -800,6 +1070,7 @@
                             <div class="editor-actions">
                                 <button class="btn btn-success" onclick="saveCurrentFile()">💾 حفظ</button>
                                 <button class="btn btn-primary" onclick="previewFile()">👁️ معاينة</button>
+                                <button class="btn btn-secondary" onclick="downloadFile()">⬇️ تنزيل</button>
                                 <button class="btn btn-warning" onclick="closeEditor()">✖️ إغلاق</button>
                             </div>
                         </div>
@@ -819,13 +1090,13 @@
                 <div class="content-section" id="section-images">
                     <div class="section-header">
                         <h2>🖼️ إدارة الصور</h2>
-                        <p>رفع وإدارة صور الموقع</p>
+                        <p>رفع وإدارة صور الموقع بكل سهولة</p>
                     </div>
                     
                     <div class="upload-area" onclick="document.getElementById('imageUpload').click()">
                         <div class="upload-icon">📤</div>
                         <h3>اضغط لرفع الصور</h3>
-                        <p>أو اسحب الصور هنا</p>
+                        <p>أو اسحب الصور هنا (يدعم رفع متعدد)</p>
                         <input type="file" id="imageUpload" multiple accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
                     </div>
                     
@@ -833,67 +1104,102 @@
                         <div class="search-box">
                             <input type="text" id="imageSearch" placeholder="🔍 البحث عن صورة..." onkeyup="filterImages()">
                         </div>
-                        <button class="btn btn-primary" onclick="refreshImageList()">🔄 تحديث</button>
+                        <button class="btn btn-primary" onclick="loadImages()">🔄 تحديث</button>
                     </div>
                     
                     <div class="image-grid" id="imageGrid">
+                        <div style="text-align: center; padding: 40px; color: #94a3b8;">
+                            <div class="loading-spinner" style="margin: 0 auto 20px;"></div>
+                            <p>جاري تحميل الصور...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pages Management Section -->
+                <div class="content-section" id="section-pages">
+                    <div class="section-header">
+                        <h2>🌐 إدارة الصفحات</h2>
+                        <p>التحكم الكامل في صفحات الموقع وطريقة عرضها</p>
+                    </div>
+                    
+                    <div class="action-bar">
+                        <button class="btn btn-success" onclick="setAsHomePage()">🏠 تعيين كصفحة رئيسية</button>
+                        <button class="btn btn-primary" onclick="loadPages()">🔄 تحديث</button>
+                    </div>
+                    
+                    <div class="page-list" id="pageList">
                         <!-- Will be populated dynamically -->
                     </div>
                 </div>
                 
-                <!-- Settings Section -->
-                <div class="content-section" id="section-settings">
+                <!-- Site Configuration Section -->
+                <div class="content-section" id="section-config">
                     <div class="section-header">
-                        <h2>⚙️ الإعدادات</h2>
-                        <p>تخصيص إعدادات لوحة التحكم</p>
+                        <h2>⚙️ إعدادات الموقع</h2>
+                        <p>تخصيص إعدادات وخصائص الموقع</p>
                     </div>
                     
                     <div class="editor-container">
-                        <h3 style="margin-bottom: 20px;">⚙️ إعدادات عامة</h3>
-                        <div class="form-group">
-                            <label>وضع الحفظ التلقائي</label>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="autoSave" onchange="toggleAutoSave()">
-                                <span class="slider"></span>
-                            </label>
+                        <h3 style="margin-bottom: 20px;">⚙️ الإعدادات الأساسية</h3>
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label>اسم الموقع</label>
+                            <input type="text" id="siteName" placeholder="اسم الموقع" style="width: 100%; padding: 12px; border: 2px solid #334155; border-radius: 8px; background: #0f172a; color: white;">
                         </div>
-                        <div class="form-group">
-                            <label>تفعيل المعاينة المباشرة</label>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="livePreview" checked>
-                                <span class="slider"></span>
-                            </label>
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label>الصفحة الرئيسية</label>
+                            <select id="mainPage" style="width: 100%; padding: 12px; border: 2px solid #334155; border-radius: 8px; background: #0f172a; color: white;">
+                                <option value="home.html">home.html</option>
+                                <option value="index.html">index.html</option>
+                                <option value="index2.html">index2.html</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-success" onclick="saveConfig()">💾 حفظ الإعدادات</button>
+                    </div>
+                    
+                    <div class="editor-container" style="margin-top: 30px;">
+                        <h3 style="margin-bottom: 20px;">🎨 السمة والألوان</h3>
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label>السمة</label>
+                            <select id="siteTheme" style="width: 100%; padding: 12px; border: 2px solid #334155; border-radius: 8px; background: #0f172a; color: white;">
+                                <option value="default">الافتراضية</option>
+                                <option value="dark">داكنة</option>
+                                <option value="light">فاتحة</option>
+                            </select>
                         </div>
                     </div>
                 </div>
                 
-                <!-- GitHub Settings Section -->
-                <div class="content-section" id="section-github">
+                <!-- Changelog Section -->
+                <div class="content-section" id="section-changelog">
                     <div class="section-header">
-                        <h2>🔗 إعدادات GitHub</h2>
-                        <p>ربط لوحة التحكم مع GitHub</p>
+                        <h2>📜 سجل التغييرات</h2>
+                        <p>عرض سجل النسخ الاحتياطية والتغييرات</p>
                     </div>
                     
-                    <div class="editor-container">
-                        <h3 style="margin-bottom: 20px;">🔗 معلومات المستودع</h3>
-                        <p style="color: #94a3b8; margin-bottom: 30px;">
-                            💡 ملاحظة: هذا النظام يعمل حالياً مع الملفات المحلية. للحفظ المباشر في GitHub، يتطلب إعداد GitHub Actions أو استخدام GitHub API مع Personal Access Token.
-                        </p>
-                        
-                        <div class="form-group">
-                            <label>اسم المالك</label>
-                            <input type="text" value="aliabdelaal-adm" readonly style="background: #0f172a; color: white; padding: 12px; border: 2px solid #334155; border-radius: 8px; width: 100%;">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>اسم المستودع</label>
-                            <input type="text" value="awa_reports_2025" readonly style="background: #0f172a; color: white; padding: 12px; border: 2px solid #334155; border-radius: 8px; width: 100%;">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>الفرع</label>
-                            <input type="text" value="main" readonly style="background: #0f172a; color: white; padding: 12px; border: 2px solid #334155; border-radius: 8px; width: 100%;">
-                        </div>
+                    <div class="action-bar">
+                        <button class="btn btn-primary" onclick="loadChangelog()">🔄 تحديث</button>
+                        <button class="btn btn-warning" onclick="clearOldBackups()">🗑️ مسح النسخ القديمة</button>
+                    </div>
+                    
+                    <div class="changelog-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>الملف</th>
+                                    <th>التاريخ</th>
+                                    <th>الحجم</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="changelogBody">
+                                <tr>
+                                    <td colspan="4" style="text-align: center; color: #94a3b8;">
+                                        <div class="loading-spinner" style="margin: 0 auto 10px;"></div>
+                                        جاري تحميل السجل...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -928,406 +1234,34 @@
     </div>
     
     <script>
-        // Global variables
-        let currentFile = null;
-        let editor = null;
-        let autoSaveInterval = null;
-        
-        // File definitions
-        const editableFiles = [
-            { name: 'home.html', path: 'home.html', icon: '🏠', type: 'html' },
-            { name: 'gallery-view.html', path: 'gallery-view.html', icon: '🎨', type: 'html' },
-            { name: 'index2.html', path: 'index2.html', icon: '📊', type: 'html' },
-            { name: 'index.html', path: 'index.html', icon: '📄', type: 'html' },
-            { name: 'dashboard-view.html', path: 'dashboard-view.html', icon: '📈', type: 'html' },
-            { name: 'smart-planner.html', path: 'smart-planner.html', icon: '🎛️', type: 'html' },
-            { name: 'plan-data.html', path: 'plan-data.html', icon: '📑', type: 'html' },
-            { name: 'report-data.html', path: 'report-data.html', icon: '📄', type: 'html' },
-            { name: 'timeline-view.html', path: 'timeline-view.html', icon: '⏱️', type: 'html' },
-            { name: 'ai-background.css', path: 'ai-background.css', icon: '🎨', type: 'css' },
-            { name: 'ai-background.js', path: 'ai-background.js', icon: '⚡', type: 'js' },
-            { name: 'ai-campaign-features.js', path: 'ai-campaign-features.js', icon: '⚡', type: 'js' }
-        ];
-        
-        // Authentication
-        function handleLogin(event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            // Simple authentication (in production, use proper backend authentication)
-            if (password === '1940') {
-                localStorage.setItem('adminAuth', 'true');
-                localStorage.setItem('adminUser', username);
-                document.getElementById('loginContainer').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                document.getElementById('currentUser').textContent = username;
-                initializeDashboard();
-                showStatus('تم تسجيل الدخول بنجاح! مرحباً ' + username, 'success');
-            } else {
-                document.getElementById('loginError').style.display = 'block';
+        // Auto-detect server availability and load appropriate client script
+        (async function() {
+            try {
+                const response = await fetch('/api/health');
+                if (response.ok) {
+                    // Server is available, use full-featured client
+                    const script = document.createElement('script');
+                    script.src = 'admin-client.js';
+                    document.body.appendChild(script);
+                    console.log('✅ Using server-based admin client');
+                } else {
+                    throw new Error('Server not available');
+                }
+            } catch (error) {
+                // No server, use standalone client
+                const script = document.createElement('script');
+                script.src = 'admin-client-standalone.js';
+                document.body.appendChild(script);
+                console.log('⚠️ Using standalone admin client (limited features)');
+                
+                // Show info banner
                 setTimeout(() => {
-                    document.getElementById('loginError').style.display = 'none';
-                }, 3000);
-            }
-        }
-        
-        function handleLogout() {
-            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
-                localStorage.removeItem('adminAuth');
-                localStorage.removeItem('adminUser');
-                location.reload();
-            }
-        }
-        
-        // Check authentication on page load
-        window.addEventListener('DOMContentLoaded', function() {
-            if (localStorage.getItem('adminAuth') === 'true') {
-                const username = localStorage.getItem('adminUser') || 'المطور';
-                document.getElementById('loginContainer').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                document.getElementById('currentUser').textContent = username;
-                initializeDashboard();
-            }
-        });
-        
-        // Initialize dashboard
-        function initializeDashboard() {
-            populateFileList();
-            populateImageList();
-            initializeEditor();
-        }
-        
-        // Monaco Editor initialization
-        function initializeEditor() {
-            require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
-            
-            require(['vs/editor/editor.main'], function () {
-                editor = monaco.editor.create(document.getElementById('codeEditor'), {
-                    value: '<!-- اختر ملفاً للبدء في التحرير -->',
-                    language: 'html',
-                    theme: 'vs-dark',
-                    automaticLayout: true,
-                    fontSize: 14,
-                    minimap: { enabled: true },
-                    scrollBeyondLastLine: false,
-                    wordWrap: 'on'
-                });
-            });
-        }
-        
-        // Section navigation
-        function showSection(sectionName) {
-            // Update sidebar
-            document.querySelectorAll('.sidebar-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            event.currentTarget.classList.add('active');
-            
-            // Update content
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById('section-' + sectionName).classList.add('active');
-        }
-        
-        // File management
-        function populateFileList() {
-            const fileList = document.getElementById('fileList');
-            let html = '';
-            
-            editableFiles.forEach(file => {
-                html += `
-                    <div class="file-card" data-filename="${file.name}">
-                        <div class="file-icon">${file.icon}</div>
-                        <div class="file-name">${file.name}</div>
-                        <div class="file-path">${file.path}</div>
-                        <div class="file-actions">
-                            <button class="btn btn-primary" onclick="editFile('${file.path}', '${file.type}')">✏️ تحرير</button>
-                            <button class="btn btn-success" onclick="viewFile('${file.path}')">👁️ عرض</button>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            fileList.innerHTML = html;
-        }
-        
-        function filterFiles() {
-            const searchTerm = document.getElementById('fileSearch').value.toLowerCase();
-            const fileCards = document.querySelectorAll('.file-card');
-            
-            fileCards.forEach(card => {
-                const fileName = card.dataset.filename.toLowerCase();
-                if (fileName.includes(searchTerm)) {
-                    card.style.display = '';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-        
-        function refreshFileList() {
-            populateFileList();
-            showStatus('تم تحديث قائمة الملفات', 'success');
-        }
-        
-        function editFile(filePath, fileType) {
-            showSection('editor');
-            
-            // In a real implementation, this would fetch the file content
-            // For now, we'll show a placeholder
-            showStatus('جاري تحميل الملف...', 'info');
-            
-            setTimeout(() => {
-                currentFile = { path: filePath, type: fileType };
-                document.getElementById('editorFileName').textContent = filePath;
-                
-                if (editor) {
-                    const language = fileType === 'html' ? 'html' : fileType === 'css' ? 'css' : fileType === 'js' ? 'javascript' : 'plaintext';
-                    monaco.editor.setModelLanguage(editor.getModel(), language);
-                    editor.setValue(`<!-- محتوى الملف: ${filePath} -->\n<!-- في التطبيق الفعلي، سيتم تحميل المحتوى من الملف -->`);
-                }
-                
-                showStatus('تم تحميل الملف بنجاح', 'success');
-            }, 500);
-        }
-        
-        function viewFile(filePath) {
-            window.open(filePath, '_blank');
-        }
-        
-        function saveCurrentFile() {
-            if (!currentFile) {
-                showStatus('لم يتم تحديد ملف للحفظ', 'error');
-                return;
-            }
-            
-            const content = editor.getValue();
-            
-            // In a real implementation, this would save the file
-            // For now, we'll just show a success message
-            showStatus('تم حفظ الملف بنجاح: ' + currentFile.path, 'success');
-            
-            // Store in localStorage for demonstration
-            localStorage.setItem('file_' + currentFile.path, content);
-        }
-        
-        function previewFile() {
-            if (!currentFile) {
-                showStatus('لم يتم تحديد ملف للمعاينة', 'error');
-                return;
-            }
-            
-            const content = editor.getValue();
-            const previewContainer = document.getElementById('previewContainer');
-            const previewFrame = document.getElementById('previewFrame');
-            
-            previewContainer.style.display = 'block';
-            
-            // Create a blob URL and load it in the iframe
-            const blob = new Blob([content], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            previewFrame.src = url;
-            
-            showStatus('تم تحميل المعاينة', 'success');
-        }
-        
-        function closePreview() {
-            document.getElementById('previewContainer').style.display = 'none';
-        }
-        
-        function closeEditor() {
-            if (editor) {
-                editor.setValue('<!-- اختر ملفاً للبدء في التحرير -->');
-            }
-            currentFile = null;
-            document.getElementById('editorFileName').textContent = 'لم يتم تحديد ملف';
-            showSection('files');
-        }
-        
-        // Image management
-        function populateImageList() {
-            const imageGrid = document.getElementById('imageGrid');
-            
-            // Sample images - in production, this would fetch from the server
-            const sampleImages = [
-                'IMG-20250217-WA0018.jpg',
-                '752d5b9a-4696-4382-b895-bdf14e984335.jpeg',
-                '398cd88d-05e6-46a6-9a47-69d0fb7b2806.jpeg',
-                '543ee0e9-8b8c-43cf-9c67-5d9fd1750f64.jpeg'
-            ];
-            
-            let html = '';
-            sampleImages.forEach((img, index) => {
-                html += `
-                    <div class="image-card" data-imagename="${img}">
-                        <img src="${img}" alt="${img}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Crect fill=%27%23ddd%27 width=%27200%27 height=%27200%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 text-anchor=%27middle%27 dy=%27.3em%27 fill=%27%23999%27%3E${img}%3C/text%3E%3C/svg%3E'">
-                        <div class="image-info">
-                            <div class="image-name">${img}</div>
-                            <div class="image-size">حجم غير معروف</div>
-                            <div class="image-actions">
-                                <button class="btn btn-primary" onclick="viewImage('${img}')">👁️ عرض</button>
-                                <button class="btn btn-danger" onclick="deleteImage('${img}')">🗑️ حذف</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            imageGrid.innerHTML = html;
-        }
-        
-        function filterImages() {
-            const searchTerm = document.getElementById('imageSearch').value.toLowerCase();
-            const imageCards = document.querySelectorAll('.image-card');
-            
-            imageCards.forEach(card => {
-                const imageName = card.dataset.imagename.toLowerCase();
-                if (imageName.includes(searchTerm)) {
-                    card.style.display = '';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-        
-        function refreshImageList() {
-            populateImageList();
-            showStatus('تم تحديث قائمة الصور', 'success');
-        }
-        
-        function handleImageUpload(event) {
-            const files = event.target.files;
-            if (files.length === 0) return;
-            
-            showStatus(`جاري رفع ${files.length} صورة...`, 'info');
-            
-            // In a real implementation, this would upload the files
-            // For now, we'll just show a success message
-            setTimeout(() => {
-                showStatus(`تم رفع ${files.length} صورة بنجاح`, 'success');
-                refreshImageList();
-            }, 1000);
-        }
-        
-        function viewImage(imageName) {
-            window.open(imageName, '_blank');
-        }
-        
-        function deleteImage(imageName) {
-            if (confirm(`هل أنت متأكد من حذف الصورة: ${imageName}؟`)) {
-                showStatus('تم حذف الصورة: ' + imageName, 'success');
-                // In a real implementation, this would delete the file
-                refreshImageList();
-            }
-        }
-        
-        function uploadImages() {
-            showSection('images');
-            document.getElementById('imageUpload').click();
-        }
-        
-        // New file creation
-        function createNewFile() {
-            openModal('createFileModal');
-        }
-        
-        function submitNewFile(event) {
-            event.preventDefault();
-            const fileName = document.getElementById('newFileName').value;
-            const fileType = document.getElementById('newFileType').value;
-            
-            closeModal('createFileModal');
-            showStatus('تم إنشاء الملف: ' + fileName, 'success');
-            
-            // Add to editable files
-            editableFiles.push({
-                name: fileName,
-                path: fileName,
-                icon: fileType === 'html' ? '📄' : fileType === 'css' ? '🎨' : '⚡',
-                type: fileType
-            });
-            
-            refreshFileList();
-            editFile(fileName, fileType);
-        }
-        
-        // Settings
-        function toggleAutoSave() {
-            const autoSave = document.getElementById('autoSave').checked;
-            
-            if (autoSave) {
-                autoSaveInterval = setInterval(() => {
-                    if (currentFile && editor) {
-                        saveCurrentFile();
+                    if (window.showStatus) {
+                        showStatus('🔧 الوضع المحلي: التغييرات تُحفظ في المتصفح فقط. استخدم زر "تنزيل" لحفظ الملفات.', 'info');
                     }
-                }, 30000); // Auto-save every 30 seconds
-                showStatus('تم تفعيل الحفظ التلقائي', 'success');
-            } else {
-                if (autoSaveInterval) {
-                    clearInterval(autoSaveInterval);
-                    autoSaveInterval = null;
-                }
-                showStatus('تم تعطيل الحفظ التلقائي', 'info');
+                }, 2000);
             }
-        }
-        
-        function saveAllChanges() {
-            if (currentFile && editor) {
-                saveCurrentFile();
-            } else {
-                showStatus('لا توجد تغييرات للحفظ', 'info');
-            }
-        }
-        
-        // Modal management
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-        }
-        
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        }
-        
-        // Status messages
-        function showStatus(message, type = 'info') {
-            const statusDiv = document.createElement('div');
-            statusDiv.className = `status-message status-${type}`;
-            statusDiv.textContent = message;
-            document.body.appendChild(statusDiv);
-            
-            setTimeout(() => {
-                statusDiv.style.animation = 'fadeInUp 0.4s ease reverse';
-                setTimeout(() => statusDiv.remove(), 400);
-            }, 3000);
-        }
-        
-        // Drag and drop for image upload
-        const uploadArea = document.querySelector('.upload-area');
-        if (uploadArea) {
-            uploadArea.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadArea.style.borderColor = '#3b82f6';
-                uploadArea.style.background = 'rgba(59, 130, 246, 0.2)';
-            });
-            
-            uploadArea.addEventListener('dragleave', () => {
-                uploadArea.style.borderColor = '#334155';
-                uploadArea.style.background = 'rgba(59, 130, 246, 0.05)';
-            });
-            
-            uploadArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadArea.style.borderColor = '#334155';
-                uploadArea.style.background = 'rgba(59, 130, 246, 0.05)';
-                
-                const files = e.dataTransfer.files;
-                if (files.length > 0) {
-                    handleImageUpload({ target: { files } });
-                }
-            });
-        }
+        })();
     </script>
 </body>
 </html>
