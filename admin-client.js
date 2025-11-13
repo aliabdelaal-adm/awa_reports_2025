@@ -46,16 +46,27 @@ function handleLogout() {
     }
 }
 
+// Attach login form handler immediately when script loads
+// Since this script is loaded dynamically, DOMContentLoaded may have already fired
+const loginForm = document.getElementById('loginForm');
+if (loginForm) {
+    loginForm.addEventListener('submit', handleLogin);
+}
+
 // Check authentication on page load
-window.addEventListener('DOMContentLoaded', function() {
-    if (localStorage.getItem('adminAuth') === 'true') {
-        const username = localStorage.getItem('adminUser') || 'المطور';
-        document.getElementById('loginContainer').style.display = 'none';
-        document.getElementById('dashboard').style.display = 'block';
-        document.getElementById('currentUser').textContent = username;
+if (localStorage.getItem('adminAuth') === 'true') {
+    const username = localStorage.getItem('adminUser') || 'المطور';
+    const loginContainer = document.getElementById('loginContainer');
+    const dashboard = document.getElementById('dashboard');
+    const currentUser = document.getElementById('currentUser');
+    
+    if (loginContainer && dashboard && currentUser) {
+        loginContainer.style.display = 'none';
+        dashboard.style.display = 'block';
+        currentUser.textContent = username;
         initializeDashboard();
     }
-});
+}
 
 // Initialize dashboard
 async function initializeDashboard() {
