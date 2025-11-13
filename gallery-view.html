@@ -290,27 +290,134 @@
     </div>
     
     <div class="gallery-container">
-        <!-- Content from index-old.html -->
-        <div class="content-frame">
-            <iframe src="index-old.html" style="width: 100%; min-height: 800px; border: none; border-radius: 15px; background: white; box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3);"></iframe>
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <button class="filter-btn active" data-filter="all">🌐 جميع التقارير</button>
+            <button class="filter-btn" data-filter="inspection">🏥 نظام التفتيش</button>
+            <button class="filter-btn" data-filter="awareness">📢 حملات التوعية</button>
+            <button class="filter-btn" data-filter="system">📊 نظام التقارير</button>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Reports will be dynamically loaded here -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <h2>🔍</h2>
+            <p>لا توجد تقارير متطابقة مع الفلتر المحدد</p>
         </div>
     </div>
 
     <script>
-        // Auto-resize iframe based on content
-        window.addEventListener('DOMContentLoaded', function() {
-            const iframe = document.querySelector('iframe');
-            if (iframe) {
-                iframe.addEventListener('load', function() {
-                    try {
-                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-                        const height = iframeDoc.body.scrollHeight;
-                        iframe.style.height = height + 'px';
-                    } catch (e) {
-                        console.log('Cannot auto-resize iframe due to cross-origin restrictions');
-                    }
-                });
+        // Reports data structure - developers can add more reports here
+        const reports = [
+            {
+                id: 1,
+                title: "الخطة التحسينية المستمرة لنظام التفتيش الموحد",
+                description: "خطة شاملة لتحسين وتطوير نظام التفتيش الموحد الخاص بإدارة الصحة العامة",
+                icon: "📋",
+                category: "inspection",
+                path: "index-old.html",
+                status: "visible",
+                color: "#1e3a8a"
+            },
+            {
+                id: 2,
+                title: "حملات التوعية والتوجيه والإرشاد",
+                description: "دليل رعاية الحيوانات الأليفة والطيور وأسماك الزينة - نظام الرفق بالحيوان",
+                icon: "📢",
+                category: "awareness",
+                path: "index2.html",
+                status: "visible",
+                color: "#059669"
+            },
+            {
+                id: 3,
+                title: "نظام التقارير - إدارة الصحة العامة",
+                description: "نظام شامل لإدارة وعرض التقارير الخاصة بإدارة الصحة العامة",
+                icon: "📊",
+                category: "system",
+                path: "index.html",
+                status: "visible",
+                color: "#7c3aed"
             }
+        ];
+
+        // Function to render reports
+        function renderReports(filter = 'all') {
+            const grid = document.getElementById('galleryGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            // Filter reports
+            const filteredReports = filter === 'all' 
+                ? reports 
+                : reports.filter(report => report.category === filter);
+            
+            // Show empty state if no reports
+            if (filteredReports.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+            
+            // Generate cards
+            grid.innerHTML = filteredReports.map(report => `
+                <div class="gallery-card" data-category="${report.category}">
+                    <div class="card-header" style="background: linear-gradient(135deg, ${report.color} 0%, ${adjustColor(report.color, 20)} 100%);">
+                        <div class="card-icon">${report.icon}</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-status status-${report.status}">
+                            ${report.status === 'visible' ? '✓ متاح' : '✗ مخفي'}
+                        </div>
+                        <h2 class="card-title">${report.title}</h2>
+                        <p class="card-description">${report.description}</p>
+                        <div class="card-actions">
+                            <a href="${report.path}" class="action-btn" target="_blank">
+                                👁️ عرض التقرير
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Helper function to adjust color brightness
+        function adjustColor(color, percent) {
+            const num = parseInt(color.replace("#", ""), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) + amt;
+            const G = (num >> 8 & 0x00FF) + amt;
+            const B = (num & 0x0000FF) + amt;
+            return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+                (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+                (B < 255 ? B < 1 ? 0 : B : 255))
+                .toString(16).slice(1);
+        }
+
+        // Initialize filter buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Update active state
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter reports
+                    const filter = this.getAttribute('data-filter');
+                    renderReports(filter);
+                });
+            });
+            
+            // Initial render
+            renderReports();
         });
     </script>
     <script src="ai-background.js"></script>
