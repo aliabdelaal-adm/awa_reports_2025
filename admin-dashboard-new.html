@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم المتقدمة - نظام إدارة المحتوى الكامل</title>
+    
+    <!-- Monaco Editor (VS Code Editor) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            direction: rtl;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Login Screen */
+        .login-container {
+            max-width: 500px;
+            margin: 100px auto;
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        .login-container h1 {
+            color: #1e293b;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 2.5em;
+        }
+        
+        .login-container .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        
+        .login-icon {
+            text-align: center;
+            font-size: 5em;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #1e293b;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
+        
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        /* Main Dashboard */
+        .dashboard {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            padding: 25px 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .dashboard-header h1 {
+            font-size: 2em;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+        
+        .logout-btn {
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: white;
+            color: #1e3a8a;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            height: calc(100vh - 85px);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 300px;
+            background: #1e293b;
+            padding: 30px 20px;
+            overflow-y: auto;
+            border-right: 2px solid #334155;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-section h3 {
+            color: #94a3b8;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        
+        .sidebar-item {
+            padding: 15px 20px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .sidebar-item:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateX(-5px);
+        }
+        
+        .sidebar-item.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        
+        .sidebar-item .icon {
+            font-size: 1.4em;
+        }
+        
+        .sidebar-item .label {
+            flex: 1;
+            font-weight: 600;
+        }
+        
+        .sidebar-item .badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+        }
+        
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            background: #0f172a;
+        }
+        
+        .content-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .section-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #334155;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .section-header p {
+            color: #94a3b8;
+            font-size: 1.1em;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #334155;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+        
+        .stat-card .stat-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        
+        .stat-card .stat-label {
+            color: #94a3b8;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+        
+        /* File Manager */
+        .file-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .file-card {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #334155;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .file-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.3);
+        }
+        
+        .file-card .file-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .file-card .file-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+        
+        .file-card .file-meta {
+            color: #94a3b8;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        
+        .file-card .file-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+            color: white;
+        }
+        
+        /* Code Editor */
+        .editor-container {
+            background: #1e293b;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #334155;
+        }
+        
+        .editor-header h3 {
+            font-size: 1.5em;
+        }
+        
+        .editor-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        #codeEditor {
+            height: 600px;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .preview-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .preview-header h3 {
+            color: #1e293b;
+            font-size: 1.5em;
+        }
+        
+        #previewFrame {
+            width: 100%;
+            height: 800px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
+        }
+        
+        /* Image Manager */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .image-card {
+            background: #1e293b;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid #334155;
+            transition: all 0.3s;
+        }
+        
+        .image-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.3);
+        }
+        
+        .image-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .image-card .image-info {
+            padding: 15px;
+        }
+        
+        .image-card .image-name {
+            font-weight: bold;
+            margin-bottom: 8px;
+            word-break: break-all;
+        }
+        
+        .image-card .image-size {
+            color: #94a3b8;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+        }
+        
+        .image-card .image-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .upload-area {
+            border: 3px dashed #334155;
+            border-radius: 15px;
+            padding: 60px 40px;
+            text-align: center;
+            background: rgba(59, 130, 246, 0.05);
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 30px;
+        }
+        
+        .upload-area:hover {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .upload-area .upload-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        .upload-area h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        
+        .upload-area p {
+            color: #94a3b8;
+            font-size: 1.1em;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            color: #1e293b;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: zoomIn 0.3s ease;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .modal-header h2 {
+            font-size: 2em;
+        }
+        
+        .close-modal {
+            font-size: 2.5em;
+            cursor: pointer;
+            color: #64748b;
+            transition: all 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #ef4444;
+            transform: rotate(90deg);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* Status Messages */
+        .status-message {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 20px 40px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.1em;
+            z-index: 3000;
+            animation: slideDown 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .status-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+        
+        .status-error {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+        
+        .status-info {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+        
+        /* Action Bar */
+        .action-bar {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .action-bar .search-box {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .action-bar input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            background: #0f172a;
+            color: white;
+            font-size: 1em;
+        }
+        
+        .action-bar input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .action-bar select {
+            padding: 12px 20px;
+            border: 2px solid #334155;
+            border-radius: 10px;
+            background: #0f172a;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .dashboard-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 2px solid #334155;
+            }
+            
+            .file-list, .image-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .file-list, .image-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Page Management */
+        .page-list {
+            display: grid;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .page-item {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .page-item:hover {
+            border-color: #3b82f6;
+            transform: translateX(-5px);
+        }
+        
+        .page-item .page-info {
+            flex: 1;
+        }
+        
+        .page-item .page-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .page-item .page-url {
+            color: #94a3b8;
+            font-size: 0.9em;
+            font-family: monospace;
+        }
+        
+        .page-item .page-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #334155;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #3b82f6;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* Changelog Table */
+        .changelog-table {
+            width: 100%;
+            background: #1e293b;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+        
+        .changelog-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .changelog-table th {
+            background: #334155;
+            padding: 15px;
+            text-align: right;
+            font-weight: bold;
+        }
+        
+        .changelog-table td {
+            padding: 15px;
+            border-bottom: 1px solid #334155;
+        }
+        
+        .changelog-table tr:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-icon">🔐</div>
+        <h1>لوحة التحكم المتقدمة</h1>
+        <p class="subtitle">نظام إدارة المحتوى الكامل والمتكامل</p>
+        
+        <div class="error-message" id="loginError">اسم المستخدم أو كلمة المرور غير صحيحة</div>
+        
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="username">اسم المستخدم</label>
+                <input type="text" id="username" placeholder="أدخل اسم المستخدم" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">كلمة المرور</label>
+                <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
+            </div>
+            
+            <button type="submit" class="login-btn">🚀 تسجيل الدخول</button>
+        </form>
+    </div>
+    
+    <!-- Main Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="dashboard-header">
+            <h1>🎛️ لوحة التحكم الشاملة</h1>
+            <div class="header-actions">
+                <div class="user-info">
+                    <span>👤</span>
+                    <span id="currentUser">المطور</span>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">🚪 تسجيل الخروج</button>
+            </div>
+        </div>
+        
+        <div class="dashboard-container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <h3>لوحة المعلومات</h3>
+                    <div class="sidebar-item active" onclick="showSection('dashboard')">
+                        <span class="icon">📊</span>
+                        <span class="label">نظرة عامة</span>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>إدارة الملفات</h3>
+                    <div class="sidebar-item" onclick="showSection('files')">
+                        <span class="icon">📁</span>
+                        <span class="label">جميع الملفات</span>
+                        <span class="badge" id="filesCount">0</span>
+                    </div>
+                    <div class="sidebar-item" onclick="showSection('editor')">
+                        <span class="icon">✏️</span>
+                        <span class="label">محرر الأكواد</span>
+                    </div>
+                    <div class="sidebar-item" onclick="showSection('images')">
+                        <span class="icon">🖼️</span>
+                        <span class="label">إدارة الصور</span>
+                        <span class="badge" id="imagesCount">0</span>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>إدارة المحتوى</h3>
+                    <div class="sidebar-item" onclick="showSection('pages')">
+                        <span class="icon">🌐</span>
+                        <span class="label">إدارة الصفحات</span>
+                    </div>
+                    <div class="sidebar-item" onclick="showSection('config')">
+                        <span class="icon">⚙️</span>
+                        <span class="label">إعدادات الموقع</span>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>الإجراءات السريعة</h3>
+                    <div class="sidebar-item" onclick="createNewFile()">
+                        <span class="icon">➕</span>
+                        <span class="label">ملف جديد</span>
+                    </div>
+                    <div class="sidebar-item" onclick="uploadImages()">
+                        <span class="icon">📤</span>
+                        <span class="label">رفع صور</span>
+                    </div>
+                    <div class="sidebar-item" onclick="showSection('changelog')">
+                        <span class="icon">📜</span>
+                        <span class="label">سجل التغييرات</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Dashboard Section -->
+                <div class="content-section active" id="section-dashboard">
+                    <div class="section-header">
+                        <h2>📊 نظرة عامة</h2>
+                        <p>إحصائيات ومعلومات شاملة عن الموقع</p>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">📄</div>
+                            <div class="stat-label">إجمالي الملفات</div>
+                            <div class="stat-value" id="totalFiles">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🖼️</div>
+                            <div class="stat-label">إجمالي الصور</div>
+                            <div class="stat-value" id="totalImages">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🌐</div>
+                            <div class="stat-label">الصفحات النشطة</div>
+                            <div class="stat-value" id="activePages">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">💾</div>
+                            <div class="stat-label">نسخ احتياطية</div>
+                            <div class="stat-value" id="backupCount">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-bar">
+                        <button class="btn btn-success" onclick="refreshAllData()">🔄 تحديث البيانات</button>
+                        <button class="btn btn-primary" onclick="showSection('files')">📁 إدارة الملفات</button>
+                        <button class="btn btn-warning" onclick="showSection('pages')">🌐 إدارة الصفحات</button>
+                    </div>
+                </div>
+                
+                <!-- Files Section -->
+                <div class="content-section" id="section-files">
+                    <div class="section-header">
+                        <h2>📁 إدارة الملفات</h2>
+                        <p>عرض وتحرير جميع ملفات الموقع بشكل مباشر</p>
+                    </div>
+                    
+                    <div class="action-bar">
+                        <div class="search-box">
+                            <input type="text" id="fileSearch" placeholder="🔍 البحث عن ملف..." onkeyup="filterFiles()">
+                        </div>
+                        <select id="fileTypeFilter" onchange="filterFiles()">
+                            <option value="">جميع الأنواع</option>
+                            <option value="html">HTML</option>
+                            <option value="css">CSS</option>
+                            <option value="js">JavaScript</option>
+                            <option value="json">JSON</option>
+                            <option value="md">Markdown</option>
+                        </select>
+                        <button class="btn btn-success" onclick="createNewFile()">➕ ملف جديد</button>
+                        <button class="btn btn-primary" onclick="loadFiles()">🔄 تحديث</button>
+                    </div>
+                    
+                    <div class="file-list" id="fileList">
+                        <div style="text-align: center; padding: 40px; color: #94a3b8;">
+                            <div class="loading-spinner" style="margin: 0 auto 20px;"></div>
+                            <p>جاري تحميل الملفات...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Editor Section -->
+                <div class="content-section" id="section-editor">
+                    <div class="section-header">
+                        <h2>✏️ محرر الأكواد المتقدم</h2>
+                        <p>تحرير الملفات مباشرة مع معاينة فورية</p>
+                    </div>
+                    
+                    <div class="editor-container">
+                        <div class="editor-header">
+                            <h3 id="editorFileName">لم يتم تحديد ملف</h3>
+                            <div class="editor-actions">
+                                <button class="btn btn-success" onclick="saveCurrentFile()">💾 حفظ</button>
+                                <button class="btn btn-primary" onclick="previewFile()">👁️ معاينة</button>
+                                <button class="btn btn-secondary" onclick="downloadFile()">⬇️ تنزيل</button>
+                                <button class="btn btn-warning" onclick="closeEditor()">✖️ إغلاق</button>
+                            </div>
+                        </div>
+                        <div id="codeEditor"></div>
+                    </div>
+                    
+                    <div class="preview-container" id="previewContainer" style="display: none;">
+                        <div class="preview-header">
+                            <h3>👁️ معاينة مباشرة</h3>
+                            <button class="btn btn-warning" onclick="closePreview()">✖️ إغلاق المعاينة</button>
+                        </div>
+                        <iframe id="previewFrame"></iframe>
+                    </div>
+                </div>
+                
+                <!-- Images Section -->
+                <div class="content-section" id="section-images">
+                    <div class="section-header">
+                        <h2>🖼️ إدارة الصور</h2>
+                        <p>رفع وإدارة صور الموقع بكل سهولة</p>
+                    </div>
+                    
+                    <div class="upload-area" onclick="document.getElementById('imageUpload').click()">
+                        <div class="upload-icon">📤</div>
+                        <h3>اضغط لرفع الصور</h3>
+                        <p>أو اسحب الصور هنا (يدعم رفع متعدد)</p>
+                        <input type="file" id="imageUpload" multiple accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                    </div>
+                    
+                    <div class="action-bar">
+                        <div class="search-box">
+                            <input type="text" id="imageSearch" placeholder="🔍 البحث عن صورة..." onkeyup="filterImages()">
+                        </div>
+                        <button class="btn btn-primary" onclick="loadImages()">🔄 تحديث</button>
+                    </div>
+                    
+                    <div class="image-grid" id="imageGrid">
+                        <div style="text-align: center; padding: 40px; color: #94a3b8;">
+                            <div class="loading-spinner" style="margin: 0 auto 20px;"></div>
+                            <p>جاري تحميل الصور...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pages Management Section -->
+                <div class="content-section" id="section-pages">
+                    <div class="section-header">
+                        <h2>🌐 إدارة الصفحات</h2>
+                        <p>التحكم الكامل في صفحات الموقع وطريقة عرضها</p>
+                    </div>
+                    
+                    <div class="action-bar">
+                        <button class="btn btn-success" onclick="setAsHomePage()">🏠 تعيين كصفحة رئيسية</button>
+                        <button class="btn btn-primary" onclick="loadPages()">🔄 تحديث</button>
+                    </div>
+                    
+                    <div class="page-list" id="pageList">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+                
+                <!-- Site Configuration Section -->
+                <div class="content-section" id="section-config">
+                    <div class="section-header">
+                        <h2>⚙️ إعدادات الموقع</h2>
+                        <p>تخصيص إعدادات وخصائص الموقع</p>
+                    </div>
+                    
+                    <div class="editor-container">
+                        <h3 style="margin-bottom: 20px;">⚙️ الإعدادات الأساسية</h3>
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label>اسم الموقع</label>
+                            <input type="text" id="siteName" placeholder="اسم الموقع" style="width: 100%; padding: 12px; border: 2px solid #334155; border-radius: 8px; background: #0f172a; color: white;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label>الصفحة الرئيسية</label>
+                            <select id="mainPage" style="width: 100%; padding: 12px; border: 2px solid #334155; border-radius: 8px; background: #0f172a; color: white;">
+                                <option value="home.html">home.html</option>
+                                <option value="index.html">index.html</option>
+                                <option value="index2.html">index2.html</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-success" onclick="saveConfig()">💾 حفظ الإعدادات</button>
+                    </div>
+                    
+                    <div class="editor-container" style="margin-top: 30px;">
+                        <h3 style="margin-bottom: 20px;">🎨 السمة والألوان</h3>
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label>السمة</label>
+                            <select id="siteTheme" style="width: 100%; padding: 12px; border: 2px solid #334155; border-radius: 8px; background: #0f172a; color: white;">
+                                <option value="default">الافتراضية</option>
+                                <option value="dark">داكنة</option>
+                                <option value="light">فاتحة</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Changelog Section -->
+                <div class="content-section" id="section-changelog">
+                    <div class="section-header">
+                        <h2>📜 سجل التغييرات</h2>
+                        <p>عرض سجل النسخ الاحتياطية والتغييرات</p>
+                    </div>
+                    
+                    <div class="action-bar">
+                        <button class="btn btn-primary" onclick="loadChangelog()">🔄 تحديث</button>
+                        <button class="btn btn-warning" onclick="clearOldBackups()">🗑️ مسح النسخ القديمة</button>
+                    </div>
+                    
+                    <div class="changelog-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>الملف</th>
+                                    <th>التاريخ</th>
+                                    <th>الحجم</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="changelogBody">
+                                <tr>
+                                    <td colspan="4" style="text-align: center; color: #94a3b8;">
+                                        <div class="loading-spinner" style="margin: 0 auto 10px;"></div>
+                                        جاري تحميل السجل...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    <div class="modal" id="createFileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>➕ إنشاء ملف جديد</h2>
+                <span class="close-modal" onclick="closeModal('createFileModal')">&times;</span>
+            </div>
+            <form onsubmit="submitNewFile(event)">
+                <div class="form-group">
+                    <label>اسم الملف</label>
+                    <input type="text" id="newFileName" placeholder="example.html" required style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px;">
+                </div>
+                <div class="form-group">
+                    <label>نوع الملف</label>
+                    <select id="newFileType" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px;">
+                        <option value="html">HTML</option>
+                        <option value="css">CSS</option>
+                        <option value="js">JavaScript</option>
+                        <option value="json">JSON</option>
+                        <option value="md">Markdown</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success" style="width: 100%; padding: 15px; margin-top: 20px;">✅ إنشاء الملف</button>
+            </form>
+        </div>
+    </div>
+    
+    <script src="admin-client.js"></script>
+</body>
+</html>
