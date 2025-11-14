@@ -32,9 +32,15 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Security: Simple authentication middleware
+// Developer credentials
+const ADMIN_USERNAME = 'developer';
+const ADMIN_PASSWORD = '1940';
+
 const authenticate = (req, res, next) => {
+    const username = req.headers['x-admin-username'];
     const password = req.headers['x-admin-password'];
-    if (password === '1940') {
+    
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
         next();
     } else {
         res.status(401).json({ error: 'Unauthorized' });
@@ -321,5 +327,7 @@ app.get('/api/health', (req, res) => {
 app.listen(PORT, () => {
     console.log(`✅ Admin Dashboard Server running on http://localhost:${PORT}`);
     console.log(`📁 Serving files from: ${__dirname}`);
-    console.log(`🔐 Admin password: 1940`);
+    console.log(`🔐 Admin credentials:`);
+    console.log(`   Username: ${ADMIN_USERNAME}`);
+    console.log(`   Password: ${ADMIN_PASSWORD}`);
 });

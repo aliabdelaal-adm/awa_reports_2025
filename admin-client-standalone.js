@@ -8,6 +8,9 @@ let currentFile = null;
 let editor = null;
 let allFiles = [];
 let allImages = [];
+
+// Developer credentials
+const ADMIN_USERNAME = 'developer';
 const ADMIN_PASSWORD = '1940';
 
 // File definitions - Static list of editable files
@@ -58,7 +61,7 @@ function handleLogin(event) {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     
-    if (password === ADMIN_PASSWORD) {
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
         localStorage.setItem('adminAuth', 'true');
         localStorage.setItem('adminUser', username);
         document.getElementById('loginContainer').style.display = 'none';
