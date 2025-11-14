@@ -773,6 +773,58 @@
             }
         }
         
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+        
+        .tooltip:hover::after {
+            opacity: 1;
+        }
+        
+        /* Enhanced Button States */
+        .btn:active {
+            transform: scale(0.95);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Pulse animation for active items */
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+            }
+        }
+        
+        .sidebar-item.active {
+            animation: pulse 2s infinite;
+        }
+        
         /* Page Management */
         .page-list {
             display: grid;
@@ -937,7 +989,7 @@
             <div class="sidebar">
                 <div class="sidebar-section">
                     <h3>لوحة المعلومات</h3>
-                    <div class="sidebar-item active" onclick="showSection('dashboard')">
+                    <div class="sidebar-item active" onclick="showSection('dashboard', this)">
                         <span class="icon">📊</span>
                         <span class="label">نظرة عامة</span>
                     </div>
@@ -945,16 +997,16 @@
                 
                 <div class="sidebar-section">
                     <h3>إدارة الملفات</h3>
-                    <div class="sidebar-item" onclick="showSection('files')">
+                    <div class="sidebar-item" onclick="showSection('files', this)">
                         <span class="icon">📁</span>
                         <span class="label">جميع الملفات</span>
                         <span class="badge" id="filesCount">0</span>
                     </div>
-                    <div class="sidebar-item" onclick="showSection('editor')">
+                    <div class="sidebar-item" onclick="showSection('editor', this)">
                         <span class="icon">✏️</span>
                         <span class="label">محرر الأكواد</span>
                     </div>
-                    <div class="sidebar-item" onclick="showSection('images')">
+                    <div class="sidebar-item" onclick="showSection('images', this)">
                         <span class="icon">🖼️</span>
                         <span class="label">إدارة الصور</span>
                         <span class="badge" id="imagesCount">0</span>
@@ -963,11 +1015,11 @@
                 
                 <div class="sidebar-section">
                     <h3>إدارة المحتوى</h3>
-                    <div class="sidebar-item" onclick="showSection('pages')">
+                    <div class="sidebar-item" onclick="showSection('pages', this)">
                         <span class="icon">🌐</span>
                         <span class="label">إدارة الصفحات</span>
                     </div>
-                    <div class="sidebar-item" onclick="showSection('config')">
+                    <div class="sidebar-item" onclick="showSection('config', this)">
                         <span class="icon">⚙️</span>
                         <span class="label">إعدادات الموقع</span>
                     </div>
@@ -983,7 +1035,7 @@
                         <span class="icon">📤</span>
                         <span class="label">رفع صور</span>
                     </div>
-                    <div class="sidebar-item" onclick="showSection('changelog')">
+                    <div class="sidebar-item" onclick="showSection('changelog', this)">
                         <span class="icon">📜</span>
                         <span class="label">سجل التغييرات</span>
                     </div>
@@ -1024,8 +1076,8 @@
                     
                     <div class="action-bar">
                         <button class="btn btn-success" onclick="refreshAllData()">🔄 تحديث البيانات</button>
-                        <button class="btn btn-primary" onclick="showSection('files')">📁 إدارة الملفات</button>
-                        <button class="btn btn-warning" onclick="showSection('pages')">🌐 إدارة الصفحات</button>
+                        <button class="btn btn-primary" onclick="showSection('files', this)">📁 إدارة الملفات</button>
+                        <button class="btn btn-warning" onclick="showSection('pages', this)">🌐 إدارة الصفحات</button>
                     </div>
                 </div>
                 
