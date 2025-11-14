@@ -22,10 +22,10 @@ https://[your-domain]/admin-dashboard.html
 3. اضغط على البطاقة للوصول إلى لوحة التحكم
 
 ### بيانات تسجيل الدخول
-- **كلمة المرور**: 1940
-- **اسم المستخدم**: أي اسم (للعرض فقط)
+- **اسم المستخدم (Developer Name)**: `developer`
+- **الرقم السري (Serial Number/Password)**: `1940`
 
-> ⚠️ **ملاحظة أمنية**: هذا نظام مصادقة من جانب العميل فقط. في بيئة الإنتاج، يجب استخدام مصادقة من جانب الخادم.
+> ⚠️ **ملاحظة أمنية**: في بيئة الإنتاج، يجب استخدام مصادقة من جانب الخادم بنظام أكثر أماناً.
 
 ## المميزات الرئيسية | Key Features
 
@@ -168,12 +168,15 @@ await octokit.rest.repos.createOrUpdateFileContents({
 
 ## التخصيص | Customization
 
-### تغيير كلمة المرور
-في `admin-dashboard.html`، ابحث عن:
+### تغيير بيانات تسجيل الدخول
+في ملفات `admin-server.js`, `admin-client.js`, و `admin-client-standalone.js`، ابحث عن:
 ```javascript
-if (password === '1940') {
+const ADMIN_USERNAME = 'developer';
+const ADMIN_PASSWORD = '1940';
 ```
-وقم بتغيير '1940' إلى كلمة المرور الجديدة.
+وقم بتغيير القيم إلى اسم المستخدم والرقم السري الجديدين.
+
+> **ملاحظة**: يجب تغيير البيانات في جميع الملفات الثلاثة للحفاظ على التناسق.
 
 ### إضافة ملفات جديدة للتحرير
 في `admin-dashboard.html`، أضف إلى array `editableFiles`:
