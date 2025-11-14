@@ -850,3 +850,75 @@ window.addEventListener('click', (e) => {
         e.target.classList.remove('active');
     }
 });
+
+// Keyboard Shortcuts
+document.addEventListener('keydown', (e) => {
+    // Ctrl/Cmd + S to save in editor
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        if (document.getElementById('section-editor').classList.contains('active') && currentFile) {
+            saveCurrentFile();
+        }
+    }
+    
+    // Ctrl/Cmd + K to focus search
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        const fileSearch = document.getElementById('fileSearch');
+        const imageSearch = document.getElementById('imageSearch');
+        if (fileSearch && document.getElementById('section-files').classList.contains('active')) {
+            fileSearch.focus();
+        } else if (imageSearch && document.getElementById('section-images').classList.contains('active')) {
+            imageSearch.focus();
+        }
+    }
+    
+    // ESC to close modals
+    if (e.key === 'Escape') {
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.classList.remove('active');
+        });
+        // Also close preview
+        const previewContainer = document.getElementById('previewContainer');
+        if (previewContainer) {
+            previewContainer.style.display = 'none';
+        }
+    }
+});
+
+// Add welcome message on first load
+setTimeout(() => {
+    const hasSeenWelcome = localStorage.getItem('dashboardWelcomeSeen');
+    if (!hasSeenWelcome) {
+        showStatus('🎉 مرحباً بك في لوحة التحكم الشاملة! جميع الأزرار تعمل بكفاءة 100%', 'success');
+        localStorage.setItem('dashboardWelcomeSeen', 'true');
+    }
+}, 1000);
+
+// Add helper tooltips on hover
+document.addEventListener('DOMContentLoaded', () => {
+    // Add tooltips to buttons
+    const tooltips = {
+        'refreshAllData': 'تحديث جميع البيانات من الخادم',
+        'createNewFile': 'إنشاء ملف جديد (HTML, CSS, JS)',
+        'uploadImages': 'رفع صور إلى المشروع',
+        'saveCurrentFile': 'حفظ التغييرات (Ctrl+S)',
+        'previewFile': 'معاينة الملف قبل الحفظ',
+        'downloadFile': 'تنزيل الملف إلى جهازك',
+        'closeEditor': 'إغلاق المحرر'
+    };
+    
+    Object.keys(tooltips).forEach(funcName => {
+        document.querySelectorAll(`[onclick*="${funcName}"]`).forEach(btn => {
+            if (!btn.hasAttribute('title')) {
+                btn.setAttribute('title', tooltips[funcName]);
+            }
+        });
+    });
+});
+
+console.log('✅ لوحة التحكم الشاملة جاهزة للاستخدام');
+console.log('⌨️ اختصارات لوحة المفاتيح:');
+console.log('   Ctrl/Cmd + S: حفظ الملف');
+console.log('   Ctrl/Cmd + K: البحث');
+console.log('   ESC: إغلاق النوافذ المنبثقة');
