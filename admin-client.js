@@ -8,6 +8,8 @@ const API_BASE = window.location.hostname === 'localhost' || window.location.hos
     ? 'http://localhost:3000/api' 
     : '/api';
 
+// Developer credentials
+const ADMIN_USERNAME = 'developer';
 const ADMIN_PASSWORD = '1940';
 
 // Global variables
@@ -22,7 +24,7 @@ function handleLogin(event) {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     
-    if (password === ADMIN_PASSWORD) {
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
         localStorage.setItem('adminAuth', 'true');
         localStorage.setItem('adminUser', username);
         document.getElementById('loginContainer').style.display = 'none';
@@ -119,6 +121,7 @@ async function apiCall(endpoint, options = {}) {
         const defaultOptions = {
             headers: {
                 'Content-Type': 'application/json',
+                'X-Admin-Username': ADMIN_USERNAME,
                 'X-Admin-Password': ADMIN_PASSWORD
             }
         };
