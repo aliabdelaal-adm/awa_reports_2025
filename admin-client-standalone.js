@@ -20,7 +20,6 @@ const staticFiles = [
     { name: 'smart-planner.html', type: 'html' },
     { name: 'plan-data.html', type: 'html' },
     { name: 'report-data.html', type: 'html' },
-    { name: 'timeline-view.html', type: 'html' },
     { name: 'test_viewer_mode.html', type: 'html' },
     { name: 'ai-background.css', type: 'css' },
     { name: 'ai-background.js', type: 'js' },
