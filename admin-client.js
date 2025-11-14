@@ -55,6 +55,25 @@ if (loginForm) {
     loginForm.addEventListener('submit', handleLogin);
 }
 
+// Auto-authentication enabled - bypass login screen
+// Automatically authenticate with developer credentials on page load
+function autoAuthenticate() {
+    // Set authentication in localStorage
+    localStorage.setItem('adminAuth', 'true');
+    localStorage.setItem('adminUser', 'developer');
+    
+    const loginContainer = document.getElementById('loginContainer');
+    const dashboard = document.getElementById('dashboard');
+    const currentUser = document.getElementById('currentUser');
+    
+    if (loginContainer && dashboard && currentUser) {
+        loginContainer.style.display = 'none';
+        dashboard.style.display = 'block';
+        currentUser.textContent = 'developer';
+        initializeDashboard();
+    }
+}
+
 // Check authentication on page load
 if (localStorage.getItem('adminAuth') === 'true') {
     const username = localStorage.getItem('adminUser') || 'المطور';
@@ -68,6 +87,9 @@ if (localStorage.getItem('adminAuth') === 'true') {
         currentUser.textContent = username;
         initializeDashboard();
     }
+} else {
+    // Auto-authenticate if not already authenticated
+    autoAuthenticate();
 }
 
 // Initialize dashboard
