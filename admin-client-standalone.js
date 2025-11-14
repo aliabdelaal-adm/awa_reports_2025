@@ -90,6 +90,25 @@ if (loginForm) {
     loginForm.addEventListener('submit', handleLogin);
 }
 
+// Auto-authentication enabled - bypass login screen
+// Automatically authenticate with developer credentials on page load
+function autoAuthenticate() {
+    // Set authentication in localStorage
+    localStorage.setItem('adminAuth', 'true');
+    localStorage.setItem('adminUser', 'developer');
+    
+    const loginContainer = document.getElementById('loginContainer');
+    const dashboard = document.getElementById('dashboard');
+    const currentUser = document.getElementById('currentUser');
+    
+    if (loginContainer && dashboard && currentUser) {
+        loginContainer.style.display = 'none';
+        dashboard.style.display = 'block';
+        currentUser.textContent = 'developer';
+        initializeDashboard();
+    }
+}
+
 // Check authentication on page load
 if (localStorage.getItem('adminAuth') === 'true') {
     const username = localStorage.getItem('adminUser') || 'المطور';
@@ -103,6 +122,9 @@ if (localStorage.getItem('adminAuth') === 'true') {
         currentUser.textContent = username;
         initializeDashboard();
     }
+} else {
+    // Auto-authenticate if not already authenticated
+    autoAuthenticate();
 }
 
 // Initialize dashboard
@@ -113,6 +135,38 @@ async function initializeDashboard() {
 
 // Monaco Editor initialization
 function initializeEditor() {
+    // Check if loader is available
+    if (typeof require === 'undefined' || typeof require.config === 'undefined') {
+        console.log('Monaco Editor loader not ready yet, retrying...');
+        // Retry after a short delay (max 10 attempts = 1 second)
+        if (!initializeEditor.retries) initializeEditor.retries = 0;
+        if (initializeEditor.retries < 10) {
+            initializeEditor.retries++;
+            setTimeout(initializeEditor, 100);
+            return;
+        }
+        
+        // If still not available after retries, use fallback
+        console.warn('Monaco Editor loader not available, using fallback textarea');
+        const editorDiv = document.getElementById('codeEditor');
+        if (editorDiv) {
+            editorDiv.innerHTML = `
+                <textarea id="fallbackEditor" style="width: 100%; height: 100%; background: #1e1e1e; color: #d4d4d4; 
+                    border: none; padding: 15px; font-family: 'Consolas', 'Monaco', monospace; font-size: 14px; resize: none;">
+<!-- اختر ملفاً للبدء في التحرير -->
+<!-- في هذا الوضع، يمكنك تحرير الملفات وحفظها محلياً -->
+<!-- لحفظ التغييرات في الموقع الفعلي، استخدم زر "تنزيل" ثم قم برفع الملف يدوياً -->
+                </textarea>
+            `;
+            editor = {
+                getValue: () => document.getElementById('fallbackEditor').value,
+                setValue: (val) => { document.getElementById('fallbackEditor').value = val; },
+                getModel: () => ({ getLanguageId: () => 'html' })
+            };
+        }
+        return;
+    }
+    
     require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
     
     require(['vs/editor/editor.main'], function () {
@@ -126,6 +180,7 @@ function initializeEditor() {
             scrollBeyondLastLine: false,
             wordWrap: 'on'
         });
+        console.log('✅ Monaco Editor initialized successfully');
     });
 }
 
@@ -295,7 +350,10 @@ async function editFile(filename, fileType) {
                           : fileType === 'md' ? 'markdown'
                           : 'plaintext';
             
-            monaco.editor.setModelLanguage(editor.getModel(), language);
+            // Only use monaco if it's available
+            if (typeof monaco !== 'undefined' && editor.getModel) {
+                monaco.editor.setModelLanguage(editor.getModel(), language);
+            }
             editor.setValue(content);
         }
         
