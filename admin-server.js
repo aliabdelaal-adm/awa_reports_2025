@@ -248,7 +248,7 @@ app.get('/api/config', authenticate, (req, res) => {
         } else {
             res.json({
                 siteName: 'نظام التقارير - إدارة الصحة العامة',
-                mainPages: ['home.html', 'index.html', 'dashboard-view.html'],
+                mainPages: ['home.html', 'index.html'],
                 theme: 'default'
             });
         }

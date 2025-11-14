@@ -16,7 +16,6 @@ const staticFiles = [
     { name: 'gallery-view.html', type: 'html' },
     { name: 'index2.html', type: 'html' },
     { name: 'index.html', type: 'html' },
-    { name: 'dashboard-view.html', type: 'html' },
     { name: 'smart-planner.html', type: 'html' },
     { name: 'plan-data.html', type: 'html' },
     { name: 'report-data.html', type: 'html' },
