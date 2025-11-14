@@ -943,6 +943,179 @@
         .changelog-table tr:hover {
             background: rgba(59, 130, 246, 0.1);
         }
+        
+        /* Reports and Campaigns Grid */
+        .reports-grid, .campaigns-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .report-card, .campaign-card {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #334155;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .report-card:hover, .campaign-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+        
+        .report-card .card-icon, .campaign-card .card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .report-card h3, .campaign-card h3 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            line-height: 1.4;
+        }
+        
+        .report-card p, .campaign-card p {
+            color: #94a3b8;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .report-card .card-actions, .campaign-card .card-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        .report-card .card-actions button, .campaign-card .card-actions button {
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        /* Edit Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: #1e293b;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 2px solid #3b82f6;
+            box-shadow: 0 25px 70px rgba(59, 130, 246, 0.5);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #334155;
+        }
+        
+        .modal-header h3 {
+            font-size: 2em;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .modal-close:hover {
+            color: #f87171;
+            transform: rotate(90deg);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #e2e8f0;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 2px solid #334155;
+            background: #0f172a;
+            color: white;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* Git Status Badges */
+        .git-file-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin: 3px;
+        }
+        
+        .git-badge-modified {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+        
+        .git-badge-created {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+        
+        .git-badge-deleted {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -1019,9 +1192,27 @@
                         <span class="icon">🌐</span>
                         <span class="label">إدارة الصفحات</span>
                     </div>
+                    <div class="sidebar-item" onclick="showSection('reports', this)">
+                        <span class="icon">📊</span>
+                        <span class="label">إدارة التقارير</span>
+                        <span class="badge" id="reportsCount">0</span>
+                    </div>
+                    <div class="sidebar-item" onclick="showSection('campaigns', this)">
+                        <span class="icon">📢</span>
+                        <span class="label">إدارة الحملات</span>
+                        <span class="badge" id="campaignsCount">0</span>
+                    </div>
                     <div class="sidebar-item" onclick="showSection('config', this)">
                         <span class="icon">⚙️</span>
                         <span class="label">إعدادات الموقع</span>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3>GitHub</h3>
+                    <div class="sidebar-item" onclick="showSection('github', this)">
+                        <span class="icon">🔄</span>
+                        <span class="label">الحفظ في GitHub</span>
                     </div>
                 </div>
                 
@@ -1255,6 +1446,87 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <!-- Reports Management Section -->
+                <div class="content-section" id="section-reports">
+                    <div class="section-header">
+                        <h2>📊 إدارة التقارير</h2>
+                        <p>إدارة وتحرير جميع التقارير المعروضة في الموقع</p>
+                    </div>
+                    
+                    <div class="action-bar">
+                        <button class="btn btn-primary" onclick="loadReports()">🔄 تحديث</button>
+                        <button class="btn btn-success" onclick="addNewReport()">➕ إضافة تقرير</button>
+                        <button class="btn btn-info" onclick="saveReportsToGitHub()">💾 حفظ في GitHub</button>
+                    </div>
+                    
+                    <div id="reportsGrid" class="reports-grid">
+                        <div style="text-align: center; color: #94a3b8; padding: 40px;">
+                            <div class="loading-spinner" style="margin: 0 auto 20px;"></div>
+                            جاري تحميل التقارير...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campaigns Management Section -->
+                <div class="content-section" id="section-campaigns">
+                    <div class="section-header">
+                        <h2>📢 إدارة الحملات</h2>
+                        <p>إدارة وتحرير جميع الحملات التوعوية</p>
+                    </div>
+                    
+                    <div class="action-bar">
+                        <button class="btn btn-primary" onclick="loadCampaigns()">🔄 تحديث</button>
+                        <button class="btn btn-success" onclick="addNewCampaign()">➕ إضافة حملة</button>
+                        <button class="btn btn-info" onclick="saveCampaignsToGitHub()">💾 حفظ في GitHub</button>
+                    </div>
+                    
+                    <div id="campaignsGrid" class="campaigns-grid">
+                        <div style="text-align: center; color: #94a3b8; padding: 40px;">
+                            <div class="loading-spinner" style="margin: 0 auto 20px;"></div>
+                            جاري تحميل الحملات...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GitHub Integration Section -->
+                <div class="content-section" id="section-github">
+                    <div class="section-header">
+                        <h2>🔄 الحفظ في GitHub</h2>
+                        <p>حفظ جميع التغييرات مباشرة في مستودع GitHub</p>
+                    </div>
+                    
+                    <div class="git-status-box" style="background: #1e293b; padding: 25px; border-radius: 15px; margin-bottom: 25px;">
+                        <h3 style="margin-bottom: 20px;">📊 حالة المستودع</h3>
+                        <div id="gitStatus">
+                            <div style="text-align: center; color: #94a3b8;">
+                                <div class="loading-spinner" style="margin: 0 auto 20px;"></div>
+                                جاري التحقق من الحالة...
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="git-actions" style="background: #1e293b; padding: 25px; border-radius: 15px;">
+                        <h3 style="margin-bottom: 20px;">⚡ الإجراءات</h3>
+                        
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 10px; font-weight: bold;">رسالة الحفظ (Commit Message):</label>
+                            <input type="text" id="gitCommitMessage" placeholder="مثال: تحديث التقارير والحملات..." 
+                                   style="width: 100%; padding: 15px; border-radius: 10px; border: 2px solid #334155; background: #0f172a; color: white; font-size: 1.1em;">
+                        </div>
+                        
+                        <div class="action-bar" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                            <button class="btn btn-primary" onclick="checkGitStatus()">🔄 تحديث الحالة</button>
+                            <button class="btn btn-success" onclick="gitCommit()">💾 حفظ التغييرات (Commit)</button>
+                            <button class="btn btn-info" onclick="gitPush()">☁️ رفع إلى GitHub (Push)</button>
+                            <button class="btn btn-warning" onclick="gitCommitAndPush()">🚀 حفظ ورفع مباشرة</button>
+                        </div>
+                        
+                        <div id="gitOutput" style="margin-top: 25px; padding: 20px; background: #0f172a; border-radius: 10px; border: 2px solid #334155; display: none; max-height: 400px; overflow-y: auto;">
+                            <pre style="color: #94a3b8; margin: 0; white-space: pre-wrap;"></pre>
+                        </div>
                     </div>
                 </div>
             </div>

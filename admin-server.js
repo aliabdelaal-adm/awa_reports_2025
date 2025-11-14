@@ -1,6 +1,6 @@
 /**
  * Admin Dashboard Backend Server
- * Provides real file operations for the admin dashboard
+ * Provides real file operations for the admin dashboard with GitHub integration
  */
 
 const express = require('express');
@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+const simpleGit = require('simple-git');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -323,6 +324,220 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'Admin server is running' });
 });
 
+// Initialize git
+const git = simpleGit(__dirname);
+
+// Git: Check status
+app.get('/api/git/status', authenticate, async (req, res) => {
+    try {
+        const status = await git.status();
+        res.json({
+            current: status.current,
+            tracking: status.tracking,
+            modified: status.modified,
+            created: status.created,
+            deleted: status.deleted,
+            renamed: status.renamed,
+            files: status.files
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Git: Commit changes
+app.post('/api/git/commit', authenticate, async (req, res) => {
+    try {
+        const { message, files } = req.body;
+        
+        if (!message) {
+            return res.status(400).json({ error: 'Commit message is required' });
+        }
+        
+        // Add specific files or all if not specified
+        if (files && files.length > 0) {
+            await git.add(files);
+        } else {
+            await git.add('.');
+        }
+        
+        const result = await git.commit(message);
+        res.json({
+            success: true,
+            commit: result.commit,
+            summary: result.summary
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Git: Push to GitHub
+app.post('/api/git/push', authenticate, async (req, res) => {
+    try {
+        const { remote, branch } = req.body;
+        
+        const result = await git.push(remote || 'origin', branch || 'main');
+        res.json({
+            success: true,
+            message: 'Changes pushed to GitHub successfully',
+            result
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            error: error.message,
+            hint: 'Make sure Git credentials are configured and you have push access'
+        });
+    }
+});
+
+// Git: Pull from GitHub
+app.post('/api/git/pull', authenticate, async (req, res) => {
+    try {
+        const { remote, branch } = req.body;
+        
+        const result = await git.pull(remote || 'origin', branch || 'main');
+        res.json({
+            success: true,
+            message: 'Changes pulled from GitHub successfully',
+            result
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Git: Commit and push in one operation
+app.post('/api/git/save', authenticate, async (req, res) => {
+    try {
+        const { message, files } = req.body;
+        
+        if (!message) {
+            return res.status(400).json({ error: 'Commit message is required' });
+        }
+        
+        // Add files
+        if (files && files.length > 0) {
+            await git.add(files);
+        } else {
+            await git.add('.');
+        }
+        
+        // Commit
+        const commitResult = await git.commit(message);
+        
+        // Push
+        const pushResult = await git.push('origin', 'main');
+        
+        res.json({
+            success: true,
+            message: 'Changes saved and pushed to GitHub successfully',
+            commit: commitResult.commit,
+            summary: commitResult.summary
+        });
+    } catch (error) {
+        res.status(500).json({ 
+            error: error.message,
+            hint: 'Make sure Git credentials are configured and you have push access'
+        });
+    }
+});
+
+// Get all reports and campaigns data
+app.get('/api/content/all', authenticate, (req, res) => {
+    try {
+        // Parse home.html to get files array
+        const homeHtml = fs.readFileSync(path.join(__dirname, 'home.html'), 'utf8');
+        
+        // Extract JavaScript files array from home.html
+        const filesMatch = homeHtml.match(/const files = \[([\s\S]*?)\];/);
+        const campaignFilesMatch = homeHtml.match(/const campaignFiles = \[([\s\S]*?)\];/);
+        const specialViewsMatch = homeHtml.match(/const specialViews = \[([\s\S]*?)\];/);
+        
+        let files = [];
+        let campaignFiles = [];
+        let specialViews = [];
+        
+        if (filesMatch) {
+            try {
+                files = eval('[' + filesMatch[1] + ']');
+            } catch (e) {
+                console.error('Error parsing files:', e);
+            }
+        }
+        
+        if (campaignFilesMatch) {
+            try {
+                campaignFiles = eval('[' + campaignFilesMatch[1] + ']');
+            } catch (e) {
+                console.error('Error parsing campaignFiles:', e);
+            }
+        }
+        
+        if (specialViewsMatch) {
+            try {
+                specialViews = eval('[' + specialViewsMatch[1] + ']');
+            } catch (e) {
+                console.error('Error parsing specialViews:', e);
+            }
+        }
+        
+        res.json({
+            files,
+            campaignFiles,
+            specialViews,
+            pages: {
+                home: 'home.html',
+                gallery: 'gallery-view.html',
+                index: 'index.html',
+                index2: 'index2.html'
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Update report/campaign data
+app.post('/api/content/update', authenticate, (req, res) => {
+    try {
+        const { page, dataType, data } = req.body;
+        
+        if (!page || !dataType || !data) {
+            return res.status(400).json({ error: 'Missing required fields' });
+        }
+        
+        const filepath = path.join(__dirname, page);
+        
+        if (!fs.existsSync(filepath)) {
+            return res.status(404).json({ error: 'Page not found' });
+        }
+        
+        // Create backup
+        const backupDir = path.join(__dirname, 'backups');
+        if (!fs.existsSync(backupDir)) {
+            fs.mkdirSync(backupDir);
+        }
+        const backupPath = path.join(backupDir, `${page}.${Date.now()}.bak`);
+        fs.copyFileSync(filepath, backupPath);
+        
+        // Read current file
+        let content = fs.readFileSync(filepath, 'utf8');
+        
+        // Replace the data array in the file
+        const dataString = JSON.stringify(data, null, 12).replace(/^/gm, '        ');
+        const regex = new RegExp(`const ${dataType} = \\[[\\s\\S]*?\\];`, 'm');
+        content = content.replace(regex, `const ${dataType} = ${dataString};`);
+        
+        // Write back
+        fs.writeFileSync(filepath, content, 'utf8');
+        
+        res.json({ success: true, message: `${dataType} updated successfully in ${page}` });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Start server
 app.listen(PORT, () => {
     console.log(`✅ Admin Dashboard Server running on http://localhost:${PORT}`);
@@ -330,4 +545,5 @@ app.listen(PORT, () => {
     console.log(`🔐 Admin credentials:`);
     console.log(`   Username: ${ADMIN_USERNAME}`);
     console.log(`   Password: ${ADMIN_PASSWORD}`);
+    console.log(`🔄 GitHub integration enabled`);
 });
