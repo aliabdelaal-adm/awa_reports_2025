@@ -1292,7 +1292,16 @@
         // Auto-detect server availability and load appropriate client script
         (async function() {
             try {
-                const response = await fetch('/api/health');
+                // Try to detect server with a timeout
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
+                
+                const response = await fetch('/api/health', { 
+                    signal: controller.signal,
+                    cache: 'no-cache'
+                });
+                clearTimeout(timeoutId);
+                
                 if (response.ok) {
                     // Server is available, use full-featured client
                     const script = document.createElement('script');
@@ -1307,14 +1316,15 @@
                 const script = document.createElement('script');
                 script.src = 'admin-client-standalone.js';
                 document.body.appendChild(script);
-                console.log('⚠️ Using standalone admin client (limited features)');
+                console.log('⚠️ Using standalone admin client (GitHub Pages mode)');
+                console.log('📝 Changes are saved in browser localStorage. Use Download button to save files.');
                 
                 // Show info banner
                 setTimeout(() => {
                     if (window.showStatus) {
-                        showStatus('🔧 الوضع المحلي: التغييرات تُحفظ في المتصفح فقط. استخدم زر "تنزيل" لحفظ الملفات.', 'info');
+                        showStatus('🌐 الوضع المستقل: التغييرات تُحفظ في المتصفح. استخدم زر "تنزيل" لحفظ الملفات على جهازك.', 'info');
                     }
-                }, 2000);
+                }, 3000);
             }
         })();
     </script>
