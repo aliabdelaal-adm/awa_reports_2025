@@ -46,13 +46,16 @@
             skyContainer.appendChild(cloud);
         });
         
-        // Create birds with different speeds and heights
+        // Create birds with different speeds and heights - more natural and realistic
         const birdConfigs = [
-            { emoji: '🦅', top: '18%', duration: 35 },
-            { emoji: '🕊️', top: '28%', duration: 40 },
-            { emoji: '🦜', top: '22%', duration: 38 },
-            { emoji: '🦆', top: '32%', duration: 42 },
-            { emoji: '🐦', top: '25%', duration: 36 },
+            { emoji: '🦅', top: '18%', duration: 25, size: '2.2em' },
+            { emoji: '🕊️', top: '28%', duration: 30, size: '1.8em' },
+            { emoji: '🦜', top: '22%', duration: 28, size: '2em' },
+            { emoji: '🦆', top: '32%', duration: 32, size: '1.9em' },
+            { emoji: '🐦', top: '25%', duration: 26, size: '1.7em' },
+            { emoji: '🦅', top: '15%', duration: 27, size: '2.1em' },
+            { emoji: '🕊️', top: '35%', duration: 29, size: '1.8em' },
+            { emoji: '🦜', top: '20%', duration: 31, size: '2em' },
         ];
         
         birdConfigs.forEach((config, index) => {
@@ -61,16 +64,18 @@
             bird.textContent = config.emoji;
             bird.style.top = config.top;
             bird.style.left = '-50px';
+            bird.style.fontSize = config.size;
             bird.style.animationDuration = config.duration + 's';
-            bird.style.animationDelay = (index * 6) + 's';
+            bird.style.animationDelay = (index * 4) + 's';
             skyContainer.appendChild(bird);
         });
         
-        // Create airplanes with different speeds
+        // Create airplanes with different speeds - more natural and realistic
         const airplaneConfigs = [
-            { emoji: '✈️', top: '12%', duration: 50 },
-            { emoji: '🛩️', top: '35%', duration: 55 },
-            { emoji: '✈️', top: '40%', duration: 48 },
+            { emoji: '✈️', top: '12%', duration: 35, size: '2.8em' },
+            { emoji: '🛩️', top: '35%', duration: 40, size: '2.5em' },
+            { emoji: '✈️', top: '40%', duration: 38, size: '2.6em' },
+            { emoji: '🛩️', top: '8%', duration: 42, size: '2.4em' },
         ];
         
         airplaneConfigs.forEach((config, index) => {
@@ -79,8 +84,9 @@
             airplane.textContent = config.emoji;
             airplane.style.top = config.top;
             airplane.style.left = '-100px';
+            airplane.style.fontSize = config.size;
             airplane.style.animationDuration = config.duration + 's';
-            airplane.style.animationDelay = (index * 15) + 's';
+            airplane.style.animationDelay = (index * 10) + 's';
             skyContainer.appendChild(airplane);
         });
         
