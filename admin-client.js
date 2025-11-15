@@ -917,8 +917,604 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// ===== REPORTS MANAGEMENT =====
+let allReportsData = [];
+let allCampaignsData = [];
+
+async function loadReports() {
+    try {
+        showStatus('جاري تحميل التقارير...', 'info');
+        
+        const response = await fetch(`${API_BASE}/content/all`, {
+            headers: getAuthHeaders()
+        });
+        
+        if (!response.ok) throw new Error('فشل تحميل التقارير');
+        
+        const data = await response.json();
+        allReportsData = data.files || [];
+        
+        // Update badge count
+        document.getElementById('reportsCount').textContent = allReportsData.length;
+        
+        // Render reports grid
+        const grid = document.getElementById('reportsGrid');
+        if (allReportsData.length === 0) {
+            grid.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 40px;">لا توجد تقارير حالياً</div>';
+        } else {
+            grid.innerHTML = allReportsData.map((report, index) => `
+                <div class="report-card">
+                    <div class="card-icon">${report.icon}</div>
+                    <h3>${report.name}</h3>
+                    <p>${report.description}</p>
+                    <div style="margin: 10px 0;">
+                        <span style="background: #334155; padding: 5px 10px; border-radius: 15px; font-size: 0.9em; margin-right: 5px;">
+                            📁 ${report.path}
+                        </span>
+                        <span style="background: #334155; padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">
+                            📂 ${report.category}
+                        </span>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-primary" onclick="editReport(${index})">✏️ تحرير</button>
+                        <button class="btn btn-warning" onclick="deleteReport(${index})">🗑️ حذف</button>
+                        <button class="btn btn-info" onclick="previewReport('${report.path}')">👁️ معاينة</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        showStatus(`تم تحميل ${allReportsData.length} تقرير`, 'success');
+    } catch (error) {
+        console.error('Error loading reports:', error);
+        showStatus('فشل تحميل التقارير: ' + error.message, 'error');
+    }
+}
+
+async function loadCampaigns() {
+    try {
+        showStatus('جاري تحميل الحملات...', 'info');
+        
+        const response = await fetch(`${API_BASE}/content/all`, {
+            headers: getAuthHeaders()
+        });
+        
+        if (!response.ok) throw new Error('فشل تحميل الحملات');
+        
+        const data = await response.json();
+        allCampaignsData = data.campaignFiles || [];
+        
+        // Update badge count
+        document.getElementById('campaignsCount').textContent = allCampaignsData.length;
+        
+        // Render campaigns grid
+        const grid = document.getElementById('campaignsGrid');
+        if (allCampaignsData.length === 0) {
+            grid.innerHTML = '<div style="text-align: center; color: #94a3b8; padding: 40px;">لا توجد حملات حالياً</div>';
+        } else {
+            grid.innerHTML = allCampaignsData.map((campaign, index) => `
+                <div class="campaign-card">
+                    <div class="card-icon">${campaign.icon}</div>
+                    <h3>${campaign.name}</h3>
+                    <p>${campaign.description}</p>
+                    <div style="margin: 10px 0;">
+                        <span style="background: #334155; padding: 5px 10px; border-radius: 15px; font-size: 0.9em; margin-right: 5px;">
+                            📁 ${campaign.path}
+                        </span>
+                        <span style="background: #334155; padding: 5px 10px; border-radius: 15px; font-size: 0.9em;">
+                            📅 ${campaign.year}
+                        </span>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-primary" onclick="editCampaign(${index})">✏️ تحرير</button>
+                        <button class="btn btn-warning" onclick="deleteCampaign(${index})">🗑️ حذف</button>
+                        <button class="btn btn-info" onclick="previewReport('${campaign.path}')">👁️ معاينة</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        showStatus(`تم تحميل ${allCampaignsData.length} حملة`, 'success');
+    } catch (error) {
+        console.error('Error loading campaigns:', error);
+        showStatus('فشل تحميل الحملات: ' + error.message, 'error');
+    }
+}
+
+function addNewReport() {
+    const newReport = {
+        id: `report-${Date.now()}`,
+        name: 'تقرير جديد',
+        description: 'وصف التقرير',
+        icon: '📊',
+        path: 'new-report.html',
+        category: 'التقارير',
+        mainCategory: 'report',
+        type: 'report',
+        year: new Date().getFullYear().toString(),
+        defaultVisible: true
+    };
+    allReportsData.push(newReport);
+    editReport(allReportsData.length - 1);
+}
+
+function addNewCampaign() {
+    const newCampaign = {
+        id: `campaign-${Date.now()}`,
+        name: 'حملة جديدة',
+        description: 'وصف الحملة',
+        icon: '📢',
+        path: 'new-campaign.html',
+        type: 'campaign',
+        year: new Date().getFullYear().toString(),
+        gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+    };
+    allCampaignsData.push(newCampaign);
+    editCampaign(allCampaignsData.length - 1);
+}
+
+function editReport(index) {
+    const report = allReportsData[index];
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ تحرير التقرير</h3>
+                <button class="modal-close" onclick="this.closest('.modal').remove()">&times;</button>
+            </div>
+            <form onsubmit="saveReport(event, ${index})">
+                <div class="form-group">
+                    <label>اسم التقرير</label>
+                    <input type="text" name="name" value="${report.name}" required>
+                </div>
+                <div class="form-group">
+                    <label>الوصف</label>
+                    <textarea name="description" required>${report.description}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>الأيقونة (emoji)</label>
+                    <input type="text" name="icon" value="${report.icon}" required>
+                </div>
+                <div class="form-group">
+                    <label>المسار (path)</label>
+                    <input type="text" name="path" value="${report.path}" required>
+                </div>
+                <div class="form-group">
+                    <label>التصنيف</label>
+                    <input type="text" name="category" value="${report.category}" required>
+                </div>
+                <div class="form-group">
+                    <label>السنة</label>
+                    <input type="text" name="year" value="${report.year}" required>
+                </div>
+                <div class="action-bar">
+                    <button type="submit" class="btn btn-success">💾 حفظ</button>
+                    <button type="button" class="btn btn-secondary" onclick="this.closest('.modal').remove()">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+function editCampaign(index) {
+    const campaign = allCampaignsData[index];
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ تحرير الحملة</h3>
+                <button class="modal-close" onclick="this.closest('.modal').remove()">&times;</button>
+            </div>
+            <form onsubmit="saveCampaign(event, ${index})">
+                <div class="form-group">
+                    <label>اسم الحملة</label>
+                    <input type="text" name="name" value="${campaign.name}" required>
+                </div>
+                <div class="form-group">
+                    <label>الوصف</label>
+                    <textarea name="description" required>${campaign.description}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>الأيقونة (emoji)</label>
+                    <input type="text" name="icon" value="${campaign.icon}" required>
+                </div>
+                <div class="form-group">
+                    <label>المسار (path)</label>
+                    <input type="text" name="path" value="${campaign.path}" required>
+                </div>
+                <div class="form-group">
+                    <label>السنة</label>
+                    <input type="text" name="year" value="${campaign.year}" required>
+                </div>
+                <div class="action-bar">
+                    <button type="submit" class="btn btn-success">💾 حفظ</button>
+                    <button type="button" class="btn btn-secondary" onclick="this.closest('.modal').remove()">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+async function saveReport(event, index) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const updated = {};
+    formData.forEach((value, key) => updated[key] = value);
+    
+    allReportsData[index] = { ...allReportsData[index], ...updated };
+    
+    try {
+        const response = await fetch(`${API_BASE}/content/update`, {
+            method: 'POST',
+            headers: {
+                ...getAuthHeaders(),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                page: 'home.html',
+                dataType: 'files',
+                data: allReportsData
+            })
+        });
+        
+        if (!response.ok) throw new Error('فشل الحفظ');
+        
+        showStatus('تم حفظ التقرير بنجاح', 'success');
+        event.target.closest('.modal').remove();
+        loadReports();
+    } catch (error) {
+        showStatus('فشل حفظ التقرير: ' + error.message, 'error');
+    }
+}
+
+async function saveCampaign(event, index) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const updated = {};
+    formData.forEach((value, key) => updated[key] = value);
+    
+    allCampaignsData[index] = { ...allCampaignsData[index], ...updated };
+    
+    try {
+        const response = await fetch(`${API_BASE}/content/update`, {
+            method: 'POST',
+            headers: {
+                ...getAuthHeaders(),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                page: 'home.html',
+                dataType: 'campaignFiles',
+                data: allCampaignsData
+            })
+        });
+        
+        if (!response.ok) throw new Error('فشل الحفظ');
+        
+        showStatus('تم حفظ الحملة بنجاح', 'success');
+        event.target.closest('.modal').remove();
+        loadCampaigns();
+    } catch (error) {
+        showStatus('فشل حفظ الحملة: ' + error.message, 'error');
+    }
+}
+
+async function deleteReport(index) {
+    if (!confirm('هل أنت متأكد من حذف هذا التقرير؟')) return;
+    
+    allReportsData.splice(index, 1);
+    
+    try {
+        const response = await fetch(`${API_BASE}/content/update`, {
+            method: 'POST',
+            headers: {
+                ...getAuthHeaders(),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                page: 'home.html',
+                dataType: 'files',
+                data: allReportsData
+            })
+        });
+        
+        if (!response.ok) throw new Error('فشل الحذف');
+        
+        showStatus('تم حذف التقرير', 'success');
+        loadReports();
+    } catch (error) {
+        showStatus('فشل حذف التقرير: ' + error.message, 'error');
+    }
+}
+
+async function deleteCampaign(index) {
+    if (!confirm('هل أنت متأكد من حذف هذه الحملة؟')) return;
+    
+    allCampaignsData.splice(index, 1);
+    
+    try {
+        const response = await fetch(`${API_BASE}/content/update`, {
+            method: 'POST',
+            headers: {
+                ...getAuthHeaders(),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                page: 'home.html',
+                dataType: 'campaignFiles',
+                data: allCampaignsData
+            })
+        });
+        
+        if (!response.ok) throw new Error('فشل الحذف');
+        
+        showStatus('تم حذف الحملة', 'success');
+        loadCampaigns();
+    } catch (error) {
+        showStatus('فشل حذف الحملة: ' + error.message, 'error');
+    }
+}
+
+function previewReport(path) {
+    window.open(path, '_blank');
+}
+
+async function saveReportsToGitHub() {
+    if (!confirm('هل تريد حفظ جميع التقارير إلى GitHub؟')) return;
+    
+    showStatus('جاري الحفظ في GitHub...', 'info');
+    
+    try {
+        const response = await fetch(`${API_BASE}/git/save`, {
+            method: 'POST',
+            headers: {
+                ...getAuthHeaders(),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: 'تحديث التقارير من لوحة التحكم',
+                files: ['home.html']
+            })
+        });
+        
+        if (!response.ok) throw new Error('فشل الحفظ في GitHub');
+        
+        const result = await response.json();
+        showStatus('تم الحفظ في GitHub بنجاح! Commit: ' + result.commit, 'success');
+    } catch (error) {
+        showStatus('فشل الحفظ في GitHub: ' + error.message, 'error');
+    }
+}
+
+async function saveCampaignsToGitHub() {
+    if (!confirm('هل تريد حفظ جميع الحملات إلى GitHub؟')) return;
+    
+    showStatus('جاري الحفظ في GitHub...', 'info');
+    
+    try {
+        const response = await fetch(`${API_BASE}/git/save`, {
+            method: 'POST',
+            headers: {
+                ...getAuthHeaders(),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                message: 'تحديث الحملات من لوحة التحكم',
+                files: ['home.html']
+            })
+        });
+        
+        if (!response.ok) throw new Error('فشل الحفظ في GitHub');
+        
+        const result = await response.json();
+        showStatus('تم الحفظ في GitHub بنجاح! Commit: ' + result.commit, 'success');
+    } catch (error) {
+        showStatus('فشل الحفظ في GitHub: ' + error.message, 'error');
+    }
+}
+
+// ===== GITHUB INTEGRATION =====
+async function checkGitStatus() {
+    try {
+        showStatus('جاري التحقق من حالة Git...', 'info');
+        
+        const response = await fetch(`${API_BASE}/git/status`, {
+            headers: getAuthHeaders()
+        });
+        
+        if (!response.ok) throw new Error('فشل التحقق من حالة Git');
+        
+        const status = await response.json();
+        const statusDiv = document.getElementById('gitStatus');
+        
+        let html = '<div style="color: #94a3b8;">';
+        html += `<div style="margin-bottom: 15px;"><strong>الفرع الحالي:</strong> ${status.current}</div>`;
+        
+        if (status.modified && status.modified.length > 0) {
+            html += '<div style="margin-bottom: 10px;"><strong>ملفات معدلة:</strong></div>';
+            status.modified.forEach(file => {
+                html += `<div class="git-file-badge git-badge-modified">📝 ${file}</div>`;
+            });
+        }
+        
+        if (status.created && status.created.length > 0) {
+            html += '<div style="margin-bottom: 10px; margin-top: 15px;"><strong>ملفات جديدة:</strong></div>';
+            status.created.forEach(file => {
+                html += `<div class="git-file-badge git-badge-created">➕ ${file}</div>`;
+            });
+        }
+        
+        if (status.deleted && status.deleted.length > 0) {
+            html += '<div style="margin-bottom: 10px; margin-top: 15px;"><strong>ملفات محذوفة:</strong></div>';
+            status.deleted.forEach(file => {
+                html += `<div class="git-file-badge git-badge-deleted">🗑️ ${file}</div>`;
+            });
+        }
+        
+        if (!status.modified || (status.modified.length === 0 && (!status.created || status.created.length === 0) && (!status.deleted || status.deleted.length === 0))) {
+            html += '<div style="color: #10b981; font-size: 1.2em;">✅ لا توجد تغييرات جديدة</div>';
+        }
+        
+        html += '</div>';
+        statusDiv.innerHTML = html;
+        
+        showStatus('تم تحديث حالة Git', 'success');
+    } catch (error) {
+        console.error('Error checking git status:', error);
+        showStatus('فشل التحقق من حالة Git: ' + error.message, 'error');
+    }
+}
+
+async function gitCommit() {
+    const message = document.getElementById('gitCommitMessage').value.trim();
+    
+    if (!message) {
+        showStatus('يرجى إدخال رسالة الحفظ (Commit Message)', 'error');
+        return;
+    }
+    
+    try {
+        showStatus('جاري حفظ التغييرات...', 'info');
+        
+        const response = await fetch(`${API_BASE}/git/commit`, {
+            method: 'POST',
+            headers: {
+                ...getAuthHeaders(),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message })
+        });
+        
+        if (!response.ok) throw new Error('فشل الحفظ');
+        
+        const result = await response.json();
+        
+        const outputDiv = document.getElementById('gitOutput');
+        outputDiv.style.display = 'block';
+        outputDiv.querySelector('pre').textContent = `✅ تم الحفظ بنجاح!
+Commit: ${result.commit}
+التغييرات: ${JSON.stringify(result.summary, null, 2)}`;
+        
+        showStatus('تم حفظ التغييرات في Git', 'success');
+        checkGitStatus();
+    } catch (error) {
+        showStatus('فشل حفظ التغييرات: ' + error.message, 'error');
+    }
+}
+
+async function gitPush() {
+    if (!confirm('هل تريد رفع التغييرات إلى GitHub؟')) return;
+    
+    try {
+        showStatus('جاري رفع التغييرات إلى GitHub...', 'info');
+        
+        const response = await fetch(`${API_BASE}/git/push`, {
+            method: 'POST',
+            headers: {
+                ...getAuthHeaders(),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                remote: 'origin',
+                branch: 'main'
+            })
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error + (error.hint ? '\n' + error.hint : ''));
+        }
+        
+        const result = await response.json();
+        
+        const outputDiv = document.getElementById('gitOutput');
+        outputDiv.style.display = 'block';
+        outputDiv.querySelector('pre').textContent = '✅ ' + result.message;
+        
+        showStatus('تم رفع التغييرات إلى GitHub بنجاح!', 'success');
+        checkGitStatus();
+    } catch (error) {
+        showStatus('فشل رفع التغييرات: ' + error.message, 'error');
+        
+        const outputDiv = document.getElementById('gitOutput');
+        outputDiv.style.display = 'block';
+        outputDiv.querySelector('pre').textContent = '❌ خطأ: ' + error.message;
+    }
+}
+
+async function gitCommitAndPush() {
+    const message = document.getElementById('gitCommitMessage').value.trim();
+    
+    if (!message) {
+        showStatus('يرجى إدخال رسالة الحفظ (Commit Message)', 'error');
+        return;
+    }
+    
+    if (!confirm('هل تريد حفظ ورفع التغييرات إلى GitHub مباشرة؟')) return;
+    
+    try {
+        showStatus('جاري حفظ ورفع التغييرات...', 'info');
+        
+        const response = await fetch(`${API_BASE}/git/save`, {
+            method: 'POST',
+            headers: {
+                ...getAuthHeaders(),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message })
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error + (error.hint ? '\n' + error.hint : ''));
+        }
+        
+        const result = await response.json();
+        
+        const outputDiv = document.getElementById('gitOutput');
+        outputDiv.style.display = 'block';
+        outputDiv.querySelector('pre').textContent = `✅ تم حفظ ورفع التغييرات بنجاح!
+Commit: ${result.commit}
+التغييرات: ${JSON.stringify(result.summary, null, 2)}`;
+        
+        showStatus('تم حفظ ورفع التغييرات إلى GitHub بنجاح!', 'success');
+        document.getElementById('gitCommitMessage').value = '';
+        checkGitStatus();
+    } catch (error) {
+        showStatus('فشل حفظ ورفع التغييرات: ' + error.message, 'error');
+        
+        const outputDiv = document.getElementById('gitOutput');
+        outputDiv.style.display = 'block';
+        outputDiv.querySelector('pre').textContent = '❌ خطأ: ' + error.message;
+    }
+}
+
+// Auto-load sections when switching
+const originalShowSection = window.showSection;
+window.showSection = function(sectionName, element) {
+    if (originalShowSection) {
+        originalShowSection(sectionName, element);
+    }
+    
+    // Auto-load data when switching to these sections
+    if (sectionName === 'reports' && allReportsData.length === 0) {
+        loadReports();
+    }
+    if (sectionName === 'campaigns' && allCampaignsData.length === 0) {
+        loadCampaigns();
+    }
+    if (sectionName === 'github') {
+        checkGitStatus();
+    }
+};
+
 console.log('✅ لوحة التحكم الشاملة جاهزة للاستخدام');
 console.log('⌨️ اختصارات لوحة المفاتيح:');
 console.log('   Ctrl/Cmd + S: حفظ الملف');
 console.log('   Ctrl/Cmd + K: البحث');
 console.log('   ESC: إغلاق النوافذ المنبثقة');
+console.log('🔄 GitHub Integration: متاح');
