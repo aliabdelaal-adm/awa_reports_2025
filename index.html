@@ -83,14 +83,14 @@
         
         .header {
             text-align: center;
-            background: rgba(30, 41, 59, 0.95);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.85) 0%, rgba(96, 165, 250, 0.75) 100%);
             backdrop-filter: blur(10px);
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
             margin-bottom: 30px;
             animation: slideDown 0.8s ease;
-            border: 1px solid rgba(79, 172, 254, 0.1);
+            border: 2px solid rgba(147, 197, 253, 0.4);
         }
         
         @keyframes slideDown {
@@ -260,12 +260,12 @@
         }
         
         .footer {
-            background: rgba(30, 41, 59, 0.95);
-            color: #94a3b8;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.85) 0%, rgba(96, 165, 250, 0.75) 100%);
+            color: #f1f5f9;
             padding: 8px 20px;
             text-align: center;
             font-size: 0.85em;
-            border-top: 1px solid rgba(79, 172, 254, 0.1);
+            border-top: 2px solid rgba(147, 197, 253, 0.4);
             border-radius: 0 0 20px 20px;
         }
         
@@ -298,12 +298,12 @@
         
         /* Search Bar Styles */
         .search-container {
-            background: rgba(30, 41, 59, 0.95);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.85) 0%, rgba(96, 165, 250, 0.75) 100%);
             backdrop-filter: blur(10px);
             padding: 25px;
             border-radius: 20px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(79, 172, 254, 0.1);
+            border: 2px solid rgba(147, 197, 253, 0.4);
             margin-bottom: 30px;
             animation: fadeInUp 0.8s ease;
             animation-delay: 0.2s;
@@ -352,10 +352,10 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(30, 41, 59, 0.98);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(96, 165, 250, 0.85) 100%);
             backdrop-filter: blur(20px);
             box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.5);
-            border-top: 1px solid rgba(79, 172, 254, 0.2);
+            border-top: 2px solid rgba(147, 197, 253, 0.4);
             padding: 15px 0;
             z-index: 1000;
             animation: slideUp 0.5s ease;
@@ -404,17 +404,17 @@
             transition: all 0.3s ease;
             border-radius: 15px;
             text-decoration: none;
-            color: #94a3b8;
+            color: #f1f5f9;
         }
         
         .nav-item:hover {
-            background: rgba(79, 172, 254, 0.15);
+            background: rgba(255, 255, 255, 0.2);
             transform: translateY(-5px);
         }
         
         .nav-item.active {
-            color: #4facfe;
-            background: rgba(79, 172, 254, 0.2);
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.3);
         }
         
         .nav-icon {
@@ -818,25 +818,11 @@
         // Special view screens (always visible, not controlled by config)
         const specialViews = [
             {
-                name: "معرض التقارير التفاعلي",
+                name: "التقارير",
                 description: "عرض بطاقات ثلاثية الأبعاد احترافي وتفاعلي لجميع التقارير مع إمكانية الفلترة والبحث",
                 path: "gallery-view.html",
                 icon: "🎨",
                 gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
-            },
-            {
-                name: "الجدول الزمني للتقارير",
-                description: "عرض تسلسلي احترافي لجميع التقارير مرتبة زمنياً مع تأثيرات بصرية مميزة",
-                path: "timeline-view.html",
-                icon: "📅",
-                gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-            },
-            {
-                name: "لوحة المعلومات الذكية",
-                description: "لوحة تحكم تحليلية شاملة مع رسوم بيانية تفاعلية وإحصائيات متقدمة في الوقت الفعلي",
-                path: "dashboard-view.html",
-                icon: "📊",
-                gradient: "linear-gradient(135deg, #30cfd0 0%, #330867 100%)"
             }
         ];
 
