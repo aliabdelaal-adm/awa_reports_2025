@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام التقارير - إدارة الصحة العامة</title>
+    <title>نظام التقارير  </title>
     <style>
         * {
             margin: 0;
@@ -881,13 +881,7 @@
         <div class="uae-corner-decoration top-right"></div>
         <div class="uae-corner-decoration bottom-left"></div>
         <div class="uae-corner-decoration bottom-right"></div>
-        <div class="uae-symbol" style="top: 15%; left: 20%;">⭐</div>
-        <div class="uae-symbol" style="top: 25%; left: 80%;">⭐</div>
-        <div class="uae-symbol" style="top: 45%; left: 10%;">⭐</div>
-        <div class="uae-symbol" style="top: 55%; left: 90%;">⭐</div>
-        <div class="uae-symbol" style="top: 75%; left: 25%;">⭐</div>
-        <div class="uae-symbol" style="top: 85%; left: 75%;">⭐</div>
-        <div class="uae-symbol" style="top: 35%; left: 50%;">⭐</div>
+        
     </div>
     
     <div class="container">
@@ -901,7 +895,7 @@
         <div class="search-container">
             <div class="search-box">
                 <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" id="searchInput" placeholder="ابحث عن التقارير بالاسم أو النوع..." onkeyup="filterReports()">
+                <input type="text" class="search-input" id="searchInput" placeholder=" البحث عن التقارير..." onkeyup="filterReports()">
             </div>
         </div>
 
@@ -1066,7 +1060,7 @@
         const specialViews = [
             {
                 name: "التقارير",
-                description: "عرض بطاقات ثلاثية الأبعاد احترافي وتفاعلي لجميع التقارير مع إمكانية الفلترة والبحث",
+                description: "none",
                 path: "gallery-view.html",
                 icon: "🎨",
                 gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
@@ -1237,7 +1231,7 @@
                 
                 developerSpecialViews.forEach((view, index) => {
                     html += `
-                        <div class="card" onclick="navigateTo('${view.path}')" data-maincategory="report" data-category="عروض خاصة - للمطور">
+                        <div class="card" onclick="navigateTo('${view.path}')" data-maincategory="report" data-category="   ">
                             <div class="card-icon">${view.icon}</div>
                             <h2>${view.name}</h2>
                             <p>${view.description}</p>
