@@ -1,5 +1,5 @@
-/* Animated and Glowing Light Blue Background */
-/* خلفية زرقاء فاتحة متحركة ومتوهجة */
+/* Vibrant Animated Gradient Background */
+/* خلفية متدرجة نابضة بالحياة مع تأثيرات متحركة */
 
 (function() {
     'use strict';
@@ -8,7 +8,7 @@
     function initAnimatedBackground() {
         // The animated and glowing background is now handled entirely by CSS
         // This script file is kept for future enhancements if needed
-        console.log('✨ Animated and Glowing Light Blue Background initialized successfully');
+        console.log('✨ Vibrant Animated Gradient Background initialized successfully');
     }
     
     // Initialize when DOM is ready
