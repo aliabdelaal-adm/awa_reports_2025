@@ -1047,7 +1047,7 @@ function addNewCampaign() {
         path: 'new-campaign.html',
         type: 'campaign',
         year: new Date().getFullYear().toString(),
-        gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+        gradient: '#f5f5f5'
     };
     allCampaignsData.push(newCampaign);
     editCampaign(allCampaignsData.length - 1);

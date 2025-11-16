@@ -20,8 +20,8 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: white;
+            background: #ffffff;
+            color: #000000;
             direction: rtl;
             min-height: 100vh;
             overflow-x: hidden;
@@ -35,7 +35,6 @@
             padding: 50px;
             border-radius: 20px;
             box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
-            animation: fadeInUp 0.6s ease;
         }
         
         .login-container h1 {
@@ -88,8 +87,8 @@
         .login-btn {
             width: 100%;
             padding: 18px;
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            color: white;
+            background: #ffffff;
+            color: #000000;
             border: none;
             border-radius: 10px;
             font-size: 1.2em;
@@ -118,11 +117,10 @@
         /* Main Dashboard */
         .dashboard {
             display: none;
-            animation: fadeIn 0.6s ease;
         }
         
         .dashboard-header {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            background: #ffffff;
             padding: 25px 40px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             display: flex;
@@ -147,16 +145,16 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.1);
             padding: 10px 20px;
             border-radius: 10px;
         }
         
         .logout-btn {
             padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.1);
             border: 2px solid white;
-            color: white;
+            color: #000000;
             border-radius: 10px;
             cursor: pointer;
             font-size: 1em;
@@ -198,7 +196,7 @@
         .sidebar-item {
             padding: 15px 20px;
             margin-bottom: 8px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
@@ -213,7 +211,7 @@
         }
         
         .sidebar-item.active {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            background: #ffffff;
             box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
         
@@ -236,7 +234,6 @@
         
         .content-section {
             display: none;
-            animation: fadeIn 0.4s ease;
         }
         
         .content-section.active {
@@ -268,7 +265,7 @@
         }
         
         .file-card {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            background: #ffffff;
             padding: 30px;
             border-radius: 15px;
             border: 2px solid #334155;
@@ -317,8 +314,8 @@
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            color: white;
+            background: #ffffff;
+            color: #000000;
         }
         
         .btn-primary:hover {
@@ -327,18 +324,18 @@
         }
         
         .btn-success {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
+            background: #ffffff;
+            color: #000000;
         }
         
         .btn-danger {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
+            background: #ffffff;
+            color: #000000;
         }
         
         .btn-warning {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: white;
+            background: #ffffff;
+            color: #000000;
         }
         
         /* Code Editor */
@@ -509,7 +506,6 @@
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
-            animation: zoomIn 0.3s ease;
         }
         
         .modal-header {
@@ -538,31 +534,17 @@
         }
         
         /* Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
             to {
                 opacity: 1;
             }
         }
         
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
         
-        @keyframes zoomIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
             to {
                 opacity: 1;
                 transform: scale(1);
@@ -580,30 +562,24 @@
             font-weight: bold;
             font-size: 1.1em;
             z-index: 3000;
-            animation: slideDown 0.4s ease;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
         
         .status-success {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
+            background: #ffffff;
+            color: #000000;
         }
         
         .status-error {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
+            background: #ffffff;
+            color: #000000;
         }
         
         .status-info {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            color: white;
+            background: #ffffff;
+            color: #000000;
         }
         
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -20px);
-            }
             to {
                 opacity: 1;
                 transform: translate(-50%, 0);
@@ -633,7 +609,7 @@
             border: 2px solid #334155;
             border-radius: 10px;
             background: #0f172a;
-            color: white;
+            color: #000000;
             font-size: 1em;
         }
         
@@ -882,17 +858,17 @@
                         
                         <div class="form-group">
                             <label>اسم المالك</label>
-                            <input type="text" value="aliabdelaal-adm" readonly style="background: #0f172a; color: white; padding: 12px; border: 2px solid #334155; border-radius: 8px; width: 100%;">
+                            <input type="text" value="aliabdelaal-adm" readonly style="background: #0f172a; color: #000000; padding: 12px; border: 2px solid #334155; border-radius: 8px; width: 100%;">
                         </div>
                         
                         <div class="form-group">
                             <label>اسم المستودع</label>
-                            <input type="text" value="awa_reports_2025" readonly style="background: #0f172a; color: white; padding: 12px; border: 2px solid #334155; border-radius: 8px; width: 100%;">
+                            <input type="text" value="awa_reports_2025" readonly style="background: #0f172a; color: #000000; padding: 12px; border: 2px solid #334155; border-radius: 8px; width: 100%;">
                         </div>
                         
                         <div class="form-group">
                             <label>الفرع</label>
-                            <input type="text" value="main" readonly style="background: #0f172a; color: white; padding: 12px; border: 2px solid #334155; border-radius: 8px; width: 100%;">
+                            <input type="text" value="main" readonly style="background: #0f172a; color: #000000; padding: 12px; border: 2px solid #334155; border-radius: 8px; width: 100%;">
                         </div>
                     </div>
                 </div>
