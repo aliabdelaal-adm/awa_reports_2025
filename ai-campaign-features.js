@@ -175,7 +175,7 @@ const CampaignAI = {
      */
     createKeywordBadges: function(keywords) {
         return keywords.map(kw => 
-            `<span style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 5px 12px; border-radius: 20px; font-size: 0.85em; cursor: pointer; margin: 3px; display: inline-block;" onclick="CampaignAI.removeKeywordBadge(this)">${kw} ×</span>`
+            `<span style="background: #e8e8e8; color: #333; padding: 5px 12px; border-radius: 5px; font-size: 0.85em; cursor: pointer; margin: 3px; display: inline-block; border: 1px solid #ddd;" onclick="CampaignAI.removeKeywordBadge(this)">${kw} ×</span>`
         ).join('');
     },
     

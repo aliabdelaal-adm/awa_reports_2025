@@ -1,20 +1,17 @@
-/* Vibrant Animated Gradient Background */
-/* خلفية متدرجة نابضة بالحياة مع تأثيرات متحركة */
+/* Simple Background - All custom animations removed */
 
 (function() {
     'use strict';
     
-    // Initialize animated background effects
-    function initAnimatedBackground() {
-        // The animated and glowing background is now handled entirely by CSS
-        // This script file is kept for future enhancements if needed
-        console.log('✨ Vibrant Animated Gradient Background initialized successfully');
+    // Simple initialization
+    function initBackground() {
+        console.log('Background initialized - simple mode');
     }
     
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initAnimatedBackground);
+        document.addEventListener('DOMContentLoaded', initBackground);
     } else {
-        initAnimatedBackground();
+        initBackground();
     }
 })();
