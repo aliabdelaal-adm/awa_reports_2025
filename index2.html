@@ -1149,7 +1149,7 @@
                     ];
                     
                     html += `
-                        <div class="training-card" style="animation-delay: ${index * 0.1}s;">
+                        <div class="training-card">
                             <h4>
                                 <span style="background: ${bgColors[index % 5]}; padding: 8px 15px; border-radius: 8px; color: #000000;">
                                     ${index + 1}
@@ -1240,7 +1240,7 @@
             
             images.forEach((image, index) => {
                 html += `
-                    <div class="gallery-item" onclick="openLightbox('${image}')" style="animation-delay: ${index * 0.05}s;">
+                    <div class="gallery-item" onclick="openLightbox('${image}')">
                         <img src="${image}" alt="صورة ${index + 1}" loading="lazy">
                         <div class="overlay">
                             <strong>صورة توثيقية ${index + 1}</strong>

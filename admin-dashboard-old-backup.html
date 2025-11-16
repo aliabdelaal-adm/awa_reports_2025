@@ -1272,8 +1272,7 @@
             document.body.appendChild(statusDiv);
             
             setTimeout(() => {
-                statusDiv.style.animation = 'fadeInUp 0.4s ease reverse';
-                setTimeout(() => statusDiv.remove(), 400);
+                statusDiv.remove();
             }, 3000);
         }
         

@@ -17,7 +17,7 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #ffffff;
+            background-color: #3b82f6;
             color: #000000;
             direction: rtl;
             min-height: 100vh;
@@ -35,7 +35,7 @@
         
         .header {
             text-align: center;
-            background: #f5f5f5;
+            background: #3b82f6;
             padding: 40px 20px;
             border-radius: 10px;
             margin-bottom: 40px;
@@ -62,7 +62,7 @@
         }
         
         .section-card {
-            background: #f9f9f9;
+            background: #3b82f6;
             padding: 30px;
             border-radius: 10px;
             border: 1px solid #ddd;
@@ -84,7 +84,7 @@
         }
         
         .action-card {
-            background: #fff;
+            background: #3b82f6;
             padding: 25px;
             border-radius: 10px;
             border: 1px solid #ddd;
@@ -124,7 +124,7 @@
             text-align: center;
             padding: 30px;
             margin-top: 50px;
-            background: #f5f5f5;
+            background: #3b82f6;
             border-radius: 10px;
             border: 1px solid #ddd;
             color: #666;
@@ -420,7 +420,6 @@
                 
                 if (title.includes(searchTerm) || description.includes(searchTerm) || category.includes(searchTerm)) {
                     card.style.display = '';
-                    card.style.animation = 'fadeInUp 0.5s ease';
                 } else {
                     card.style.display = 'none';
                 }
@@ -452,7 +451,6 @@
                     
                     if (category === 'all' || mainCategory === category) {
                         card.style.display = '';
-                        card.style.animation = 'fadeInUp 0.5s ease';
                         // Show parent section if card is visible
                         if (card.closest('.category-section')) {
                             card.closest('.category-section').style.display = 'block';
@@ -750,8 +748,7 @@
             document.body.appendChild(notification);
 
             setTimeout(() => {
-                notification.style.animation = 'fadeOut 0.5s ease';
-                setTimeout(() => notification.remove(), 500);
+                notification.remove();
             }, 3000);
         }
 

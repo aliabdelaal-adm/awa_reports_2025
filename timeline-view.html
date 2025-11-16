@@ -69,7 +69,7 @@
         }
         
         .back-btn:hover {
-            background: white;
+            background: #3b82f6;
             color: #667eea;
         }
         
@@ -86,7 +86,7 @@
             transform: translateX(50%);
             width: 4px;
             height: 100%;
-            background: #ffffff;
+            background: #3b82f6;
             z-index: 0;
         }
         
@@ -103,7 +103,7 @@
         
         .timeline-content {
             width: 45%;
-            background: white;
+            background: #3b82f6;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -137,7 +137,7 @@
         .timeline-dot {
             width: 60px;
             height: 60px;
-            background: #ffffff;
+            background: #3b82f6;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -166,7 +166,7 @@
         }
         
         .content-date {
-            background: #ffffff;
+            background: #3b82f6;
             color: #000000;
             padding: 6px 12px;
             border-radius: 15px;
@@ -345,7 +345,7 @@
                 const statusText = visible ? '✅ معروض' : '❌ مخفي';
                 
                 html += `
-                    <div class="timeline-item" style="animation-delay: ${index * 0.2}s">
+                    <div class="timeline-item">
                         ${index % 2 === 0 ? '<div class="timeline-spacer"></div>' : ''}
                         <div class="timeline-dot">${file.icon}</div>
                         <div class="timeline-content">

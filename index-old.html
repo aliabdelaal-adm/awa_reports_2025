@@ -2276,32 +2276,32 @@
             const statsContainer = document.getElementById('statsContainer');
             
             statsContainer.innerHTML = `
-                <div class="stat-card" style="background: #ffffff; animation-delay: 0s;">
+                <div class="stat-card" style="background: #3b82f6;">
                     <div style="font-size: 2.5em; margin-bottom: 10px;">📊</div>
                     <h3 class="counter" data-target="${stats.total}">0</h3>
                     <p>إجمالي المهام</p>
                 </div>
-                <div class="stat-card" style="background: #ffffff; animation-delay: 0.1s;">
+                <div class="stat-card" style="background: #3b82f6;">
                     <div style="font-size: 2.5em; margin-bottom: 10px;">⚠️</div>
                     <h3 class="counter" data-target="${stats.challenges}">0</h3>
                     <p>التحديات المسجلة</p>
                 </div>
-                <div class="stat-card" style="background: #ffffff; animation-delay: 0.2s;">
+                <div class="stat-card" style="background: #3b82f6;">
                     <div style="font-size: 2.5em; margin-bottom: 10px;">💡</div>
                     <h3 class="counter" data-target="${stats.solutions}">0</h3>
                     <p>الحلول المقترحة</p>
                 </div>
-                <div class="stat-card" style="background: #ffffff; animation-delay: 0.3s;">
+                <div class="stat-card" style="background: #3b82f6;">
                     <div style="font-size: 2.5em; margin-bottom: 10px;">✅</div>
                     <h3 class="counter" data-target="${stats.completed}">0</h3>
                     <p>المهام المنجزة</p>
                 </div>
-                <div class="stat-card" style="background: #ffffff; animation-delay: 0.4s;">
+                <div class="stat-card" style="background: #3b82f6;">
                     <div style="font-size: 2.5em; margin-bottom: 10px;">🔄</div>
                     <h3 class="counter" data-target="${stats.pending}">0</h3>
                     <p>قيد الإجراء</p>
                 </div>
-                <div class="stat-card" style="background: #ffffff; animation-delay: 0.5s;">
+                <div class="stat-card" style="background: #3b82f6;">
                     <div style="font-size: 2.5em; margin-bottom: 10px;">📈</div>
                     <h3 class="counter" data-target="${Math.round((stats.completed / stats.total) * 100)}" data-percentage="true">0%</h3>
                     <p>نسبة الإنجاز</p>
@@ -2397,7 +2397,7 @@
                 const pendingPercent = 100 - completedPercent;
                 statusCtx.innerHTML = `
                     <div style="text-align: center; padding: 40px 20px;">
-                        <div style="width: 200px; height: 200px; margin: 0 auto; border-radius: 50%; background: conic-gradient(#43e97b 0% ${completedPercent}%, #fa709a ${completedPercent}% 100%); box-shadow: 0 4px 15px rgba(0,0,0,0.2);"></div>
+                        <div style="width: 200px; height: 200px; margin: 0 auto; border-radius: 50%; background: #3b82f6; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"></div>
                         <div style="margin-top: 20px; display: flex; justify-content: center; gap: 30px;">
                             <div><span style="display: inline-block; width: 15px; height: 15px; background: #43e97b; border-radius: 3px; margin-left: 5px;"></span> منجز: ${stats.completed} (${completedPercent}%)</div>
                             <div><span style="display: inline-block; width: 15px; height: 15px; background: #fa709a; border-radius: 3px; margin-left: 5px;"></span> قيد الإجراء: ${stats.pending} (${pendingPercent}%)</div>
@@ -2415,7 +2415,7 @@
                 const lowPercent = 100 - highPercent - medPercent;
                 priorityCtx.innerHTML = `
                     <div style="text-align: center; padding: 40px 20px;">
-                        <div style="width: 200px; height: 200px; margin: 0 auto; border-radius: 50%; background: conic-gradient(#ff6384 0% ${highPercent}%, #ffce56 ${highPercent}% ${highPercent + medPercent}%, #4bc0c0 ${highPercent + medPercent}% 100%); box-shadow: 0 4px 15px rgba(0,0,0,0.2);"></div>
+                        <div style="width: 200px; height: 200px; margin: 0 auto; border-radius: 50%; background: #3b82f6; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"></div>
                         <div style="margin-top: 20px;">
                             <div style="margin: 5px 0;"><span style="display: inline-block; width: 15px; height: 15px; background: #ff6384; border-radius: 3px; margin-left: 5px;"></span> هام وعاجل: ${stats.highPriority} (${highPercent}%)</div>
                             <div style="margin: 5px 0;"><span style="display: inline-block; width: 15px; height: 15px; background: #ffce56; border-radius: 3px; margin-left: 5px;"></span> هام وغير عاجل: ${stats.mediumPriority} (${medPercent}%)</div>

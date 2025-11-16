@@ -17,7 +17,7 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #ffffff;
+            background: #3b82f6;
             color: #000000;
             direction: rtl;
             min-height: 100vh;
@@ -36,7 +36,7 @@
         
         .header {
             text-align: center;
-            background: #f5f5f5;
+            background: #3b82f6;
             padding: 30px;
             border-radius: 10px;
             margin-bottom: 30px;
@@ -72,7 +72,7 @@
         }
         
         .card {
-            background: #f9f9f9;
+            background: #3b82f6;
             padding: 20px;
             border-radius: 10px;
             border: 1px solid #ddd;
@@ -197,7 +197,7 @@
         }
         
         .search-container {
-            background: #f5f5f5;
+            background: #3b82f6;
             padding: 20px;
             border-radius: 10px;
             border: 1px solid #ddd;
@@ -207,7 +207,7 @@
         .search-box {
             display: flex;
             align-items: center;
-            background: #fff;
+            background: #3b82f6;
             border-radius: 25px;
             padding: 12px 20px;
             border: 1px solid #ddd;
@@ -244,7 +244,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: #f5f5f5;
+            background: #3b82f6;
             border-top: 1px solid #ddd;
             padding: 15px 0;
             z-index: 1000;
@@ -313,7 +313,7 @@
         }
         
         .modal-content {
-            background: white;
+            background: #3b82f6;
             padding: 40px;
             border-radius: 10px;
             max-width: 600px;
@@ -368,7 +368,7 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 1em;
-            background: white;
+            background: #3b82f6;
             color: #333;
         }
         
@@ -551,7 +551,6 @@
                 path: "index2.html",
                 icon: "📊",
                 defaultVisible: true,
-                gradient: "#f5f5f5",
                 category: "تقارير توعية",
                 type: "awareness",
                 year: "2024"
@@ -567,7 +566,6 @@
                 description: "تقرير تفصيلي عن برنامج التوعية والتدريب لموظفي محلات بيع الحيوانات الأليفة مع معرض الصور",
                 path: "index2.html",
                 icon: "📊",
-                gradient: "#f5f5f5",
                 type: "campaign",
                 year: "2024"
             }
@@ -579,8 +577,7 @@
                 name: "التقارير",
                 description: "عرض بطاقات ثلاثية الأبعاد احترافي وتفاعلي لجميع التقارير مع إمكانية الفلترة والبحث",
                 path: "gallery-view.html",
-                icon: "🎨",
-                gradient: "#f5f5f5"
+                icon: "🎨"
             }
         ];
 
@@ -636,7 +633,6 @@
                 
                 if (title.includes(searchTerm) || description.includes(searchTerm)) {
                     card.style.display = '';
-                    card.style.animation = 'fadeInUp 0.5s ease';
                 } else {
                     card.style.display = 'none';
                 }
@@ -835,8 +831,7 @@
             document.body.appendChild(notification);
 
             setTimeout(() => {
-                notification.style.animation = 'fadeOut 0.5s ease';
-                setTimeout(() => notification.remove(), 500);
+                notification.remove();
             }, 3000);
         }
 
