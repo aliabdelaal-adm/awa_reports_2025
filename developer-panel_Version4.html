@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <title>لوحة إدارة خطة التفتيش الشهرية وتوزيع المحلات</title>
+  <link rel="stylesheet" href="water-waves-background.css">
   <style>
     html, body { direction: rtl; }
     body {font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6fb;}
-    h2 {text-align:center; background:#2336a0; color:#fff; padding:12px; border-radius:8px;}
-    .section {background:#e2e6f6; border-radius:6px; padding:10px; margin-bottom:18px;}
-    .list-item {display:inline-block; background:#2336a0; color:#fff; margin:2px; padding:4px 12px; border-radius:4px;}
+    h2 {text-align:center; background:#87CEEB; color:#fff; padding:12px; border-radius:8px;}
+    .section {background:#B0E0E6; border-radius:6px; padding:10px; margin-bottom:18px;}
+    .list-item {display:inline-block; background:#87CEEB; color:#fff; margin:2px; padding:4px 12px; border-radius:4px;}
     .del-btn {background:#c00; color:#fff; border:none; border-radius:50%; width:20px; height:20px; margin-left:7px; cursor:pointer;}
     .del-btn:hover {background:#a00;}
     .add-box {display:inline-block; margin-left:12px;}
     table {width:100%; border-collapse:collapse; margin-top:10px; direction: rtl;}
     th,td {border:1px solid #bbb; padding:6px; text-align:center;}
-    th {background:#2336a0; color:#fff;}
+    th {background:#87CEEB; color:#fff;}
     .copyright {text-align:center; color:#2336a0; font-weight:bold; margin-top:30px;}
     .footer {background:#f8f9fa; color:#555; padding:8px 20px; text-align:center; font-size:0.85em; border-top:1px solid #e0e0e0; margin-top:30px;}
-    .save-btn {background:#2336a0; color:#fff; border:none; padding:8px 24px; border-radius:4px; font-size:1em; cursor:pointer;}
+    .save-btn {background:#87CEEB; color:#fff; border:none; padding:8px 24px; border-radius:4px; font-size:1em; cursor:pointer;}
     .save-btn:hover {background:#2a43c7;}
     .upload-btn {background:#0fa25c; color:#fff; border:none; padding:8px 24px; border-radius:4px; font-size:1em; cursor:pointer; margin-right:8px;}
     .upload-btn:hover {background:#0b7a43;}
@@ -29,9 +30,9 @@
 <body>
   <!-- Navigation Bar -->
   <div style="background:#1a3a5e; padding:15px; text-align:center; margin-bottom:20px; border-radius:8px;" id="navBar">
-    <a href="home.html" style="color:#fff; text-decoration:none; margin:0 15px; padding:8px 16px; background:#2336a0; border-radius:5px; display:inline-block;">🏠 الصفحة الرئيسية</a>
+    <a href="home.html" style="color:#fff; text-decoration:none; margin:0 15px; padding:8px 16px; background:#87CEEB; border-radius:5px; display:inline-block;">🏠 الصفحة الرئيسية</a>
     <a href="developer-panel.html" style="color:#fff; text-decoration:none; margin:0 15px; padding:8px 16px; background:#c0392b; border-radius:5px; display:inline-block;">🎛️ لوحة التحكم المطور</a>
-    <a href="awareness-campaign-report.html" style="color:#fff; text-decoration:none; margin:0 15px; padding:8px 16px; background:#2336a0; border-radius:5px; display:inline-block;" id="link-awareness">📊 تقرير التوعية</a>
+    <a href="awareness-campaign-report.html" style="color:#fff; text-decoration:none; margin:0 15px; padding:8px 16px; background:#87CEEB; border-radius:5px; display:inline-block;" id="link-awareness">📊 تقرير التوعية</a>
     <a href="smart-planner.html" style="color:#fff; text-decoration:none; margin:0 15px; padding:8px 16px; background:#27ae60; border-radius:5px; display:inline-block;">⚙️ الإعدادات</a>
   </div>
   <h2>لوحة إدارة خطة التفتيش الشهرية وتوزيع المحلات (نسخة قديمة - للرجوع إلى النسخة الجديدة انقر على "لوحة التحكم المطور" أعلاه)</h2>
@@ -292,5 +293,6 @@
     renderShops();
     renderDistribution();
   </script>
+  <script src="water-waves-background.js"></script>
 </body>
 </html>
