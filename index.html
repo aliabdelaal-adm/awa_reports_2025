@@ -17,7 +17,7 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #3b82f6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #000000;
             direction: rtl;
             min-height: 100vh;
@@ -36,17 +36,23 @@
         
         .header {
             text-align: center;
-            background: #3b82f6;
-            padding: 30px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            padding: 40px;
+            border-radius: 20px;
             margin-bottom: 30px;
-            border: 1px solid #ddd;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
         }
         
         .header h1 {
             font-size: 3em;
             margin-bottom: 15px;
-            color: #333;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
         }
         
         .header p {
@@ -72,11 +78,11 @@
         }
         
         .card {
-            background: #3b82f6;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            padding: 25px;
+            border-radius: 15px;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
             position: relative;
             overflow: hidden;
@@ -85,12 +91,14 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
         }
         
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border-color: #999;
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 45px rgba(102, 126, 234, 0.4);
+            border-color: rgba(102, 126, 234, 0.8);
         }
         
         .card-icon {
@@ -197,26 +205,29 @@
         }
         
         .search-container {
-            background: #3b82f6;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #ddd;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            padding: 25px;
+            border-radius: 15px;
+            border: 3px solid rgba(255, 255, 255, 0.5);
             margin-bottom: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
         }
         
         .search-box {
             display: flex;
             align-items: center;
-            background: #3b82f6;
-            border-radius: 25px;
-            padding: 12px 20px;
-            border: 1px solid #ddd;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 30px;
+            padding: 14px 24px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
             transition: all 0.3s ease;
         }
         
         .search-box:focus-within {
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            border-color: #999;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.6);
+            background: rgba(255, 255, 255, 0.9);
         }
         
         .search-icon {
@@ -244,10 +255,12 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: #3b82f6;
-            border-top: 1px solid #ddd;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+            border-top: 3px solid rgba(255, 255, 255, 0.5);
             padding: 15px 0;
             z-index: 1000;
+            box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
         }
         
         .nav-container {
@@ -263,22 +276,24 @@
             flex-direction: column;
             align-items: center;
             gap: 5px;
-            padding: 10px 20px;
+            padding: 12px 24px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 10px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 15px;
             text-decoration: none;
-            color: #333;
+            color: #4a5568;
         }
         
         .nav-item:hover {
-            background: #e8e8e8;
-            transform: translateY(-2px);
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-3px) scale(1.05);
+            color: #667eea;
         }
         
         .nav-item.active {
-            color: #000;
-            background: #ddd;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
         
         .nav-icon {
@@ -313,14 +328,16 @@
         }
         
         .modal-content {
-            background: #3b82f6;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.95));
             padding: 40px;
-            border-radius: 10px;
+            border-radius: 20px;
             max-width: 600px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
-            border: 1px solid #ddd;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
         }
         
         .modal-header {
